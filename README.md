@@ -11,13 +11,13 @@ This solution is specially designed for the TU Graz, but can be used for all oth
 Member| Role
 -------- | -------- 
 Christina Tögl   | Product Owner
-Jakob Elias Dunst | Member
-Irfan Jahić | Member
-Tamara Steinwender | Member
-Patrick Struger | Member
-Alexander Toch | Member
-Bernadette Vogl | Member
-Michael Weiß | Member
+Jakob Elias Dunst | Scrum Master
+Irfan Jahić | Developer
+Tamara Steinwender | Developer
+Patrick Struger | Developer
+Alexander Toch | Developer
+Bernadette Vogl | Developer
+Michael Weiß | Developer
 
 ## Currently implemented Features
 User Story | Feature
