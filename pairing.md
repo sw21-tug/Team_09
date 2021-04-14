@@ -1,16 +1,16 @@
 ### Pairing Matrix
-Dev 1: Name
-Dev 2: Name
-Dev 3: Name
-Dev 4: Name
-Dev 5: Name
-Dev 6: Name
+Dev 1: Irfan Jahic  
+Dev 2: Tamara Steinwender  
+Dev 3: Patrick Struger  
+Dev 4: Alexander Toch  
+Dev 5: Bernadette Vogl  
+Dev 6: Michael Weiß  
 
 | Syntax      | Dev 1   	  | Dev 2   	  | Dev 3     	| Dev 4   	  | Dev 5     	| Dev 6   	  |
 | :---        |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |
-| Dev 1       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 2       | HH:MM       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 3       | HH:MM       | HH:MM       | X           | HH:MM       | HH:MM       | HH:MM       |
-| Dev 4       | HH:MM       | HH:MM       | HH:MM       | X           | HH:MM       | HH:MM       |
-| Dev 5       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | X           | HH:MM       |
-| Dev 6       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | X           |
+| Dev 1       | X           | 00:00       | 00:00       | 00:00       | 00:00       | 04:00       |
+| Dev 2       | 00:00       | X           | 00:00       | 00:00       | 04:00       | 00:00       |
+| Dev 3       | 00:00       | 00:00       | X           | 04:00       | 00:00       | 00:00       |
+| Dev 4       | 00:00       | 00:00       | 04:00       | X           | 00:00       | 00:00       |
+| Dev 5       | 00:00       | 04:00       | 00:00       | 00:00       | X           | 00:00       |
+| Dev 6       | 04:00       | 00:00       | 00:00       | 00:00       | 00:00       | X           |
