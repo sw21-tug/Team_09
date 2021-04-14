@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -11,21 +12,28 @@ import org.junit.Assert.*
  */
 class NewsgroupConnectionUnitTest {
 
-    private val host = "news.tugraz.at"
+    private val HOST = "news.tugraz.at"
 
     @Test
     fun establishConnection() {
-        var server = NewsgroupServer(host)
-        NewsgroupConnection.server = server
-        var groups = NewsgroupConnection.getNewsGroups()
+        val server = NewsgroupServer(HOST)
+        val con = NewsgroupConnection(server)
+        val groups = con.getNewsGroups()
 
         assertTrue("No newsgroups received", groups.size > 0)
     }
 
     @Test(expected = NewsgroupConnection.NewsgroupConnectionException::class)
     fun establishWithWrongHost() {
-        var server = NewsgroupServer("wrong.tugraz.at")
-        NewsgroupConnection.server = server
-        NewsgroupConnection.getNewsGroups()
+        val server = NewsgroupServer("wrong.tugraz.at")
+        val con = NewsgroupConnection(server)
+        val groups = con.getNewsGroups()
+    }
+
+    @Test(expected = NewsgroupConnection.NewsgroupConnectionException::class)
+    fun establishWithWrongPort() {
+        val server = NewsgroupServer(HOST, 0)
+        val con = NewsgroupConnection(server)
+        con.getNewsGroups()
     }
 }

@@ -1,29 +1,26 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.NNTPClient
-import org.apache.commons.net.nntp.NewsgroupInfo
-import java.io.IOException
 import java.lang.Exception
-import java.net.SocketException
 import java.net.UnknownHostException
 
-object NewsgroupConnection {
-    var server: NewsgroupServer? = null
+class NewsgroupConnection (var server: NewsgroupServer){
     private var client: NNTPClient = NNTPClient()
 
     fun ensureConnection() {
         if(!client.isConnected) {
             try {
-                client.connect(server?.host)
+                client.connect(server.host, server.port)
             } catch (e: Exception) {
                 when(e) {
                     is UnknownHostException -> {
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
-                    is IOException -> {
+                    else -> {
                         throw NewsgroupConnectionException("IOException while connecting to newsgroup server")
                     }
-                    else -> throw e
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -10,9 +11,10 @@ class NewsgroupIntegrationTest {
     @Test
     fun fillNewsGroupList() {
         var server = NewsgroupServer(host)
-        NewsgroupConnection.server = server
-        var groups = NewsgroupConnection.getNewsGroups()
-        assertFalse("Server does not contain any newsgroups ", server.newsGroups.isNullOrEmpty())
+        val con = NewsgroupConnection(server)
+
+        var groups = con.getNewsGroups()
+        assertFalse("Server does not contain any newsgroups ", groups.isNullOrEmpty())
     }
 
 }
