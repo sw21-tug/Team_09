@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ModernNewsgroupApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".ActivityAddNewsgroup"
             android:label="@string/app_name"
             android:theme="@style/Theme.ModernNewsgroupApp.NoActionBar">
             <intent-filter>
