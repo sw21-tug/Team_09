@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_gradient_background"
     android:orientation="vertical"
-    android:background = "@drawable/ic_gradient_background"
     tools:context=".FragmentSubscribe">
 
     <LinearLayout
@@ -32,35 +32,40 @@
             android:textAlignment="center"
             android:textSize="20dp" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="447dp">
+
+        <LinearLayout
+            android:id="@+id/view_subscribe"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="1">
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:gravity="bottom|end"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_back"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="40dp"
+            android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
             android:shadowColor="@android:color/transparent"
-            android:textColor="@color/berry"
             android:text="BACK"
-            android:layout_margin="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            app:cornerRadius="100dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="1"
-            />
+            android:textColor="@color/berry"
+            app:cornerRadius="100dp" />
 
         <Button
             android:id="@+id/button_finish"
