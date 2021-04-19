@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background = "@drawable/ic_gradient_background"
+    android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentAddNewsgroup">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -32,81 +37,94 @@
             android:textAlignment="center"
             android:textSize="20dp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Identity"
-            android:textColor="@color/berry"
-            android:textSize="20dp"
             android:textAllCaps="true"
-            />
+            android:textColor="@color/berry"
+            android:textSize="20dp" />
+
         <EditText
             android:id="@+id/editText_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Your name *"
-            android:maxLines="1"
             android:layout_marginTop="10dp"
-            app:backgroundTint="@color/berry"
-            />
+            android:hint="Your name *"
+            android:inputType="text"
+            android:maxLines="1"
+            app:backgroundTint="@color/berry" />
+
         <EditText
             android:id="@+id/editText_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Email address *"
-            android:maxLines="1"
             android:layout_marginTop="10dp"
-            app:backgroundTint="@color/berry"
-            />
+            android:hint="Email address *"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            app:backgroundTint="@color/berry" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Server information"
-            android:textColor="@color/berry"
-            android:textSize="20dp"
-            android:textAllCaps="true"
             android:layout_marginTop="40dp"
-            />
+            android:text="Server information"
+            android:textAllCaps="true"
+            android:textColor="@color/berry"
+            android:textSize="20dp" />
+
         <EditText
             android:id="@+id/editText_newsgroupServer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Newsgroup-server *"
             android:maxLines="1"
-            android:layout_marginTop="10dp"
-            app:backgroundTint="@color/berry"
-            />
+            app:backgroundTint="@color/berry" />
+
         <EditText
             android:id="@+id/editText_serverAlias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Server alias"
             android:layout_marginTop="10dp"
-            app:backgroundTint="@color/berry"
-            />
+            android:hint="Server alias"
+            app:backgroundTint="@color/berry" />
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
         <Button
             android:id="@+id/button_subscribe"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="40dp"
             android:background="#AA4075"
             android:text="NEXT"
-            android:layout_margin="40dp"
             app:backgroundTint="#AA4075"
-            app:cornerRadius="100dp"
-            android:layout_gravity="center_vertical|center_horizontal"/>
+            app:cornerRadius="100dp" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
