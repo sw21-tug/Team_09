@@ -28,6 +28,7 @@ class AddNewsGroupFunctionTest {
 
     @Test
     fun addNewsGroupFunctionTest() {
+        Thread.sleep(5000)
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),

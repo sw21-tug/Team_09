@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/caveat_bold"
-            android:text="SUBSCIBE"
+            android:text="SUBSCRIBE"
             android:textAlignment="center"
             android:textSize="30dp" />
 
