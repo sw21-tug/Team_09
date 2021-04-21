@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
@@ -28,144 +29,147 @@ class ActivityAddNewsgroupTest {
 
     @Test
     fun activityAddNewsgroupTest() {
+        Thread.sleep(5000)
         val appCompatEditText = onView(
-            allOf(
-                withId(R.id.editText_name),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_name),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                1
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText.perform(replaceText("Hallo"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
-            allOf(
-                withId(R.id.editText_email),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_email),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                2
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText2.perform(replaceText("test@test.com"), closeSoftKeyboard())
 
         val appCompatEditText3 = onView(
-            allOf(
-                withId(R.id.editText_newsgroupServer),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    4
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_newsgroupServer),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                4
+                        ),
+                        isDisplayed()
+                )
         )
-        appCompatEditText3.perform(replaceText("test.com"), closeSoftKeyboard())
+        appCompatEditText3.perform(replaceText("news.tugraz.at"), closeSoftKeyboard())
 
         val appCompatEditText4 = onView(
-            allOf(
-                withId(R.id.editText_serverAlias),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    5
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_serverAlias),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                5
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText4.perform(replaceText("test"), closeSoftKeyboard())
 
         val appCompatEditText5 = onView(
-            allOf(
-                withId(R.id.editText_serverAlias), withText("test"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    5
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_serverAlias), withText("test"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                5
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText5.perform(click())
 
         val appCompatEditText6 = onView(
-            allOf(
-                withId(R.id.editText_serverAlias), withText("test"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    5
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_serverAlias), withText("test"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                5
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText6.perform(replaceText("test"))
 
         val appCompatEditText7 = onView(
-            allOf(
-                withId(R.id.editText_serverAlias), withText("test"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        1
-                    ),
-                    5
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.editText_serverAlias), withText("test"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.linearLayout2),
+                                        1
+                                ),
+                                5
+                        ),
+                        isDisplayed()
+                )
         )
         appCompatEditText7.perform(closeSoftKeyboard())
 
         val materialButton = onView(
-            allOf(
-                withId(R.id.button_subscribe), withText("NEXT"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        2
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
+                allOf(
+                        withId(R.id.button_subscribe), withText("NEXT"),
+                        childAtPosition(
+                                allOf(
+                                        withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.linearLayout2),
+                                                2
+                                        )
+                                ),
+                                0
+                        ),
+                        isDisplayed()
+                )
         )
         materialButton.perform(click())
 
-        val materialButton2 = onView(
-            allOf(
-                withId(R.id.button_finish), withText("FINISH"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.LinearLayout")),
-                        2
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
+        val button2 = onView(
+                allOf(
+                        withId(R.id.button_finish), withText("FINISH"),
+                        withParent(
+                                allOf(
+                                        withId(R.id.linearLayout4),
+                                        withParent(withId(R.id.linearLayout2))
+                                )
+                        ),
+                        isDisplayed()
+                )
         )
-        materialButton2.perform(click())
+        button2.check(ViewAssertions.matches(isDisplayed()))
     }
 
     private fun childAtPosition(
-        parentMatcher: Matcher<View>, position: Int
+            parentMatcher: Matcher<View>, position: Int
     ): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {

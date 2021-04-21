@@ -3,8 +3,8 @@ package com.tugraz.asd.modernnewsgroupapp
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.NNTPClient
-import java.lang.Exception
 import java.net.UnknownHostException
+import kotlin.Exception
 
 class NewsgroupConnection (var server: NewsgroupServer){
     private var client: NNTPClient = NNTPClient()
@@ -19,7 +19,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server")
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server: " + e.message)
                     }
                 }
             }
