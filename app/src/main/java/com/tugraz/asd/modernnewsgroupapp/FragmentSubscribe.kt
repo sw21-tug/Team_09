@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 
 /**
@@ -66,10 +67,9 @@ class FragmentSubscribe : Fragment() {
         binding.viewSubscribe.forEach {
             val checkbox = it as CheckBox
             if(checkbox.isChecked) {
-                for(newsgroup in viewModel.data.value?.newsGroups!!) {
-                    if(newsgroup.name == checkbox.text) {
-                        newsgroup.subscribed = true
-                    }
+                val ng = viewModel.data.value?.newsGroups?.filter{ng -> checkbox.text == ng.name}
+                if (ng != null) {
+                    ng.elementAt(0).subscribed = true
                 }
             }
         }
