@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.tugraz.asd.modernnewsgroupapp.FirstFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/first_fragment">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
