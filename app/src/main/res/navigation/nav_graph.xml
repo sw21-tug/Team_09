@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/FragmentAddNewsgroup">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -24,5 +24,21 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentAddNewsgroup"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentAddNewsgroup"
+        android:label="Add Newsgroup Fragment"
+        tools:layout="@layout/fragment_add_newsgroup">
+
+        <action
+            android:id="@+id/action_AddNewsgroup_to_Subscribe"
+            app:destination="@id/FragmentSubscribe" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentSubscribe"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentSubscribe"
+        android:label="Subscribe Fragment"
+        tools:layout="@layout/fragment_subscribe">
     </fragment>
 </navigation>
