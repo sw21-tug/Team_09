@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.tugraz.asd.modernnewsgroupapp.helper.MessageType
 import com.tugraz.asd.modernnewsgroupapp.helper.showCustomToast
 import com.tugraz.asd.modernnewsgroupapp.helper.showSnackBar
 
@@ -28,12 +29,13 @@ class FragmentAddNewsgroup : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {
-            //showSnackBar("Ola from SnackBar", this.requireView())
-            Toast(this.activity).showCustomToast (
+
+            showSnackBar("Newsgroup subscribed", this.requireView(), MessageType.SUCCESS)
+            /*Toast(this.activity).showCustomToast (
                     "Hello! This is our custom Toast!",
                     this
-            )
-            //findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
+            )*/
+            findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
         }
     }
 }

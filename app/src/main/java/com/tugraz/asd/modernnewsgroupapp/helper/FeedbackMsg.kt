@@ -10,20 +10,24 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tugraz.asd.modernnewsgroupapp.R
 
+enum class MessageType {
+    WARNING, SUCCESS, INFO, ERROR
+}
 /*
     Custom toast for fragment context
  */
-fun showSnackBar(message: String, view: View)
+fun showSnackBar(message: String, view: View, messagetype: MessageType)
 {
-    /*val layout = fragment.layoutInflater.inflate (
-            R.layout.feedback_msg_layout,
-            fragment.activity?.findViewById(R.id.toast_container)
-    )
-    Snackbar.make(layout, fragment, message, Snackbar.LENGTH_LONG).show()*/
     val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-// To change background color to red
-    snackbar.view.setBackgroundColor(Color.RED)
-// To change color for action button
+    if (messagetype == MessageType.WARNING)
+        snackbar.view.setBackgroundColor(Color.YELLOW)
+    else if (messagetype == MessageType.INFO)
+        snackbar.view.setBackgroundColor(Color.BLUE)
+    else if (messagetype == MessageType.SUCCESS)
+        snackbar.view.setBackgroundColor(Color.GREEN)
+    else if (messagetype == MessageType.ERROR)
+        snackbar.view.setBackgroundColor(Color.RED)
+
     snackbar.setActionTextColor(Color.WHITE)
     snackbar.setAction("X") {
         fun onClick(v: View) {
