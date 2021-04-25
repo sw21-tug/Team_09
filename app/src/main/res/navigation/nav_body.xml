@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_body"
+    app:startDestination="@id/FragmentShowSubgroupsBody">
+
+    <fragment
+        android:id="@+id/FragmentShowSubgroupsBody"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroupsBody"
+        android:label="Fragment Show Subgroups"
+        tools:layout="@layout/fragment_show_subgroups_body">
+        <action
+            android:id="@+id/action_FragmentShowSubgroupsBody_to_FragmentEditNewsgroupBody"
+            app:destination="@id/FragmentEditNewsgroupBody" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentEditNewsgroupBody"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroupsBody"
+        android:label="Fragment Show Subgroups"
+        tools:layout="@layout/fragment_edit_newsgroup_body">
+    </fragment>
+</navigation>
