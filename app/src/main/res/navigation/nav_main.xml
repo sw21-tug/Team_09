@@ -16,8 +16,8 @@
     </fragment>
     <fragment
         android:id="@+id/FragmentEditNewsgroupBody"
-        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroupsBody"
-        android:label="Fragment Show Subgroups"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentEditNewsgroupBody"
+        android:label="Fragment Edit Newsgroup"
         tools:layout="@layout/fragment_edit_newsgroup_body">
     </fragment>
 </navigation>
