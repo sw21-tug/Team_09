@@ -8,22 +8,63 @@
     android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentAddNewsgroup">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/simple_spinner_dropdown_item"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:background="#F5F5F5"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/button_show_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/icon_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/newsgroups_List"
+            android:layout_width="230dp"
+            android:layout_height="45dp"
+            android:layout_margin="10dp"
+            android:entries="@array/newsgroups"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit_newsgroup"
+            app:layout_constraintStart_toEndOf="@+id/button_show_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_edit_newsgroup"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/icon_settings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageButton
         android:id="@+id/button_add_subgroups"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_round"
-        android:src="@drawable/ic_icon_add"
+        android:src="@drawable/icon_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/simple_spinner_dropdown_item" />
 
     <ScrollView
         android:id="@+id/scrollView_show_subgroups"
         android:layout_width="match_parent"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +87,7 @@
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 ></TextView>
 
             <TextView
@@ -56,7 +98,8 @@
                 android:text="tu-graz.test2"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -66,7 +109,8 @@
                 android:text="tu-graz.test3"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -76,7 +120,8 @@
                 android:text="tu-graz.test4"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -86,7 +131,8 @@
                 android:text="tu-graz.test5"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -96,7 +142,8 @@
                 android:text="tu-graz.test6"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -106,7 +153,8 @@
                 android:text="tu-graz.test7"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,7 +164,8 @@
                 android:text="tu-graz.test8"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -126,7 +175,8 @@
                 android:text="tu-graz.test9"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -136,7 +186,8 @@
                 android:text="tu-graz.test10"
                 android:textColor="@color/darkgrey"
                 android:background="@drawable/border_top"
-                android:textSize="20dp"></TextView>
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
