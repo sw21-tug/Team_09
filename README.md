@@ -22,9 +22,9 @@ Michael Weiß | Developer
 ## Currently implemented Features
 User Story | Feature
 -------- | -------- 
-MNA-001  | Subscription
-MNA-015  | Start / Splash Screen
-MNA-016  | Feedback Messages
+[MNA-001](https://github.com/sw21-tug/Team_09/issues/1)  | Subscription
+[MNA-015](https://github.com/sw21-tug/Team_09/issues/19)  | Start / Splash Screen
+[MNA-016](https://github.com/sw21-tug/Team_09/issues/20)  | Feedback Messages
 
 ### Description of these Features:
 There is always a splash screen when you launch the app, which displays the name and the logo of the app. This screen disappears after some seconds. 
