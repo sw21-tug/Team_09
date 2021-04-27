@@ -8,7 +8,6 @@ import android.os.Looper
 
 const val splashScreenDuration: Long = 3000 // Milliseconds
 
-
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
