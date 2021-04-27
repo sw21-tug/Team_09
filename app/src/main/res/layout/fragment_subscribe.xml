@@ -43,7 +43,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Filter..."
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            app:backgroundTint="@color/berry" />
+
 
     </LinearLayout>
 
