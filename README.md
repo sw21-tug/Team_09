@@ -22,4 +22,11 @@ Michael Weiß | Developer
 ## Currently implemented Features
 User Story | Feature
 -------- | -------- 
-MNA-0XX  | <FeatureName>
+MNA-001  | Subscription
+MNA-015  | Start / Splash Screen
+MNA-016  | Feedback Messages
+
+### Description of these Features:
+There is always a splash screen when you launch the app, which displays the name and the logo of the app. This screen disappears after some seconds. 
+After the splash screen disappears, the subscribe screen appears. You can subscribe to a newsgroup server now, which subsequently shows a list of all subgroups of this server, including a filter to search for a specific one. 
+The app is also provided with toast messages, which can be used for further implementations now. They will be used as a feedback system to notify in case something went wrong and also when it was successful.  
