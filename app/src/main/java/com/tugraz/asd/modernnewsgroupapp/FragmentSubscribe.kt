@@ -1,7 +1,10 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.content.DialogInterface
+import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,6 +43,8 @@ class FragmentSubscribe : Fragment() {
             onButtonFinishClick()
         }
 
+        binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher);
+
         viewModel.data.observe(viewLifecycleOwner, Observer {
             for(newsgroup in viewModel.data.value?.newsGroups!!) {
 
@@ -61,6 +67,27 @@ class FragmentSubscribe : Fragment() {
         })
         val view = binding.root
         return view
+    }
+
+    private val filterTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val checkboxes = binding.viewSubscribe.children
+
+            for (box in checkboxes) {
+                val c: CheckBox = box as CheckBox;
+
+                if(!c.text.contains(s!!)) {
+                    c.visibility = View.GONE;
+                } else {
+                    c.visibility = View.VISIBLE;
+                }
+
+            }
+        }
     }
 
     fun onButtonFinishClick() {
