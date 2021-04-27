@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="berry">#AA4075</color>
     <color name="lightgrey">#D1D1D1</color>
+    <color name="darkgrey">#404040</color>
 </resources>

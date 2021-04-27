@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ActivityAddNewsgroup">
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_add_newsgroup" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
