@@ -76,20 +76,6 @@
             android:id="@+id/view_show_subgroups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:paddingLeft="40dp"
-                android:gravity="center|left"
-                android:text="tu-graz.test1"
-                android:textColor="@color/darkgrey"
-                android:background="@drawable/border_top"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                ></TextView>
-
-        </LinearLayout>
+            android:orientation="vertical"/>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

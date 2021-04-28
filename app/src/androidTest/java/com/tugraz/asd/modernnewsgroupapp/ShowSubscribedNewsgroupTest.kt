@@ -86,7 +86,7 @@ class ShowSubscribedNewsgroupTest {
                         withParent(allOf(withId(R.id.view_show_subgroups),
                                 withParent(withId(R.id.scrollView_show_subgroups)))),
                         isDisplayed()))
-        textView.check(matches(withText("tu-graz.test1")))
+        textView.check(matches(withText("tu-graz.algorithmen")))
     }
 
     private fun childAtPosition(
