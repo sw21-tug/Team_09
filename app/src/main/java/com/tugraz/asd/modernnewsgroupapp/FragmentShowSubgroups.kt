@@ -66,6 +66,10 @@ class FragmentShowSubgroups : Fragment() {
 
                 binding.viewShowSubgroups.addView(textview)
             }
+
+            binding.buttonAddSubgroups.setOnClickListener() {
+                findNavController().navigate(R.id.action_fragmentShowSubgroups_to_FragmentSubscribe)
+            }
         }
 
         // TODO Make a list
