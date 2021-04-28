@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
-import java.net.UnknownHostException
-import kotlin.concurrent.thread
 
 
 /**
@@ -21,7 +19,7 @@ import kotlin.concurrent.thread
 class FragmentAddNewsgroup : Fragment() {
 
     private lateinit var binding: FragmentAddNewsgroupBinding
-    private lateinit var viewModel: ServerObseravble
+    private lateinit var viewModel: ServerObservable
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +38,7 @@ class FragmentAddNewsgroup : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObseravble::class.java)
+            ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

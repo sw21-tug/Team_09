@@ -40,5 +40,12 @@
         android:name="com.tugraz.asd.modernnewsgroupapp.FragmentSubscribe"
         android:label="Subscribe Fragment"
         tools:layout="@layout/fragment_subscribe">
+        <action
+            android:id="@+id/action_FragmentSubscribe_to_fragmentShowSubgroups"
+            app:destination="@id/fragmentShowSubgroups" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentShowSubgroups"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroups"
+        android:label="FragmentShowSubgroups" />
 </navigation>

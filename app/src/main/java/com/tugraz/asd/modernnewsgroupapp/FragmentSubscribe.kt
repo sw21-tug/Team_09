@@ -1,8 +1,5 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-import android.content.DialogInterface
-import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,17 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
-import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
-import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 
 /**
@@ -30,7 +23,7 @@ import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
  */
 class FragmentSubscribe : Fragment() {
     private lateinit var binding: FragmentSubscribeBinding
-    private lateinit var viewModel: ServerObseravble
+    private lateinit var viewModel: ServerObservable
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +32,7 @@ class FragmentSubscribe : Fragment() {
         binding = FragmentSubscribeBinding.inflate(layoutInflater)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObseravble::class.java)
+            ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
         binding.buttonFinish.setOnClickListener() {
@@ -103,13 +96,12 @@ class FragmentSubscribe : Fragment() {
                 }
             }
         }
-
-        findNavController().navigate(R.id.FragmentShowSubgroups)
-
+        print("Button finish click")
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_fragmentShowSubgroups)
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         /*view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
-open class ServerObseravble : ViewModel()
+open class ServerObservable : ViewModel()
 {
     val data = MutableLiveData<NewsgroupServer>()
 
