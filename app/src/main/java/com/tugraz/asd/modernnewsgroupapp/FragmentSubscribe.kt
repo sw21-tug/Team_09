@@ -17,6 +17,7 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
@@ -41,6 +42,10 @@ class FragmentSubscribe : Fragment() {
 
         binding.buttonFinish.setOnClickListener() {
             onButtonFinishClick()
+        }
+
+        binding.buttonBack.setOnClickListener() {
+            onButtonBackClick()
         }
 
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher);
@@ -100,6 +105,10 @@ class FragmentSubscribe : Fragment() {
                 }
             }
         }
+    }
+
+    private fun onButtonBackClick() {
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
