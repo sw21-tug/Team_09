@@ -6,9 +6,9 @@ import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 open class ServerObservable : ViewModel()
 {
-    val data = MutableLiveData<NewsgroupServer>()
+    val data = MutableLiveData<NewsgroupController>()
 
-    fun data(item: NewsgroupServer) {
+    fun data(item: NewsgroupController) {
         data.value = item
     }
 }

@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 
 /**
@@ -42,23 +43,33 @@ class FragmentSubscribe : Fragment() {
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher);
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
-            for(newsgroup in viewModel.data.value?.newsGroups!!) {
+            var newsgroupServer_ : NewsgroupServer? = null
+            for ((key, value) in  viewModel.data.value!!.servers) {
+                if(key.active == true)
+                {
+                    newsgroupServer_ = key
+                }
+            }
 
-                System.out.println("Adding NG: " + newsgroup.name)
+            if (newsgroupServer_ != null) {
+                for(newsgroup in newsgroupServer_.newsGroups!!) {
 
-                val check = CheckBox(activity)
-                check.text = newsgroup.name
-                check.setPadding(10, 10, 10, 10)
-                val params = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                params.setMargins(5, 5, 5, 5)
-                params.gravity = Gravity.NO_GRAVITY
-                check.layoutParams = params
-                check.gravity = Gravity.CENTER
+                    System.out.println("Adding NG: " + newsgroup.name)
 
-                binding.viewSubscribe.addView(check)
+                    val check = CheckBox(activity)
+                    check.text = newsgroup.name
+                    check.setPadding(10, 10, 10, 10)
+                    val params = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    params.setMargins(5, 5, 5, 5)
+                    params.gravity = Gravity.NO_GRAVITY
+                    check.layoutParams = params
+                    check.gravity = Gravity.CENTER
+
+                    binding.viewSubscribe.addView(check)
+                }
             }
         })
         val view = binding.root
@@ -90,7 +101,15 @@ class FragmentSubscribe : Fragment() {
         binding.viewSubscribe.forEach {
             val checkbox = it as CheckBox
             if(checkbox.isChecked) {
-                val ng = viewModel.data.value?.newsGroups?.filter{ng -> checkbox.text == ng.name}
+                var newsgroupServer_ : NewsgroupServer? = null
+                for ((key, value) in  viewModel.data.value!!.servers) {
+                    if(key.active == true)
+                    {
+                        newsgroupServer_ = key
+                    }
+                }
+
+                val ng = newsgroupServer_?.newsGroups?.filter{ ng -> checkbox.text == ng.name}
                 if (ng != null) {
                     ng.elementAt(0).subscribed = true
                 }
