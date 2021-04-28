@@ -1,6 +1,7 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +18,8 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
@@ -100,6 +103,10 @@ class FragmentSubscribe : Fragment() {
                 }
             }
         }
+
+        findNavController().navigate(R.id.FragmentShowSubgroups)
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
