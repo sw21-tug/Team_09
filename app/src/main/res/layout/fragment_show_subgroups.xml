@@ -31,7 +31,7 @@
             android:layout_width="230dp"
             android:layout_height="45dp"
             android:layout_margin="10dp"
-            android:entries="@array/newsgroups"
+            android:entries="@array/dummy_newsgroups"
             android:gravity="center"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"

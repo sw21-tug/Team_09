@@ -70,7 +70,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Newsgroup name"
+            android:text="@string/label_newsgroup_name"
             android:textAllCaps="true"
             android:textColor="@color/berry"
             android:textSize="20dp" />
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Alias"
+            android:text="@string/label_alias"
             android:textAllCaps="true"
             android:textColor="@color/berry"
             android:textSize="20dp" />
@@ -117,7 +117,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginBottom="10dp"
         android:background="#FFFFFF"
-        android:text="Save"
+        android:text="@string/button_save"
         app:backgroundTint="#38AB79"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toTopOf="@+id/button_delete_newsgroup"
@@ -132,7 +132,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="40dp"
         android:background="#DE553E"
-        android:text="Delete this newsgroup"
+        android:text="@string/button_delete_newsgroup"
         app:backgroundTint="#DE553E"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"

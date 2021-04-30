@@ -5,27 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FragmentAddNewsgroup">
 
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.tugraz.asd.modernnewsgroupapp.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/first_fragment">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.tugraz.asd.modernnewsgroupapp.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
-    <fragment
+   <fragment
         android:id="@+id/FragmentAddNewsgroup"
         android:name="com.tugraz.asd.modernnewsgroupapp.FragmentAddNewsgroup"
         android:label="Add Newsgroup Fragment"
