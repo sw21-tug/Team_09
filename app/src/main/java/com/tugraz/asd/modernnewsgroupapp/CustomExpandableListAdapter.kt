@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.CheckBox
 import android.widget.TextView
 import com.tugraz.asd.modernnewsgroupapp.R
 import java.util.HashMap
@@ -26,16 +27,16 @@ class CustomExpandableListAdapter internal constructor(
             convertView: View?,
             parent: ViewGroup
     ): View {
-        var convertView = convertView
+        var cView = convertView
         val expandedListText = getChild(listPosition, expandedListPosition) as String
-        if (convertView == null) {
+        if (cView == null) {
             val layoutInflater =
                     this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = layoutInflater.inflate(R.layout.list_item, null)
+            cView = layoutInflater.inflate(R.layout.list_item, null)
         }
-        val expandedListTextView = convertView!!.findViewById<TextView>(R.id.listView)
+        val expandedListTextView = cView!!.findViewById<CheckBox>(R.id.checkBox)
         expandedListTextView.text = expandedListText
-        return convertView
+        return cView
     }
     override fun getChildrenCount(listPosition: Int): Int {
         return this.dataList[this.titleList[listPosition]]!!.size
@@ -55,17 +56,17 @@ class CustomExpandableListAdapter internal constructor(
             convertView: View?,
             parent: ViewGroup
     ): View {
-        var convertView = convertView
+        var cView = convertView
         val listTitle = getGroup(listPosition) as String
-        if (convertView == null) {
+        if (cView == null) {
             val layoutInflater =
                     this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = layoutInflater.inflate(R.layout.list_item, null)
+            cView = layoutInflater.inflate(R.layout.group_list_item, null)
         }
-        val listTitleTextView = convertView!!.findViewById<TextView>(R.id.listView)
+        val listTitleTextView = cView!!.findViewById<TextView>(R.id.listView)
         listTitleTextView.setTypeface(null, Typeface.BOLD)
         listTitleTextView.text = listTitle
-        return convertView
+        return cView
     }
     override fun hasStableIds(): Boolean {
         return false
