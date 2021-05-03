@@ -34,8 +34,8 @@ class CustomExpandableListAdapter internal constructor(
                     this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cView = layoutInflater.inflate(R.layout.list_item, null)
         }
-        val expandedListTextView = cView!!.findViewById<CheckBox>(R.id.checkBox)
-        expandedListTextView.text = expandedListText
+        val expandedListCheckbox = cView!!.findViewById<CheckBox>(R.id.checkBox)
+        expandedListCheckbox.text = expandedListText
         return cView
     }
     override fun getChildrenCount(listPosition: Int): Int {
@@ -58,14 +58,28 @@ class CustomExpandableListAdapter internal constructor(
     ): View {
         var cView = convertView
         val listTitle = getGroup(listPosition) as String
-        if (cView == null) {
-            val layoutInflater =
-                    this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            cView = layoutInflater.inflate(R.layout.group_list_item, null)
-        }
-        val listTitleTextView = cView!!.findViewById<TextView>(R.id.listView)
-        listTitleTextView.setTypeface(null, Typeface.BOLD)
-        listTitleTextView.text = listTitle
+
+        // if entry has no child elements --> no grouping but checkbox instead
+        /*if (getChildrenCount(listPosition) == 0) {
+            if (cView == null) {
+                val layoutInflater =
+                        this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                cView = layoutInflater.inflate(R.layout.list_item, null)
+            }
+            val listCheckbox = cView!!.findViewById<CheckBox>(R.id.checkBox)
+            listCheckbox.text = listTitle
+            return cView
+
+        } else {*/
+            if (cView == null) {
+                val layoutInflater =
+                        this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                cView = layoutInflater.inflate(R.layout.group_list_item, null)
+            }
+            val listTitleTextView = cView!!.findViewById<TextView>(R.id.listView)
+            listTitleTextView.setTypeface(null, Typeface.BOLD)
+            listTitleTextView.text = listTitle
+        //}
         return cView
     }
     override fun hasStableIds(): Boolean {

@@ -60,10 +60,14 @@ class FragmentSubscribe : Fragment() {
 
                 if (newsgroup.isSubgroup()) {
                     newsgroup.setParentNewsgroup()
+                    if (viewModel.data.value?.newsGroups!!.any { it.name.equals(newsgroup.parent) }) {
+                        addToExpandableList(newsgroup.parent!!, newsgroup.parent!!)
+                    }
                     addToExpandableList(newsgroup.parent!!, newsgroup.name)
                 } else {
                     // TODO: if it is not a subgroup
-                    addToExpandableList("No subgroups", newsgroup.name)
+                    //addToExpandableList("No subgroups", newsgroup.name)
+                    expandableListItem[newsgroup.name] = ArrayList()
                 }
             }
 
