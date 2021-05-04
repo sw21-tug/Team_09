@@ -22,11 +22,12 @@ class SubgroupUnitTest {
         this.newsgroupList = con.getNewsGroups()
     }
 
+
+    // Hierarchy level 2 +
     @Test
     fun getParents() {
         init()
         val listSize = newsgroupList.size - 1
-        System.out.println(listSize)
         for (i in 0..listSize) {
             newsgroupList[i].setHierarchyLevel()
             val betweenTwoDots = newsgroupList[i].name.substringBeforeLast(".")
@@ -37,9 +38,28 @@ class SubgroupUnitTest {
             }
         }
 
-        assertTrue("Subgroups exist on this server", newsgroupList.any(Newsgroup::hasSubgroup))
+        assertTrue("Subgroups with hierarchy 2 or higher exist", newsgroupList.any(Newsgroup::hasSubgroup))
     }
 
 
+    // Hierarchy level 1 +
+    @Test
+    fun getSubgroups() {
+        init()
+        val a = newsgroupList.size - 1
+        for( i in 0..a) {
+            newsgroupList[i].setHierarchyLevel()
+        }
+
+        assertTrue("Subgroups exist", newsgroupList.any(Newsgroup::isSubgroup))
+    }
+
+    // You must set hierarchy level
+    @Test
+    fun noSubgroups() {
+        init()
+
+        assertFalse(newsgroupList.any(Newsgroup::hasSubgroup))
+    }
 
 }
