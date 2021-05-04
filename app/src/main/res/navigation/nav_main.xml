@@ -22,8 +22,5 @@
         <action
             android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups"
             app:destination="@id/FragmentShowSubgroups" />
-        <action
-            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups2"
-            app:destination="@id/FragmentShowSubgroups" />
     </fragment>
 </navigation>
