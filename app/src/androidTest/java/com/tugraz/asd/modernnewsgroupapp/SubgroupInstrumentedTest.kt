@@ -25,4 +25,12 @@ class SubgroupInstrumentedTest {
         onView(ViewMatchers.withText("control.checkgroups")).check(ViewAssertions.matches(not (ViewMatchers.isDisplayed())))
 
     }
+
+    @Test
+    fun checkIfListExpands() {
+        onView(ViewMatchers.withText("control")).perform(click())
+        onView(ViewMatchers.withText("control")).perform(click())
+        onView(ViewMatchers.withText("control.checkgroups")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+    }
 }
