@@ -27,8 +27,9 @@ class FragmentShowSubgroups : Fragment() {
         view.findViewById<ImageButton>(R.id.button_edit_newsgroup).setOnClickListener {
             findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentEditNewsgroup)
         }
+
         view.findViewById<ImageButton>(R.id.button_show_profile).setOnClickListener {
-            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentEditNewsgroup)
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentProfile)
         }
     }
 }

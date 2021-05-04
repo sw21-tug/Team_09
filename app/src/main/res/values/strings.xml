@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Modern Newsgroup App</string>
+    <string name="app_name">Berry Box</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
 
@@ -19,14 +19,28 @@
     <string name="hint_name">Your name *</string>
     <string name="hint_email_address">Email address *</string>
     <string name="label_server">Server information</string>
-    <string name="hint_server">Newsgroup-server *</string>
     <string name="hint_server_alias">Server alias</string>
     <string name="label_newsgroup_name">Newsgroup name</string>
     <string name="label_alias">Alias</string>
+    <string name="splash_subtutle">Your mobile Newsgroup-Reader</string>
+    <string name="splash_title">BerryBox</string>
+    <string name="splash_image_description">Image of a berry</string>
+    <string name="feedback_message">Feedback Nachricht</string>
 
     <string-array name="dummy_newsgroups">
         <item> tu.graz-lv.first.newsgroup </item>
         <item> tu.graz-lv.second.newsgroup </item>
         <item> tu.graz-lv.third.newsgroup </item>
+    </string-array>
+    <string name="hint_server">Newsgroup-server *</string>
+    <string name="filter">Filter...</string>
+    <string name="profile_label_language">Language</string>
+    <string-array name="languages_list">
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
+    <string-array name="languages_list_values">
+        <item>en</item>
+        <item>ru</item>
     </string-array>
 </resources>
