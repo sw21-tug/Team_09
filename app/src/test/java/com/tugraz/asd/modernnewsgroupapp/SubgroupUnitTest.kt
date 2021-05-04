@@ -23,8 +23,23 @@ class SubgroupUnitTest {
     }
 
     @Test
-    fun getSubgroups() {
+    fun getParents() {
         init()
-        assertTrue("No subgroups received", newsgroupList.any(Newsgroup::hasSubgroup))
+        val listSize = newsgroupList.size - 1
+        System.out.println(listSize)
+        for (i in 0..listSize) {
+            newsgroupList[i].setHierarchyLevel()
+            val betweenTwoDots = newsgroupList[i].name.substringBeforeLast(".")
+            if (newsgroupList[i].hierarchyLevel!! > 1 && newsgroupList[i - 1].name.substringBeforeLast(".") != betweenTwoDots) {
+                newsgroupList[i - 1].setParentNewsgroup()
+                // System.out.println(newsgroupList[i])
+
+            }
+        }
+
+        assertTrue("Subgroups exist on this server", newsgroupList.any(Newsgroup::hasSubgroup))
     }
+
+
+
 }
