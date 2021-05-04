@@ -92,7 +92,7 @@ class FragmentSubscribe : Fragment() {
             // recursive level down if newsgroup has subgroups
             if (newsgroupList!!.any { it.parent == item.name }) {
                 val nextLevelLayout: LinearLayout = layout.findViewById(R.id.linear_scroll)
-                //nextLevelLayout.visibility = View.GONE
+                nextLevelLayout.visibility = View.GONE
 
                 // set onClick listener for expanding / reducing elements
                 listTitleTextView.setOnClickListener {
@@ -152,6 +152,17 @@ class FragmentSubscribe : Fragment() {
             }
         }
     }
+
+    /*fun collapseNewsgroups(parent: LinearLayout, avoidLevel: Boolean) {
+        for (child in parent.children) {
+            if (child is LinearLayout) {
+                collapseNewsgroups(child, false)
+                if (!avoidLevel) {
+                    child.visibility = View.GONE
+                }
+            }
+        }
+    }*/
 
     fun onButtonFinishClick() {
         /*
