@@ -26,4 +26,13 @@
             android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups2"
             app:destination="@id/FragmentShowSubgroups" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentSubscribe"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentSubscribe"
+        android:label="fragment_subscribe"
+        tools:layout="@layout/fragment_subscribe" >
+        <action
+            android:id="@+id/action_fragmentSubscribe_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
+    </fragment>
 </navigation>
