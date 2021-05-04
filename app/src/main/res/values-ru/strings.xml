@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ягодная коробка</string>
+    <string name="action_settings">Настройки</string>
+    <string name="button_next">" ДАЛЕЕ следующий "</string>
+    <string name="button_back">НАЗАД</string>
+    <string name="button_finish">ФИНИШ</string>
+    <string name="button_save">СПАСИБО</string>
+    <string name="button_delete_newsgroup">Удалить группу новостей</string>
+    <string name="header1_newsgroup">ДОБАВИТЬ НОВОСИБИРСК</string>
+    <string name="feedback_message">Обратная связь Нахрихт</string>
+    <string name="header1_profile">Профиль</string>
+    <string name="header1_subscribe">ПОДПИСАТЬСЯ</string>
+    <string name="header2_newsgroup">Добавить группу новостей</string>
+    <string name="header2_subscribe">Выберите свои подгруппы</string>
+    <string name="hint_email_address">Адрес электронной почты *</string>
+    <string name="hint_name">Ваше имя *</string>
+    <string name="hint_server">Сервер групп новостей *</string>
+    <string name="hint_server_alias">Псевдоним сервера</string>
+    <string name="label_alias">Псевдоним</string>
+    <string name="label_identity">Идентичность</string>
+    <string name="label_newsgroup_name">Название группы новостей</string>
+    <string name="label_server">Информация о сервере</string>
+    <string name="splash_image_description">Изображение ягоды</string>
+    <string name="splash_subtutle">Ваш мобильный ридер групп новостей</string>
+    <string name="splash_title">Ягодная коробка</string>
+    <string name="filter">Фильтр...</string>
+    <string name="profile_label_language">Язык</string>
+    <string-array name="languages_list">
+        <item name="lang_en">Английский язык</item>
+        <item name="lang_ru">Русский</item>
+    </string-array>
+</resources>

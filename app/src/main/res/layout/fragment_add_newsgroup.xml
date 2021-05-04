@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="@string/hint_server"
+            android:inputType="textWebEditText"
             android:maxLines="1"
             android:text="news.tugraz.at"
             app:backgroundTint="@color/berry" />
@@ -103,7 +104,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="@string/hint_server_alias"
-            app:backgroundTint="@color/berry" />
+            app:backgroundTint="@color/berry"
+            android:importantForAutofill="no" />
 
     </LinearLayout>
 

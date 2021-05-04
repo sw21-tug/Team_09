@@ -25,7 +25,7 @@ class FragmentEditNewsgroup : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageButton>(R.id.button_close_newsgroup).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.button_close_profile).setOnClickListener {
             findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
         }
 
