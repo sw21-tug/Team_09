@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_FragmentSubscribe_to_FragmentShowSubgroups"
             app:destination="@id/FragmentShowSubgroups" />
+        <action
+            android:id="@+id/action_FragmentSubscribe_to_FragmentAddNewsgroup2"
+            app:destination="@id/FragmentAddNewsgroup" />
     </fragment>
     <fragment
         android:id="@+id/FragmentProfile"

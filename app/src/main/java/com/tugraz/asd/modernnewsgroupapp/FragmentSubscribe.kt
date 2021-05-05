@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 
 /**
@@ -55,7 +55,14 @@ class FragmentSubscribe : Fragment() {
         viewModel.data.observe(viewLifecycleOwner, Observer {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
-            newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
+
+            for ((key, value) in  viewModel.data.value!!.servers) {
+                if (key.active) {
+                    newsgroupList = key.newsGroups as ArrayList<Newsgroup>
+                }
+            }
+
+            //newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
 
                 if (newsgroup.isSubgroup()) {
@@ -79,6 +86,10 @@ class FragmentSubscribe : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun onButtonBackClick() {
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
 
     private fun createHierarchyView(parentLayout: LinearLayout, newsgroups: List<Newsgroup>, level: Int) {
@@ -171,6 +182,11 @@ class FragmentSubscribe : Fragment() {
     }*/
 
     fun onButtonFinishClick() {
+        /*
+         TODO use class attribute "newsgroupList" for further processing
+         all of subscribed newsgroups are saved in there
+         */
+
         /*binding.viewSubscribe.forEach {
             val checkbox = it as CheckBox
             if(checkbox.isChecked) {
@@ -192,16 +208,6 @@ class FragmentSubscribe : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    fun onButtonFinishClick() {
-        /*
-         TODO use class attribute "newsgroupList" for further processing
-         all of subscribed newsgroups are saved in there
-         */
-    }
-
-    private fun onButtonBackClick() {
-        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup)
+        super.onViewCreated(view, savedInstanceState)
     }
 }
