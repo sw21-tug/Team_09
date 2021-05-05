@@ -7,10 +7,6 @@ data class Newsgroup (var name: String){
     var hierarchyLevel: Int? = null
     var subscribed: Boolean = false
 
-    fun hasSubgroup(): Boolean {
-        return parent != null
-    }
-
     // if newsgroup has at least a dot in its name -> indicates subgroup
     fun isSubgroup(): Boolean {
         return name.filter { it == '.' }.count() >= 1

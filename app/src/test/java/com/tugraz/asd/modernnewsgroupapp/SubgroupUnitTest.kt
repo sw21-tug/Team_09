@@ -13,15 +13,14 @@ import org.junit.Assert.*
 class SubgroupUnitTest {
 
     private val HOST = "news.tugraz.at"
-    private var newsgroupList: ArrayList<Newsgroup> = ArrayList<Newsgroup>()
+    private var newsgroupList: ArrayList<Newsgroup> = ArrayList()
 
-    fun init()
+    private fun init()
     {
         val server = NewsgroupServer(HOST)
         val con = NewsgroupConnection(server)
         this.newsgroupList = con.getNewsGroups()
     }
-
 
     // Hierarchy level 2 +
     @Test
@@ -33,12 +32,9 @@ class SubgroupUnitTest {
             val betweenTwoDots = newsgroupList[i].name.substringBeforeLast(".")
             if (newsgroupList[i].hierarchyLevel!! > 1 && newsgroupList[i - 1].name.substringBeforeLast(".") != betweenTwoDots) {
                 newsgroupList[i - 1].setParentNewsgroup()
-                // System.out.println(newsgroupList[i])
-
             }
         }
-
-        assertTrue("Subgroups with hierarchy 2 or higher exist", newsgroupList.any(Newsgroup::hasSubgroup))
+        assertTrue("Subgroups with hierarchy 2 or higher exist", newsgroupList.any {it.parent != null})
     }
 
 
@@ -50,7 +46,6 @@ class SubgroupUnitTest {
         for( i in 0..a) {
             newsgroupList[i].setHierarchyLevel()
         }
-
         assertTrue("Subgroups exist", newsgroupList.any(Newsgroup::isSubgroup))
     }
 
@@ -58,8 +53,7 @@ class SubgroupUnitTest {
     @Test
     fun noSubgroups() {
         init()
-
-        assertFalse(newsgroupList.any(Newsgroup::hasSubgroup))
+        assertFalse(newsgroupList.any {it.parent != null})
     }
 
 }
