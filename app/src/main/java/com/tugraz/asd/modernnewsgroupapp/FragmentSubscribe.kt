@@ -115,9 +115,7 @@ class FragmentSubscribe : Fragment() {
                 }
             }
         }
-        print("Button finish click")
-        findNavController().navigate(R.id.action_FragmentSubscribe_to_fragmentShowSubgroups)
-
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

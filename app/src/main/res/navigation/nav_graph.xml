@@ -6,24 +6,31 @@
     app:startDestination="@id/FragmentAddNewsgroup">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.tugraz.asd.modernnewsgroupapp.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/first_fragment">
-
+        android:id="@+id/FragmentShowSubgroups"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroups"
+        android:label="Fragment Show Subgroups"
+        tools:layout="@layout/fragment_show_subgroups">
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentEditNewsgroup"
+            app:destination="@id/FragmentEditNewsgroup" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentProfile"
+            app:destination="@id/FragmentProfile" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentSubscribe"
+            app:destination="@id/FragmentSubscribe" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.tugraz.asd.modernnewsgroupapp.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/FragmentEditNewsgroup"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentEditNewsgroup"
+        android:label="Fragment Edit Newsgroup"
+        tools:layout="@layout/fragment_edit_newsgroup">
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
+        <action
+            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups2"
+            app:destination="@id/FragmentShowSubgroups" />
     </fragment>
     <fragment
         android:id="@+id/FragmentAddNewsgroup"
@@ -41,15 +48,16 @@
         android:label="Subscribe Fragment"
         tools:layout="@layout/fragment_subscribe">
         <action
-            android:id="@+id/action_FragmentSubscribe_to_fragmentShowSubgroups"
-            app:destination="@id/fragmentShowSubgroups" />
+            android:id="@+id/action_FragmentSubscribe_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentShowSubgroups"
-        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroups"
-        android:label="FragmentShowSubgroups" >
+        android:id="@+id/FragmentProfile"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentProfile"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_fragmentShowSubgroups_to_FragmentSubscribe"
-            app:destination="@id/FragmentSubscribe" />
+            android:id="@+id/action_FragmentProfile_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
     </fragment>
 </navigation>

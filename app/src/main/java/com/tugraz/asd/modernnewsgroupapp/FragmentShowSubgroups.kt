@@ -68,7 +68,7 @@ class FragmentShowSubgroups : Fragment() {
             }
 
             binding.buttonAddSubgroups.setOnClickListener() {
-                findNavController().navigate(R.id.action_fragmentShowSubgroups_to_FragmentSubscribe)
+                findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
             }
         }
 
@@ -113,6 +113,10 @@ class FragmentShowSubgroups : Fragment() {
 
         view.findViewById<ImageButton>(R.id.button_edit_newsgroup).setOnClickListener {
             findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentEditNewsgroup)
+        }
+
+        view.findViewById<ImageButton>(R.id.button_show_profile).setOnClickListener {
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentProfile)
         }
     }
 

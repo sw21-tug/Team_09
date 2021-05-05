@@ -50,7 +50,7 @@
                 android:layout_toEndOf="@id/iv_snackIcon"
                 android:layout_toRightOf="@id/iv_snackIcon"
                 android:gravity="center_horizontal"
-                android:text="Feedback Nachricht"
+                android:text="@string/feedback_message"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
