@@ -48,7 +48,7 @@ class EditNewsgroupAliasTest {
     {
         init()
         onView(withId(R.id.button_edit_newsgroup)).perform(ViewActions.click())
-        onView(withId(R.id.tv_edit_newsgroup_name)).check(matches(withText(containsString(serverName))))
+        onView(withId(R.id.header_newsgroup_name)).check(matches(withText(containsString(serverName))))
     }
 
     @Test
@@ -57,6 +57,6 @@ class EditNewsgroupAliasTest {
         init()
         val matchString = "news.KFGraz.at"
         onView(withId(R.id.button_edit_newsgroup)).perform(ViewActions.click())
-        onView(withId(R.id.tv_edit_newsgroup_name)).check(matches(not(withText(containsString(matchString)))))
+        onView(withId(R.id.header_newsgroup_name)).check(matches(not(withText(containsString(matchString)))))
     }
 }
