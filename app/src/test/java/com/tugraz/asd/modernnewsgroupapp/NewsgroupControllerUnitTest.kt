@@ -36,5 +36,10 @@ class NewsgroupControllerUnitTest {
         assertTrue("No groups fetched", server.newsGroups!!.isNotEmpty())
     }
 
+    @Test
+    fun getSplashScreenDuration() {
+        assertEquals(3000, splashScreenDuration)
+    }
+
 
 }
