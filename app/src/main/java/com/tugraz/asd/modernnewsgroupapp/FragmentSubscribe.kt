@@ -57,11 +57,7 @@ class FragmentSubscribe : Fragment() {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
 
-            for ((key, _) in  viewModel.data.value!!.servers) {
-                if (key.active) {
-                    newsgroupList = key.newsGroups as ArrayList<Newsgroup>
-                }
-            }
+            newsgroupList = viewModel.data.value!!.currentServer.newsGroups as ArrayList<Newsgroup>
 
             //newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
@@ -84,6 +80,7 @@ class FragmentSubscribe : Fragment() {
             }
             newsgroupList!!.addAll(newsgroupsToAdd)
             createHierarchyView(binding.viewSubscribe, newsgroupList!!, 0)
+            recursiveNewsgroupFilter(binding.viewSubscribe, "")
         })
 
         return binding.root
@@ -164,18 +161,16 @@ class FragmentSubscribe : Fragment() {
     }
 
     private fun onButtonFinishClick() {
-
-        for ((key, value) in  viewModel.data.value!!.servers) {
-            if(key.active)
-            {
-                key.newsGroups = newsgroupList
-                break
-            }
-        }
+        viewModel.data.value!!.currentServer.newsGroups = newsgroupList
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 
     private fun onButtonBackClick() {
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
 }
