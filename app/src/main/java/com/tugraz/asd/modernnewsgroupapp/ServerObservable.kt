@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
-open class ServerObseravble : ViewModel()
+open class ServerObservable : ViewModel()
 {
-    val data = MutableLiveData<NewsgroupServer>()
+    val data = MutableLiveData<NewsgroupController>()
 
-    fun data(item: NewsgroupServer) {
+    fun data(item: NewsgroupController) {
         data.value = item
     }
 }

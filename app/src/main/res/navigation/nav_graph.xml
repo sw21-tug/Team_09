@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_FragmentShowSubgroups_to_FragmentProfile"
             app:destination="@id/FragmentProfile" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentSubscribe"
+            app:destination="@id/FragmentSubscribe" />
     </fragment>
     <fragment
         android:id="@+id/FragmentEditNewsgroup"
