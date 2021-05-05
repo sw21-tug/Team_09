@@ -27,7 +27,7 @@
     <string name="filter">Фильтр...</string>
     <string name="profile_label_language">Язык</string>
     <string-array name="languages_list">
-        <item name="lang_en">Английский язык</item>
+        <item name="lang_en">English</item>
         <item name="lang_ru">Русский</item>
     </string-array>
 </resources>
