@@ -44,6 +44,7 @@ class FragmentShowSubgroups : Fragment() {
             if(key.active == true)
             {
                 newsgroupServer_ = key
+                viewModel.data.value!!.currentServer = key
             }
         }
 
