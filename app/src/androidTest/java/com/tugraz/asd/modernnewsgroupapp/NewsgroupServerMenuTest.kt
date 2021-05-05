@@ -95,7 +95,7 @@ class NewsgroupServerMenuTest {
 
         val materialTextView = onData(anything())
                 .inAdapterView(childAtPosition(
-                        withClassName(`is`("android.widget.PopupWindow$PopupBackgroundView")),
+                        withClassName(`is`("android.widget.PopupWindow.PopupBackgroundView")),
                         0))
                 .atPosition(0)
         materialTextView.perform(click())

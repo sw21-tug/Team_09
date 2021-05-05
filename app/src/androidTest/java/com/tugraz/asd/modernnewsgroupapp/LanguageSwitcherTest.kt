@@ -95,7 +95,7 @@ class LanguageSwitcherTest {
 
         val appCompatCheckedTextView = onData(anything())
                 .inAdapterView(childAtPosition(
-                        withClassName(`is`("android.widget.PopupWindow$PopupBackgroundView")),
+                        withClassName(`is`("android.widget.PopupWindow.PopupBackgroundView")),
                         0))
                 .atPosition(1)
         appCompatCheckedTextView.perform(click())
