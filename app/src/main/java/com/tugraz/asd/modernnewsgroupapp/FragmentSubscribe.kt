@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
-import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 
 /**
@@ -26,7 +26,7 @@ import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 class FragmentSubscribe : Fragment() {
     private lateinit var binding: FragmentSubscribeBinding
-    private lateinit var viewModel: ServerObseravble
+    private lateinit var viewModel: ServerObservable
 
     // use this list for subscribed newsgroups
     private var newsgroupList: ArrayList<Newsgroup>? = null
@@ -39,7 +39,7 @@ class FragmentSubscribe : Fragment() {
         binding = FragmentSubscribeBinding.inflate(layoutInflater)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObseravble::class.java)
+            ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
         binding.buttonFinish.setOnClickListener() {
@@ -53,6 +53,7 @@ class FragmentSubscribe : Fragment() {
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher)
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
+
             val newsgroupsToAdd = ArrayList<Newsgroup>()
             newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
@@ -168,6 +169,30 @@ class FragmentSubscribe : Fragment() {
             }
         }
     }*/
+
+    fun onButtonFinishClick() {
+        /*binding.viewSubscribe.forEach {
+            val checkbox = it as CheckBox
+            if(checkbox.isChecked) {
+                var newsgroupServer_ : NewsgroupServer? = null
+                for ((key, value) in  viewModel.data.value!!.servers) {
+                    if(key.active == true)
+                    {
+                        newsgroupServer_ = key
+                    }
+                }
+
+                val ng = newsgroupServer_?.newsGroups?.filter{ ng -> checkbox.text == ng.name}
+                if (ng != null) {
+                    ng.elementAt(0).subscribed = true
+                }
+            }
+        }*/
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     fun onButtonFinishClick() {
         /*
