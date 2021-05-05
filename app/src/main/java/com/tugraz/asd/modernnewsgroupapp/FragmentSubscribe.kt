@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 
 /**
@@ -56,7 +57,7 @@ class FragmentSubscribe : Fragment() {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
 
-            for ((key, value) in  viewModel.data.value!!.servers) {
+            for ((key, _) in  viewModel.data.value!!.servers) {
                 if (key.active) {
                     newsgroupList = key.newsGroups as ArrayList<Newsgroup>
                 }
@@ -86,10 +87,6 @@ class FragmentSubscribe : Fragment() {
         })
 
         return binding.root
-    }
-
-    private fun onButtonBackClick() {
-        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
 
     private fun createHierarchyView(parentLayout: LinearLayout, newsgroups: List<Newsgroup>, level: Int) {
@@ -127,11 +124,7 @@ class FragmentSubscribe : Fragment() {
 
                 // subscribe / unsubscribe newsgroup if checked / unchecked
                 checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                    if (isChecked) {
-                        newsgroupList!!.find { it.name == checkbox.text }?.subscribe()
-                    } else {
-                        newsgroupList!!.find { it.name == checkbox.text }?.unsubscribe()
-                    }
+                    newsgroupList!!.find { it.name == checkbox.text }?.subscribed = isChecked
                 }
             }
             parentLayout.addView(layout)
@@ -170,44 +163,19 @@ class FragmentSubscribe : Fragment() {
         }
     }
 
-    /*fun collapseNewsgroups(parent: LinearLayout, avoidLevel: Boolean) {
-        for (child in parent.children) {
-            if (child is LinearLayout) {
-                collapseNewsgroups(child, false)
-                if (!avoidLevel) {
-                    child.visibility = View.GONE
-                }
+    private fun onButtonFinishClick() {
+
+        for ((key, value) in  viewModel.data.value!!.servers) {
+            if(key.active)
+            {
+                key.newsGroups = newsgroupList
+                break
             }
         }
-    }*/
-
-    fun onButtonFinishClick() {
-        /*
-         TODO use class attribute "newsgroupList" for further processing
-         all of subscribed newsgroups are saved in there
-         */
-
-        /*binding.viewSubscribe.forEach {
-            val checkbox = it as CheckBox
-            if(checkbox.isChecked) {
-                var newsgroupServer_ : NewsgroupServer? = null
-                for ((key, value) in  viewModel.data.value!!.servers) {
-                    if(key.active == true)
-                    {
-                        newsgroupServer_ = key
-                    }
-                }
-
-                val ng = newsgroupServer_?.newsGroups?.filter{ ng -> checkbox.text == ng.name}
-                if (ng != null) {
-                    ng.elementAt(0).subscribed = true
-                }
-            }
-        }*/
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun onButtonBackClick() {
+        findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
 }

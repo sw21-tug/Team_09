@@ -53,23 +53,6 @@
 
     </LinearLayout>
 
-    <!--<RelativeLayout
-        android:id="@+id/view_subscribe"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        android:orientation="vertical">
-
-        <ExpandableListView
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>-->
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
@@ -79,15 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">-->
 
-        <!--<RelativeLayout
-            android:id="@+id/view_subscribe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="vertical">
-        </RelativeLayout>-->
-
         <LinearLayout
             android:id="@+id/view_subscribe"
             android:layout_width="match_parent"
@@ -95,12 +69,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical">
-
-            <!--<ExpandableListView
-                android:id="@+id/expandableListView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />-->
-
         </LinearLayout>
     </ScrollView>
 

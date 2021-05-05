@@ -11,14 +11,6 @@ data class Newsgroup (var name: String){
         return parent != null
     }
 
-    fun subscribe() {
-        subscribed = true
-    }
-
-    fun unsubscribe() {
-        subscribed = false
-    }
-
     // if newsgroup has at least a dot in its name -> indicates subgroup
     fun isSubgroup(): Boolean {
         return name.filter { it == '.' }.count() >= 1
