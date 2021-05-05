@@ -91,13 +91,7 @@ class FragmentAddNewsgroup : Fragment() {
             val controller : NewsgroupController = NewsgroupController()
             viewModel.data.value = controller
         }
-        else
-        {
-            for ((key, value) in  viewModel.data.value!!.servers) {
-                key.active = false
-            }
-        }
-        server.active = true
+        viewModel.data.value!!.currentServer = server
         viewModel.data.value!!.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)

@@ -31,4 +31,7 @@ class SnackBarTests {
     {
         onView(withText("Newsgroup subscribed")).check(matches(isDisplayed()))
     }
+
+
+    
 }

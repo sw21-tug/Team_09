@@ -29,6 +29,7 @@ class LanguageSwitcherTest {
 
     @Test
     fun languageSwitcherTest() {
+        Thread.sleep(5000)
         val appCompatEditText = onView(
                 allOf(withId(R.id.editText_name),
                         childAtPosition(
@@ -37,7 +38,7 @@ class LanguageSwitcherTest {
                                         1),
                                 1),
                         isDisplayed()))
-        appCompatEditText.perform(replaceText("Testerr"), closeSoftKeyboard())
+        appCompatEditText.perform(replaceText("test"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
                 allOf(withId(R.id.editText_email),
@@ -93,11 +94,7 @@ class LanguageSwitcherTest {
                         isDisplayed()))
         appCompatSpinner.perform(click())
 
-        val appCompatCheckedTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(`is`("android.widget.PopupWindow.PopupBackgroundView")),
-                        0))
-                .atPosition(1)
+        val appCompatCheckedTextView = onView(allOf(withText("Russian")))
         appCompatCheckedTextView.perform(click())
 
         val materialButton3 = onView(
@@ -111,11 +108,12 @@ class LanguageSwitcherTest {
                         isDisplayed()))
         materialButton3.perform(click())
 
-        val textView = onView(
-                allOf(withText("ИДЕНТИЧНОСТЬ"),
-                        withParent(withParent(withId(R.id.linearLayout2))),
+        val button = onView(
+                allOf(withId(R.id.button_subscribe), withText(" ДАЛЕЕ СЛЕДУЮЩИЙ "),
+                        withParent(allOf(withId(R.id.linearLayout5),
+                                withParent(withId(R.id.linearLayout2)))),
                         isDisplayed()))
-        textView.check(matches(withText("ИДЕНТИЧНОСТЬ")))
+        button.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

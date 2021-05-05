@@ -3,17 +3,16 @@ package com.tugraz.asd.modernnewsgroupapp
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
@@ -30,6 +29,7 @@ class NewsgroupServerMenuTest {
 
     @Test
     fun newsgroupServerMenuTest() {
+        Thread.sleep(5000);
         val appCompatEditText = onView(
                 allOf(withId(R.id.editText_name),
                         childAtPosition(
@@ -38,7 +38,7 @@ class NewsgroupServerMenuTest {
                                         1),
                                 1),
                         isDisplayed()))
-        appCompatEditText.perform(replaceText("m"), closeSoftKeyboard())
+        appCompatEditText.perform(replaceText("Test"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
                 allOf(withId(R.id.editText_email),
@@ -48,7 +48,7 @@ class NewsgroupServerMenuTest {
                                         1),
                                 2),
                         isDisplayed()))
-        appCompatEditText2.perform(replaceText("m@x.m"), closeSoftKeyboard())
+        appCompatEditText2.perform(replaceText("test@test.com"), closeSoftKeyboard())
 
         val materialButton = onView(
                 allOf(withId(R.id.button_subscribe), withText("NEXT"),
@@ -93,29 +93,11 @@ class NewsgroupServerMenuTest {
                         isDisplayed()))
         appCompatSpinner.perform(click())
 
-        val materialTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(`is`("android.widget.PopupWindow.PopupBackgroundView")),
-                        0))
-                .atPosition(0)
-        materialTextView.perform(click())
-
-        val appCompatSpinner2 = onView(
-                allOf(withId(R.id.newsgroups_List),
-                        childAtPosition(
-                                allOf(withId(R.id.simple_spinner_dropdown_item),
-                                        childAtPosition(
-                                                withId(R.id.linearLayout2),
-                                                0)),
-                                1),
-                        isDisplayed()))
-        appCompatSpinner2.perform(click())
-
-        val textView = onView(
+        val checkedTextView = onView(
                 allOf(withId(android.R.id.text1), withText("news.tugraz.at"),
                         withParent(withParent(IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java))),
                         isDisplayed()))
-        textView.check(matches(withText("news.tugraz.at")))
+        checkedTextView.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(
