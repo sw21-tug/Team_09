@@ -108,6 +108,11 @@ class FragmentSubscribe : Fragment() {
                 val checkbox = layout!!.findViewById<CheckBox>(R.id.checkBox)
                 checkbox.text = item.name
 
+                // mark checkbox as checked if already subscribed
+                if (item.subscribed) {
+                    checkbox.isChecked = true
+                }
+
                 // subscribe / unsubscribe newsgroup if checked / unchecked
                 checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
