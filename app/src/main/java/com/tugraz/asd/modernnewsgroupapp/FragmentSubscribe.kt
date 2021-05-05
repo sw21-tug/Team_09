@@ -80,6 +80,7 @@ class FragmentSubscribe : Fragment() {
             }
             newsgroupList!!.addAll(newsgroupsToAdd)
             createHierarchyView(binding.viewSubscribe, newsgroupList!!, 0)
+            recursiveNewsgroupFilter(binding.viewSubscribe, "")
         })
 
         return binding.root
@@ -166,6 +167,10 @@ class FragmentSubscribe : Fragment() {
 
     private fun onButtonBackClick() {
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
 }
