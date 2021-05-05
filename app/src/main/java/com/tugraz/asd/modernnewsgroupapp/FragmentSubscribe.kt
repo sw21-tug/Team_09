@@ -43,33 +43,24 @@ class FragmentSubscribe : Fragment() {
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher);
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
-            var newsgroupServer_ : NewsgroupServer? = null
-            for ((key, value) in  viewModel.data.value!!.servers) {
-                if(key.active == true)
-                {
-                    newsgroupServer_ = key
-                }
-            }
 
-            if (newsgroupServer_ != null) {
-                for(newsgroup in newsgroupServer_.newsGroups!!) {
+            for(newsgroup in viewModel.data.value!!.currentServer.newsGroups!!) {
 
-                    System.out.println("Adding NG: " + newsgroup.name)
+                System.out.println("Adding NG: " + newsgroup.name)
 
-                    val check = CheckBox(activity)
-                    check.text = newsgroup.name
-                    check.setPadding(10, 10, 10, 10)
-                    val params = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    params.setMargins(5, 5, 5, 5)
-                    params.gravity = Gravity.NO_GRAVITY
-                    check.layoutParams = params
-                    check.gravity = Gravity.CENTER
+                val check = CheckBox(activity)
+                check.text = newsgroup.name
+                check.setPadding(10, 10, 10, 10)
+                val params = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                params.setMargins(5, 5, 5, 5)
+                params.gravity = Gravity.NO_GRAVITY
+                check.layoutParams = params
+                check.gravity = Gravity.CENTER
 
-                    binding.viewSubscribe.addView(check)
-                }
+                binding.viewSubscribe.addView(check)
             }
         })
         val view = binding.root
@@ -101,15 +92,7 @@ class FragmentSubscribe : Fragment() {
         binding.viewSubscribe.forEach {
             val checkbox = it as CheckBox
             if(checkbox.isChecked) {
-                var newsgroupServer_ : NewsgroupServer? = null
-                for ((key, value) in  viewModel.data.value!!.servers) {
-                    if(key.active == true)
-                    {
-                        newsgroupServer_ = key
-                    }
-                }
-
-                val ng = newsgroupServer_?.newsGroups?.filter{ ng -> checkbox.text == ng.name}
+                val ng = viewModel.data.value!!.currentServer.newsGroups?.filter{ ng -> checkbox.text == ng.name}
                 if (ng != null) {
                     ng.elementAt(0).subscribed = true
                 }
@@ -117,15 +100,6 @@ class FragmentSubscribe : Fragment() {
         }
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*view.findViewById<Button>(R.id.button_subscribe).setOnClickListener {
-            findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
-        }*/
-    }
-
 
 
 }

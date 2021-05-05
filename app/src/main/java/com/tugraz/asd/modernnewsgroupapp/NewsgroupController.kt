@@ -7,7 +7,7 @@ class NewsgroupController {
     lateinit var currentServer: NewsgroupServer
 
     fun addServer(server: NewsgroupServer) {
-        servers.put(server, NewsgroupConnection(server))
+        servers[server] = NewsgroupConnection(server)
     }
 
     fun fetchNewsGroups() {

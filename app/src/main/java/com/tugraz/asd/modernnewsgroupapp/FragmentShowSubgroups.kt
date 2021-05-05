@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
@@ -26,6 +27,7 @@ class FragmentShowSubgroups : Fragment() {
     private lateinit var viewModel: ServerObservable
     private lateinit var ngs: NewsgroupController
     private lateinit var binding: FragmentShowSubgroupsBinding
+    private lateinit var controller: NewsgroupController
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
@@ -39,16 +41,13 @@ class FragmentShowSubgroups : Fragment() {
 
         binding = FragmentShowSubgroupsBinding.inflate(layoutInflater)
 
-        var newsgroupServer_ : NewsgroupServer? = null
-        for ((key, value) in  viewModel.data.value!!.servers) {
-            if(key.active == true)
-            {
-                newsgroupServer_ = key
-                viewModel.data.value!!.currentServer = key
-            }
-        }
+        viewModel.data.observe(viewLifecycleOwner, Observer {
+            controller = viewModel.data.value!!
+        })
 
-        val subscribed_newsgroups = newsgroupServer_?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true}
+        controller = viewModel.data.value!!
+
+        val subscribed_newsgroups = controller.currentServer?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true}
         val scale = getResources().getDisplayMetrics().density;
 
         if (subscribed_newsgroups != null) {
@@ -73,13 +72,11 @@ class FragmentShowSubgroups : Fragment() {
             }
         }
 
-        // TODO Make a list
 
-
-
-        var ngArray = arrayOfNulls<String>(viewModel.data.value!!.servers.size)
         val list: MutableList<String> = ArrayList()
-        for ((key, value) in  viewModel.data.value!!.servers) {
+        var currentServerIndex = 0
+
+        for ((key, _) in  controller.servers) {
             var newsgroupServer = ""
             if(key.alias?.isEmpty()!!)
             {
@@ -89,7 +86,12 @@ class FragmentShowSubgroups : Fragment() {
             {
                 newsgroupServer = key.alias.toString() + " <" + key.host.toString() + ">"
             }
+
             list.add(newsgroupServer)
+
+            if(key == viewModel.data.value!!.currentServer) {
+                currentServerIndex = list.size -1
+            }
         }
 
 
@@ -105,7 +107,7 @@ class FragmentShowSubgroups : Fragment() {
 
 
         // Initializing an ArrayAdapter
-        spinner.setSelection(0)
+        spinner.setSelection(currentServerIndex)
         return binding.root
     }
 
