@@ -29,4 +29,9 @@ class NewsgroupController {
             servers.remove(currentServer)
     }
 
+    fun renameCurrentAlias(newAlias: String){
+        if(this::currentServer.isInitialized)
+            currentServer.alias = newAlias
+    }
+
 }

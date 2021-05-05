@@ -28,10 +28,11 @@ class FragmentEditNewsgroup : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentEditNewsgroupBinding.inflate(layoutInflater)
         val view = binding.root
-        binding.buttonCloseProfile.setOnClickListener() {
-            findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
-        }
+
         binding.buttonSaveNewsgroup.setOnClickListener() {
+            onButtonSaveNewsgroupClick()
+        }
+        binding.buttonCloseProfile.setOnClickListener() {
             findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
         }
         binding.buttonDeleteNewsgroup.setOnClickListener() {
@@ -57,10 +58,24 @@ class FragmentEditNewsgroup : Fragment() {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
         controller = viewModel.data.value!!
+
+        binding.editTextNewsgroupAlias.setText(controller.currentServer?.alias)
+        binding.headerNewsgroupName.setText(controller.currentServer?.host)
+        binding.bodyNewsgroupName.setText(controller.currentServer?.host)
     }
 
     fun deleteServer()
     {
         controller.removeCurrentServer()
+    }
+
+    fun onButtonSaveNewsgroupClick() {
+
+        val serverAlias = binding.editTextNewsgroupAlias.text
+
+        controller.renameCurrentAlias(serverAlias.toString())
+
+        findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
+
     }
 }
