@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvSnackBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="#E91E63"
+        app:cardCornerRadius="4dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/iv_snackIcon"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="Status Icon" />
+
+            <TextView
+                android:id="@+id/tv_snackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="13dp"
+                android:layout_toEndOf="@id/iv_snackIcon"
+                android:layout_toRightOf="@id/iv_snackIcon"
+                android:gravity="center_horizontal"
+                android:text="@string/feedback_message"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/ib_snackAction"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/outline_close_24"
+                android:contentDescription="SnackBar Action" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

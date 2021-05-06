@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FragmentAddNewsgroup">
+
+    <fragment
+        android:id="@+id/FragmentShowSubgroups"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowSubgroups"
+        android:label="Fragment Show Subgroups"
+        tools:layout="@layout/fragment_show_subgroups">
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentEditNewsgroup"
+            app:destination="@id/FragmentEditNewsgroup" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentProfile"
+            app:destination="@id/FragmentProfile" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentSubscribe"
+            app:destination="@id/FragmentSubscribe" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentEditNewsgroup"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentEditNewsgroup"
+        android:label="Fragment Edit Newsgroup"
+        tools:layout="@layout/fragment_edit_newsgroup">
+        <action
+            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
+        <action
+            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups2"
+            app:destination="@id/FragmentShowSubgroups" />
+        <action
+            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentAddNewsgroup"
+            app:destination="@id/FragmentAddNewsgroup" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentAddNewsgroup"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentAddNewsgroup"
+        android:label="Add Newsgroup Fragment"
+        tools:layout="@layout/fragment_add_newsgroup">
+
+        <action
+            android:id="@+id/action_AddNewsgroup_to_Subscribe"
+            app:destination="@id/FragmentSubscribe" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentSubscribe"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentSubscribe"
+        android:label="Subscribe Fragment"
+        tools:layout="@layout/fragment_subscribe">
+        <action
+            android:id="@+id/action_FragmentSubscribe_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
+        <action
+            android:id="@+id/action_FragmentSubscribe_to_FragmentAddNewsgroup2"
+            app:destination="@id/FragmentAddNewsgroup" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentProfile"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentProfile"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_FragmentProfile_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
+    </fragment>
+</navigation>

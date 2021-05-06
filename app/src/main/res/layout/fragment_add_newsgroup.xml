@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_gradient_background"
+    tools:context=".FragmentAddNewsgroup">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/caveat_bold"
+            android:text="@string/header1_newsgroup"
+            android:textAlignment="center"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/roboto"
+            android:text="@string/header2_newsgroup"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_identity"
+            android:textAllCaps="true"
+            android:textColor="@color/berry"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editText_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_name"
+            android:inputType="text"
+            android:maxLines="1"
+            app:backgroundTint="@color/berry" />
+
+        <EditText
+            android:id="@+id/editText_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_email_address"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            app:backgroundTint="@color/berry" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/label_server"
+            android:textAllCaps="true"
+            android:textColor="@color/berry"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editText_newsgroupServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_server"
+            android:inputType="textWebEditText"
+            android:maxLines="1"
+            android:text="news.tugraz.at"
+            app:backgroundTint="@color/berry" />
+
+        <EditText
+            android:id="@+id/editText_serverAlias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_server_alias"
+            app:backgroundTint="@color/berry"
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
+        <Button
+            android:id="@+id/button_subscribe"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="40dp"
+            android:background="#AA4075"
+            android:text="@string/button_next"
+            app:backgroundTint="#AA4075"
+            app:cornerRadius="100dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
