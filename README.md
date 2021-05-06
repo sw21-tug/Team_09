@@ -23,10 +23,18 @@ Michael Weiß | Developer
 User Story | Feature
 -------- | -------- 
 [MNA-001](https://github.com/sw21-tug/Team_09/issues/1)  | Subscription
+[MNA-002](https://github.com/sw21-tug/Team_09/issues/2)  | Cancel Subscription
+[MNA-003](https://github.com/sw21-tug/Team_09/issues/3)  | Subgroups
+[MNA-007](https://github.com/sw21-tug/Team_09/issues/7)  | Set Server names
+[MNA-014](https://github.com/sw21-tug/Team_09/issues/14)  | Group Overview
 [MNA-015](https://github.com/sw21-tug/Team_09/issues/19)  | Start / Splash Screen
 [MNA-016](https://github.com/sw21-tug/Team_09/issues/20)  | Feedback Messages
+[MNA-017](https://github.com/sw21-tug/Team_09/issues/37)  | Change Language
+
 
 ### Description of these Features:
 There is always a splash screen when you launch the app, which displays the name and the logo of the app. This screen disappears after some seconds. 
-After the splash screen disappears, the subscribe screen appears. You can subscribe to a newsgroup server now, which subsequently shows a list of all subgroups of this server, including a filter to search for a specific one. 
+After the splash screen disappears, the subscribe screen appears. You can subscribe to a newsgroup server now, which subsequently shows a tree including all subgroups of this server and a filter to search for a specific one. When you check your preferred newsgroup and click on "FINISH" these subgroups where subscribed and you see the next screen with the subscribed groups listed. With the menu bar at the top of the app it is possible to navigate between your subscribed newsgroup servers.
+Furthermore, it is always possible to cancel a subscription to a newsgroup server in the settings (click on "DELETE"). It is also possible to change the language of the application in the user profile. The language can be changed to Russian or English. 
+
 The app is also provided with toast messages, which can be used for further implementations now. They will be used as a feedback system to notify in case something went wrong and also when it was successful.  
