@@ -1,6 +1,5 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-import android.R
 import android.view.View
 import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
@@ -77,23 +76,16 @@ class EditNewsgroupAliasTest {
     fun checkIfNewsgroupAliasDisplayedAtShowNewsgroups()
     {
         init()
-        //onView(withId(R.id.button_edit_newsgroup)).perform(ViewActions.click())
-        //onView(withId(R.id.newsgroups_List)).check(matches(withText(containsString(serverAlias))))
-
-        onView(withId(R.id.newsgroups_List)).check(matches(withSpinnerText(containsString(serverAlias))));
-
-        // Click on the Spinner
-        //onView(withId(R.id.newsgroups_List)).perform(click());
-
-        //
-
-        // Check that the country label is not updated.
-        //onData(allOf(`is`(instanceOf(String::class.java)))).atPosition(0).perform(click())
-
-        // Check that the country label is not updated.
-        //onView(withId(R.id.country_label)).check(matches(contains(withText(serverAlias))))
+        onView(withId(R.id.newsgroups_List)).check(matches(withSpinnerText(containsString(serverAlias))))
     }
 
+    @Test
+    fun checkIfNewsgroupAliasIsCorrect()
+    {
+        init()
+        onView(withId(R.id.newsgroups_List)).check(matches(withSpinnerText(not(containsString("bernisNewsgroup")))))
+    }
+ 
     private fun getText(matcher: ViewInteraction): String {
         var text = String()
         matcher.perform(object : ViewAction {
