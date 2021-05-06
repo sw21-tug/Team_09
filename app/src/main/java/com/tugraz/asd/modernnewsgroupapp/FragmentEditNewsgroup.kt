@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentEditNewsgroupBinding
 
 /**
@@ -28,10 +25,11 @@ class FragmentEditNewsgroup : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentEditNewsgroupBinding.inflate(layoutInflater)
         val view = binding.root
-        binding.buttonCloseProfile.setOnClickListener() {
-            findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
-        }
+
         binding.buttonSaveNewsgroup.setOnClickListener() {
+            onButtonSaveNewsgroupClick()
+        }
+        binding.buttonCloseProfile.setOnClickListener() {
             findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
         }
         binding.buttonDeleteNewsgroup.setOnClickListener() {
@@ -57,10 +55,21 @@ class FragmentEditNewsgroup : Fragment() {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
         controller = viewModel.data.value!!
+
+        binding.editTextNewsgroupAlias.setText(controller.currentServer.alias)
+        binding.headerNewsgroupName.text = controller.currentServer.host
+        binding.bodyNewsgroupName.text = controller.currentServer.host
     }
 
     fun deleteServer()
     {
         controller.removeCurrentServer()
+    }
+
+    fun onButtonSaveNewsgroupClick()
+    {
+        val serverAlias = binding.editTextNewsgroupAlias.text
+        controller.renameCurrentAlias(serverAlias.toString())
+        findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
     }
 }

@@ -36,11 +36,10 @@
             android:gravity="center|left">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/header_newsgroup_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="news.TUGraz.at"
                 android:textColor="@color/darkgrey"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -76,11 +75,11 @@
             android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/body_newsgroup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="news.TUGraz.at"
             android:textColor="@color/darkgrey"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -99,7 +98,7 @@
             android:textSize="20dp" />
 
         <EditText
-            android:id="@+id/editText_newsgroupServer"
+            android:id="@+id/editText_newsgroup_alias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
