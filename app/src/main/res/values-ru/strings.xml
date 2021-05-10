@@ -7,6 +7,7 @@
     <string name="button_finish">ФИНИШ</string>
     <string name="button_save">СПАСИБО</string>
     <string name="button_delete_newsgroup">Удалить группу новостей</string>
+    <string name="button_delete_subgroup">Удалить подгруппу</string>
     <string name="header1_newsgroup">ДОБАВИТЬ НОВОСИБИРСК</string>
     <string name="feedback_message">Обратная связь Нахрихт</string>
     <string name="header1_profile">Профиль</string>
@@ -20,6 +21,7 @@
     <string name="label_alias">Псевдоним</string>
     <string name="label_identity">Идентичность</string>
     <string name="label_newsgroup_name">Название группы новостей</string>
+    <string name="label_subgroup_name">Название подгруппы</string>
     <string name="label_server">Информация о сервере</string>
     <string name="splash_image_description">Изображение ягоды</string>
     <string name="splash_subtutle">Ваш мобильный ридер групп новостей</string>

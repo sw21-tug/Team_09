@@ -8,6 +8,7 @@
     <string name="button_finish">FINISH</string>
     <string name="button_save">SAVE</string>
     <string name="button_delete_newsgroup">Delete newsgroup</string>
+    <string name="button_delete_subgroup">Delete subgroup</string>
 
     <string name="header1_newsgroup">ADD NEWSGROUP</string>
     <string name="header2_newsgroup">Add a newsgroup</string>
@@ -21,6 +22,7 @@
     <string name="label_server">Server information</string>
     <string name="hint_server_alias">Server alias</string>
     <string name="label_newsgroup_name">Newsgroup name</string>
+    <string name="label_subgroup_name">Subgroup name</string>
     <string name="label_alias">Alias</string>
     <string name="splash_subtutle">Your mobile Newsgroup-Reader</string>
     <string name="splash_title">BerryBox</string>

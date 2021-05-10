@@ -1,6 +1,7 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -8,16 +9,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -58,13 +58,20 @@ class FragmentShowSubgroups : Fragment() {
                 textview.width = ViewGroup.LayoutParams.MATCH_PARENT
                 textview.height = (80 * scale.toInt())
                 textview.gravity = Gravity.CENTER or Gravity.LEFT
-                textview.setPadding(50 * scale.toInt(), 0,0,0)
+                textview.setPadding(50 * scale.toInt(), 0, 0, 0)
                 textview.setTextColor(Color.DKGRAY)
                 textview.background = drawable
                 textview.textSize = 20f
                 textview.setTypeface(Typeface.DEFAULT_BOLD)
 
                 binding.viewShowSubgroups.addView(textview)
+                val view = inflater.inflate(R.layout.fragment_show_subgroups, container, false)
+                textview.setOnClickListener() {
+                    //FragmentEditNewsgroupBinding.inflate(layoutInflater)
+                    val action = FragmentShowSubgroupsDirections.actionFragmentShowSubgroupsToFragmentEditNewsgroup(textview.text as String, textview.text as String )
+                    Navigation.findNavController(requireView()).navigate(action)
+
+                }
             }
 
             binding.buttonAddSubgroups.setOnClickListener() {
@@ -100,7 +107,7 @@ class FragmentShowSubgroups : Fragment() {
 
 
         val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
-            list as List<Any?>
+                list as List<Any?>
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter

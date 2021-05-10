@@ -1,28 +1,35 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentEditNewsgroupBinding
+import kotlinx.android.synthetic.main.fragment_edit_newsgroup.*
+import kotlinx.android.synthetic.main.fragment_edit_newsgroup.view.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FragmentEditNewsgroup : Fragment() {
 
+    val args: FragmentEditNewsgroupArgs by navArgs()
+
     private lateinit var binding: FragmentEditNewsgroupBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+
         binding = FragmentEditNewsgroupBinding.inflate(layoutInflater)
         val view = binding.root
 
@@ -57,8 +64,23 @@ class FragmentEditNewsgroup : Fragment() {
         controller = viewModel.data.value!!
 
         binding.editTextNewsgroupAlias.setText(controller.currentServer.alias)
-        binding.headerNewsgroupName.text = controller.currentServer.host
-        binding.bodyNewsgroupName.text = controller.currentServer.host
+
+
+        val title = args.title
+        val name = args.name
+
+
+        if ( title == "default" ) {
+            binding.headerNewsgroupName.text = controller.currentServer.host
+            binding.bodyNewsgroupName.text = controller.currentServer.host
+            news_or_sub.text = getString(R.string.label_newsgroup_name)
+        }
+        else {
+            view.header_newsgroup_name.setText(title)
+            view.body_newsgroup_name.setText(name)
+            news_or_sub.text = getString(R.string.label_subgroup_name)
+        }
+
     }
 
     fun deleteServer()
@@ -71,5 +93,10 @@ class FragmentEditNewsgroup : Fragment() {
         val serverAlias = binding.editTextNewsgroupAlias.text
         controller.renameCurrentAlias(serverAlias.toString())
         findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
+    }
+
+    var textToSet: String? = null
+    fun ChangeText(text: String?) {
+        textToSet = text
     }
 }
