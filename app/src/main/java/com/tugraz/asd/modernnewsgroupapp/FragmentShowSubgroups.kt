@@ -9,8 +9,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +25,6 @@ import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 class FragmentShowSubgroups : Fragment() {
 
     private lateinit var viewModel: ServerObservable
-    private lateinit var ngs: NewsgroupController
     private lateinit var binding: FragmentShowSubgroupsBinding
     private lateinit var controller: NewsgroupController
 
@@ -46,55 +43,37 @@ class FragmentShowSubgroups : Fragment() {
         viewModel.data.observe(viewLifecycleOwner, Observer {
             controller = viewModel.data.value!!
         })
-
         controller = viewModel.data.value!!
-
-        //val recyclerView = binding.recyclerView
 
 
         val subscribedNewsgroups = controller.currentServer.newsGroups?.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
-        //val newsgroupStrings: MutableList<String> = mutableListOf()
 
-        //val scale = getResources().getDisplayMetrics().density;
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = SwipeAdapter(subscribedNewsgroups)
 
-        if (subscribedNewsgroups != null) {
-
-            binding.recyclerView.layoutManager = LinearLayoutManager(context)
-
-            binding.recyclerView.adapter = SwipeAdapter(subscribedNewsgroups)
-
-            val swipeHandlerLeft = object : SwipeToDeleteCallback(requireContext()) {
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapter = binding.recyclerView.adapter as SwipeAdapter
-                    adapter.removeAt(viewHolder.adapterPosition)
-
-                }
-
+        val swipeHandlerLeft = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerView.adapter as SwipeAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
             }
+        }
 
-            val swipeHandlerRight = object : SwipeToEditCallback(requireContext()) {
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapter = binding.recyclerView.adapter as SwipeAdapter
-                    //adapter.removeAt(viewHolder.adapterPosition)
-
-
-
-                }
-
-
+        val swipeHandlerRight = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerView.adapter as SwipeAdapter
+                adapter.editAt(viewHolder.adapterPosition, this@FragmentShowSubgroups.requireContext())
             }
+        }
 
 
-            val itemTouchHelperLeft = ItemTouchHelper(swipeHandlerLeft)
-            itemTouchHelperLeft.attachToRecyclerView(binding.recyclerView)
+        val itemTouchHelperLeft = ItemTouchHelper(swipeHandlerLeft)
+        itemTouchHelperLeft.attachToRecyclerView(binding.recyclerView)
 
+        val itemTouchHelperRight = ItemTouchHelper(swipeHandlerRight)
+        itemTouchHelperRight.attachToRecyclerView(binding.recyclerView)
 
-            val itemTouchHelperRight = ItemTouchHelper(swipeHandlerRight)
-            itemTouchHelperRight.attachToRecyclerView(binding.recyclerView)
-
-            binding.buttonAddSubgroups.setOnClickListener() {
-                findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
-            }
+        binding.buttonAddSubgroups.setOnClickListener() {
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
         }
 
 
