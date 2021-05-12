@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tugraz.asd.modernnewsgroupapp.R
 
-abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
-    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.icon_close)
+    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.icon_settings)
     private val intrinsicWidth = deleteIcon?.intrinsicWidth
     private val intrinsicHeight = deleteIcon?.intrinsicHeight
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#f44336")
+    private val backgroundColor = Color.parseColor("#8c36f4")
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
 
@@ -37,7 +37,6 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
 
         TODO("Not yet implemented")
     }
-
 
     override fun onChildDraw(
         c: Canvas,
@@ -67,8 +66,8 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         // Calculate position of delete icon
         val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
         val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
-        val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth!!
-        val deleteIconRight = itemView.right - deleteIconMargin
+        val deleteIconLeft = itemView.left - deleteIconMargin + intrinsicWidth!!
+        val deleteIconRight = itemView.left - deleteIconMargin
         val deleteIconBottom = deleteIconTop + intrinsicHeight
 
         // Draw the delete icon
