@@ -74,11 +74,18 @@ class FragmentEditNewsgroup : Fragment() {
             binding.headerNewsgroupName.text = controller.currentServer.host
             binding.bodyNewsgroupName.text = controller.currentServer.host
             news_or_sub.text = getString(R.string.label_newsgroup_name)
+            subtitle_edit_groups.text = "Newsgroup-configuration"
         }
         else {
             view.header_newsgroup_name.setText(title)
             view.body_newsgroup_name.setText(name)
             news_or_sub.text = getString(R.string.label_subgroup_name)
+            subtitle_edit_groups.text = "Subgroup-configuration"
+            button_delete_newsgroup.text = getString(R.string.button_delete_subgroup)
+            button_delete_newsgroup.setOnClickListener() {
+                controller.currentServer?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true}
+                System.out.println(controller.currentServer?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true})
+            }
         }
 
     }
