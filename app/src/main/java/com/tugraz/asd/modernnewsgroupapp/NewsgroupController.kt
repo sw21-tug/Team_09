@@ -10,6 +10,10 @@ class NewsgroupController {
         servers[server] = NewsgroupConnection(server)
     }
 
+    fun getConnection(server: NewsgroupServer): NewsgroupConnection? {
+        return servers.get(server)
+    }
+
     fun fetchNewsGroups() {
         for ((server, con) in servers) {
             server.newsGroups = con.getNewsGroups()

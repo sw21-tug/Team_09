@@ -36,6 +36,10 @@ class FragmentShowMessages : Fragment() {
         controller = viewModel.data.value!!
 
         println("The element at ${controller.currentServer.currentNewsgroup}")
+        var con = controller.getConnection(controller.currentServer)
+        var messageThreads = con?.getMessages(controller.currentServer.currentNewsgroup)
+        print("hi")
+
         binding.headerSubgroupName.text = controller.currentServer.currentNewsgroup!!.name
 
     }
