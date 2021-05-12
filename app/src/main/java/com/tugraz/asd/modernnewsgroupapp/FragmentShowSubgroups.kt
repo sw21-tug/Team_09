@@ -63,7 +63,9 @@ class FragmentShowSubgroups : Fragment() {
                 textview.background = drawable
                 textview.textSize = 20f
                 textview.setTypeface(Typeface.DEFAULT_BOLD)
-
+                textview.setOnClickListener{
+                    findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentMessageThreads)
+                }
                 binding.viewShowSubgroups.addView(textview)
             }
 

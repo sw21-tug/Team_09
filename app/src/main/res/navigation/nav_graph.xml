@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_FragmentShowSubgroups_to_FragmentSubscribe"
             app:destination="@id/FragmentSubscribe" />
+        <action
+            android:id="@+id/action_FragmentShowSubgroups_to_FragmentMessageThreads"
+            app:destination="@id/FragmentMessageThreads" />
     </fragment>
     <fragment
         android:id="@+id/FragmentEditNewsgroup"
@@ -65,5 +68,12 @@
         <action
             android:id="@+id/action_FragmentProfile_to_FragmentShowSubgroups"
             app:destination="@id/FragmentShowSubgroups" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentMessageThreads"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentShowMessages"
+        android:label="Message Fragment"
+        tools:layout="@layout/fragment_show_message_threads">
+
     </fragment>
 </navigation>
