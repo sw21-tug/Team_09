@@ -1,6 +1,7 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import org.apache.commons.net.nntp.Article
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
@@ -8,10 +9,6 @@ class NewsgroupController {
 
     fun addServer(server: NewsgroupServer) {
         servers[server] = NewsgroupConnection(server)
-    }
-
-    fun getConnection(server: NewsgroupServer): NewsgroupConnection? {
-        return servers.get(server)
     }
 
     fun fetchNewsGroups() {
@@ -22,6 +19,11 @@ class NewsgroupController {
 
     fun fetchNewsGroups(server: NewsgroupServer) {
         server.newsGroups = servers.get(server)?.getNewsGroups()
+    }
+
+    fun fetchArtcles(server: NewsgroupServer): ArrayList<Article>? {
+        var articles = servers[server]?.getArticleHeaders(server.currentNewsgroup)
+        return articles
     }
 
     fun removeServer(server: NewsgroupServer) {

@@ -1,20 +1,19 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-import com.tugraz.asd.modernnewsgroupapp.vo.MessageThread
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import org.apache.commons.net.nntp.Article
 import org.apache.commons.net.nntp.NNTPClient
 import java.net.UnknownHostException
 import kotlin.Exception
 
 class NewsgroupConnection (var server: NewsgroupServer){
-    private var client: NNTPClient = NNTPClient()
-    private var server_: NewsgroupServer = server
+    private  var client: NNTPClient = NNTPClient()
 
     fun ensureConnection() {
         if(!client.isConnected) {
             try {
-                client.connect(server_.host, server_.port)
+                client.connect(server.host, server.port)
             } catch (e: Exception) {
                 when(e) {
                     is UnknownHostException -> {
@@ -38,24 +37,35 @@ class NewsgroupConnection (var server: NewsgroupServer){
             ng.firstArticle = group.firstArticleLong
             ng.lastArticle = group.lastArticleLong
             groups.add(ng)
-            //var messages = getMessages(ng)
-            print("test")
         }
         return groups
     }
 
-    fun getMessages(sg: Newsgroup?): ArrayList<MessageThread>{
+    fun getArticleHeaders(sg: Newsgroup?): ArrayList<Article>{
         ensureConnection()
-        var messages: ArrayList<MessageThread> = ArrayList()
-
+        var articles: ArrayList<Article> = ArrayList()
+        if (sg != null) {
+            print("name of ng to select: " + sg.name)
+            if(client.selectNewsgroup(sg.name))
+                print("Newsgroup selected")
+            else
+                print("Failed select newsgroup")
+        }
+        //var response = client.listNewsgroups()
         if (sg != null) {
             print("st")
-            for(i in sg.firstArticle!!..sg.lastArticle!!) {
-                var response = client.retrieveArticle(i)
+            var response = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            for(article in response)
+            {
+                articles.add(article)
             }
         }
+        return articles
+    }
 
-        return messages
+    fun getArticleBody(sg: Newsgroup?, id: Long)
+    {
+
     }
 
     /*

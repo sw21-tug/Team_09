@@ -29,18 +29,19 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center|left"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintHorizontal_bias="0.093"
             app:layout_constraintStart_toEndOf="@+id/button_close_profile"
-            android:gravity="center|left">
+            tools:layout_editor_absoluteY="15dp">
 
             <TextView
                 android:id="@+id/header_subgroup_alias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subgroup Alias"
                 android:gravity="center"
+                android:text="Subgroup Alias"
                 android:textColor="@color/darkgrey"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -56,5 +57,22 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scollview_show_message_threads"
+        android:layout_width="411dp"
+        android:layout_height="658dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/simple_spinner_dropdown_item">
+
+        <LinearLayout
+            android:id="@+id/view_show_message_threads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
