@@ -51,7 +51,7 @@ class FragmentShowSubgroups : Fragment() {
         val scale = getResources().getDisplayMetrics().density;
 
         if (subscribed_newsgroups != null) {
-            for(ng in subscribed_newsgroups) {
+            for ((index, ng) in subscribed_newsgroups.withIndex()) {
                 val textview = TextView(activity)
                 val drawable = resources.getDrawable(R.drawable.border_top)
                 textview.text = ng.name
@@ -64,6 +64,7 @@ class FragmentShowSubgroups : Fragment() {
                 textview.textSize = 20f
                 textview.setTypeface(Typeface.DEFAULT_BOLD)
                 textview.setOnClickListener{
+                    controller.currentServer.currentNewsgroup = ng
                     findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentMessageThreads)
                 }
                 binding.viewShowSubgroups.addView(textview)
