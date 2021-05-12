@@ -62,7 +62,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/simple_spinner_dropdown_item" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_add_subgroups" />
+
+    <!--<ScrollView
         android:id="@+id/scrollView_show_subgroups"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
@@ -78,5 +86,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"/>
-    </ScrollView>
+    </ScrollView>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

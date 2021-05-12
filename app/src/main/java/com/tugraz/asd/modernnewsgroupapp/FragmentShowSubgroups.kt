@@ -1,23 +1,23 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.SwipeAdapter
+import com.tugraz.asd.modernnewsgroupapp.helper.SwipeToDeleteCallback
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -47,12 +47,26 @@ class FragmentShowSubgroups : Fragment() {
 
         controller = viewModel.data.value!!
 
-        val subscribed_newsgroups = controller.currentServer?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true}
-        val scale = getResources().getDisplayMetrics().density;
+        //val recyclerView = binding.recyclerView
 
-        if (subscribed_newsgroups != null) {
-            for(ng in subscribed_newsgroups) {
-                val textview = TextView(activity)
+
+        val subscribedNewsgroups = controller.currentServer.newsGroups?.filter { newsgroup -> newsgroup.subscribed }
+        val newsgroupStrings: MutableList<String> = mutableListOf()
+
+        //val scale = getResources().getDisplayMetrics().density;
+
+        if (subscribedNewsgroups != null) {
+            for(ng in subscribedNewsgroups) {
+
+                newsgroupStrings.add(ng.name)
+
+                /*val layout = layoutInflater.inflate(R.layout.subgroup_list_entry, null)
+                val subgroupTextView = layout!!.findViewById<TextView>(R.id.tv_subgroup_name)
+                subgroupTextView.text = ng.name
+
+                binding.recyclerView.addView(layout)*/
+
+                /*val textview = TextView(activity)
                 val drawable = resources.getDrawable(R.drawable.border_top)
                 textview.text = ng.name
                 textview.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -71,8 +85,29 @@ class FragmentShowSubgroups : Fragment() {
                     val action = FragmentShowSubgroupsDirections.actionFragmentShowSubgroupsToFragmentEditNewsgroup(textview.text as String, textview.text as String )
                     Navigation.findNavController(requireView()).navigate(action)
 
+                }*/
+            }
+
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+
+            binding.recyclerView.adapter = SwipeAdapter(newsgroupStrings)
+
+            val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val adapter = binding.recyclerView.adapter as SwipeAdapter
+                    adapter.removeAt(viewHolder.adapterPosition)
                 }
             }
+            val itemTouchHelper = ItemTouchHelper(swipeHandler)
+            itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
             binding.buttonAddSubgroups.setOnClickListener() {
                 findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
