@@ -32,4 +32,10 @@
         <item name="lang_en">English</item>
         <item name="lang_ru">Русский</item>
     </string-array>
+    <string name="tv_text">Текст TextView</string>
+    <string name="feedback_wrong_name_email">Введите действительное имя и адрес электронной почты.</string>
+    <string name="feedback_wrong_name">Введите действительное имя.</string>
+    <string name="feedback_wrong_email">Введите действующий адрес электронной почты.</string>
+    <string name="feedback_server_connection_error">Не удалось подключиться к серверу.</string>
+    <string name="feedback_settings_saved">Сохранены успешно</string>
 </resources>

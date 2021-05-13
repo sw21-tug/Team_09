@@ -1,108 +1,73 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-
 import android.view.View
-import android.view.ViewGroup
+import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import org.hamcrest.Description
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
-import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@LargeTest
 @RunWith(AndroidJUnit4::class)
 class ShowSubscribedNewsgroupTest {
 
+    private var serverName: String? = null
+    private var serverAlias: String? = null
+
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(SplashScreen::class.java)
+    var  rule: ActivityScenarioRule<ActivityAddNewsgroup> = ActivityScenarioRule<ActivityAddNewsgroup>(ActivityAddNewsgroup::class.java)
+
+    private fun init() {
+        val inputName = onView(withId(R.id.editText_name)).check(matches(isDisplayed()))
+        val inputEmail = onView(withId(R.id.editText_email)).check(matches(isDisplayed()))
+
+        val inputServer = onView(withId(R.id.editText_newsgroupServer)).check(matches(isDisplayed()))
+        val inputAlias = onView(withId(R.id.editText_serverAlias)).check(matches(isDisplayed()))
+
+        inputName.perform(replaceText("test"), closeSoftKeyboard())
+        inputEmail.perform(replaceText("test@test.at"), closeSoftKeyboard())
+
+        inputAlias.perform(replaceText("AliasTest"), closeSoftKeyboard())
+
+        serverName = getText(inputServer)
+        serverAlias = getText(inputAlias)
+
+        onView(withText("NEXT")).perform(click())
+        onView(withText("tu-graz.algorithmen")).perform(click())
+        onView(withText("FINISH")).perform(click())
+    }
 
     @Test
     fun showSubscribedNewsgroupTest() {
-        Thread.sleep(5000)
-        val appCompatEditText = onView(
-                allOf(withId(R.id.editText_name),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.linearLayout2),
-                                        1),
-                                1),
-                        isDisplayed()))
-        appCompatEditText.perform(replaceText("test"), closeSoftKeyboard())
-
-        val appCompatEditText2 = onView(
-                allOf(withId(R.id.editText_email),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.linearLayout2),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatEditText2.perform(replaceText("test@test.com"), closeSoftKeyboard())
-
-        val materialButton = onView(
-                allOf(withId(R.id.button_subscribe), withText("NEXT"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout5),
-                                        childAtPosition(
-                                                withId(R.id.linearLayout2),
-                                                2)),
-                                0),
-                        isDisplayed()))
-        materialButton.perform(click())
-
-        val checkBox = onView(
-                allOf(withText("tu-graz.algorithmen"),
-                        childAtPosition(
-                                allOf(withId(R.id.view_subscribe),
-                                        childAtPosition(
-                                                withId(R.id.scrollView2),
-                                                0)),
-                                0)))
-        checkBox.perform(scrollTo(), click())
-
-        val materialButton2 = onView(
-                allOf(withId(R.id.button_finish), withText("FINISH"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout4),
-                                        childAtPosition(
-                                                withId(R.id.linearLayout2),
-                                                2)),
-                                1),
-                        isDisplayed()))
-        materialButton2.perform(click())
-
-        val textView = onView(
-                allOf(withText("tu-graz.algorithmen"),
-                        withParent(allOf(withId(R.id.view_show_subgroups),
-                                withParent(withId(R.id.scrollView_show_subgroups)))),
-                        isDisplayed()))
-        textView.check(matches(withText("tu-graz.algorithmen")))
+        init()
+        onView(withText("tu-graz.algorithmen")).check(matches(isDisplayed()))
     }
 
-    private fun childAtPosition(
-            parentMatcher: Matcher<View>, position: Int): Matcher<View> {
-
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("Child at position $position in parent ")
-                parentMatcher.describeTo(description)
+    private fun getText(matcher: ViewInteraction): String {
+        var text = String()
+        matcher.perform(object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isAssignableFrom(TextView::class.java)
             }
 
-            public override fun matchesSafely(view: View): Boolean {
-                val parent = view.parent
-                return parent is ViewGroup && parentMatcher.matches(parent)
-                        && view == parent.getChildAt(position)
+            override fun getDescription(): String {
+                return "Text of the view"
             }
-        }
+
+            override fun perform(uiController: UiController, view: View) {
+                val tv = view as TextView
+                text = tv.text.toString()
+            }
+        })
+        return text
     }
 }

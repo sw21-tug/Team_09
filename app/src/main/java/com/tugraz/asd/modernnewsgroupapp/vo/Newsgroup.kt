@@ -3,10 +3,11 @@ package com.tugraz.asd.modernnewsgroupapp.vo
 import kotlin.text.count as count
 
 data class Newsgroup (var name: String){
+
+    var alias: String? = null
     var parent: String? = null
     var hierarchyLevel: Int? = null
     var subscribed: Boolean = false
-    var alias: String? = null
 
     // if newsgroup has at least a dot in its name -> indicates subgroup
     fun isSubgroup(): Boolean {

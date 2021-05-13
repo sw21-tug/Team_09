@@ -29,16 +29,6 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
-    override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-    ): Boolean {
-
-        TODO("Not yet implemented")
-    }
-
-
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
@@ -80,5 +70,10 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
 
     private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
         c?.drawRect(left, top, right, bottom, clearPaint)
+    }
+
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        // no need to be implemented
+        return false
     }
 }

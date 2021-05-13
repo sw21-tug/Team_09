@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 
@@ -27,39 +28,41 @@ class FragmentAddNewsgroup : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentAddNewsgroupBinding.inflate(layoutInflater)
-        val view = binding.root
-        binding.buttonSubscribe.setOnClickListener() {
+        binding.buttonSubscribe.setOnClickListener {
             onButtonSubscribeClick()
         }
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
-    fun onButtonSubscribeClick() {
+    private fun onButtonSubscribeClick() {
         val email = binding.editTextEmail.text
         val name = binding.editTextName
         val hostname = binding.editTextNewsgroupServer.text
         val serverAlias = binding.editTextServerAlias.text
 
-
-        if(!isValidEmail(email)) {
-            // TODO: show error message
+        // check if user provided valid name and email address for newsgroup server subscription
+        if (name.text.toString() == "" && !isValidEmail(email)) {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_name_email))
+            return
+        } else if (name.text.toString() == "") {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_name))
+            return
+        } else if (!isValidEmail(email)) {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_email))
             return
         }
 
-        val controller = NewsgroupController()
-        var server = NewsgroupServer(hostname.toString())
-
+        var controller = NewsgroupController()
+        val server = NewsgroupServer(hostname.toString())
         controller.addServer(server)
-
-        System.out.println("Server: " + server.host)
 
         val thread = Thread {
             controller.fetchNewsGroups()
@@ -70,8 +73,8 @@ class FragmentAddNewsgroup : Fragment() {
         } catch (e: Exception) {
              when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
-                    // TODO: show error message
-                    System.out.println("Error on Server connection: " + e.message)
+                    Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
+                    println("Error on Server connection: " + e.message)
                     return
                 }
                 else -> {
@@ -80,25 +83,24 @@ class FragmentAddNewsgroup : Fragment() {
             }
         }
 
-        if(serverAlias.length > 0) {
+        if(serverAlias.isNotEmpty()) {
             server.alias = serverAlias.toString()
         }
 
         thread.join()
 
-        if( viewModel.data.value == null)
+        if (viewModel.data.value == null)
         {
-            val controller : NewsgroupController = NewsgroupController()
+            controller = NewsgroupController()
             viewModel.data.value = controller
         }
         viewModel.data.value!!.currentServer = server
         viewModel.data.value!!.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
-
     }
 
-    fun isValidEmail(target: CharSequence?): Boolean {
+    private fun isValidEmail(target: CharSequence): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 }

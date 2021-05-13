@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +35,7 @@ class FragmentShowSubgroups : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
         binding = FragmentShowSubgroupsBinding.inflate(layoutInflater)
@@ -65,14 +65,14 @@ class FragmentShowSubgroups : Fragment() {
             }
         }
 
-
+        // initialize and adding touch helper with left/right swipe
         val itemTouchHelperLeft = ItemTouchHelper(swipeHandlerLeft)
         itemTouchHelperLeft.attachToRecyclerView(binding.recyclerView)
 
         val itemTouchHelperRight = ItemTouchHelper(swipeHandlerRight)
         itemTouchHelperRight.attachToRecyclerView(binding.recyclerView)
 
-        binding.buttonAddSubgroups.setOnClickListener() {
+        binding.buttonAddSubgroups.setOnClickListener {
             findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
         }
 
@@ -81,14 +81,11 @@ class FragmentShowSubgroups : Fragment() {
         var currentServerIndex = 0
 
         for ((key, _) in  controller.servers) {
-            var newsgroupServer = ""
-            if(key.alias?.isEmpty()!!)
-            {
-                newsgroupServer = key.host.toString()
-            }
-            else
-            {
-                newsgroupServer = key.alias.toString() + " <" + key.host.toString() + ">"
+
+            val newsgroupServer = if (key.alias.isEmpty()) {
+                key.host
+            } else {
+                key.alias + " <" + key.host + ">"
             }
 
             list.add(newsgroupServer)
@@ -98,17 +95,12 @@ class FragmentShowSubgroups : Fragment() {
             }
         }
 
-
-
         val spinner : Spinner = binding.newsgroupsList
-
-
         val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
                 list as List<Any?>
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
 
         // Initializing an ArrayAdapter
         spinner.setSelection(currentServerIndex)

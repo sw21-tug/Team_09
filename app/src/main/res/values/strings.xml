@@ -45,4 +45,10 @@
         <item>en</item>
         <item>ru</item>
     </string-array>
+    <string name="tv_text">TextView Text</string>
+    <string name="feedback_wrong_name_email">Enter valid name and email address.</string>
+    <string name="feedback_wrong_name">Enter valid name.</string>
+    <string name="feedback_wrong_email">Enter valid email address.</string>
+    <string name="feedback_server_connection_error">Connection to the server failed.</string>
+    <string name="feedback_settings_saved">Successfully saved!</string>
 </resources>

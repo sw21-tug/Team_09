@@ -2,7 +2,6 @@ package com.tugraz.asd.modernnewsgroupapp.helper
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,11 +22,6 @@ class SwipeAdapter(private val items: MutableList<Newsgroup>) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int = items.size
-
-    /*fun addItem(name: String) {
-        items.add(name)
-        notifyItemInserted(items.size)
-    }*/
 
     fun removeAt(position: Int) {
         items[position].subscribed = false
