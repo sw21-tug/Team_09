@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp.helper
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.text.InputType
@@ -11,23 +12,29 @@ import com.tugraz.asd.modernnewsgroupapp.R
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import kotlinx.android.synthetic.main.subgroup_list_entry.view.*
 
-class SwipeAdapter(private val items: MutableList<Newsgroup>) : RecyclerView.Adapter<SwipeAdapter.VH>() {
+class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : RecyclerView.Adapter<SubscribedListAdapter.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(parent)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(items[position].name)
+        val newsgroup = items[position]
+        if (!newsgroup.alias.isNullOrEmpty()) {
+            holder.bind(newsgroup.alias + " <${newsgroup.name}>")
+        } else {
+            holder.bind(newsgroup.name)
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
-    fun removeAt(position: Int) {
+    fun removeAt(position: Int, context: Context) {
+        val ctx = context as Activity
         items[position].subscribed = false
+        Feedback.showInfo(ctx.findViewById(R.id.recyclerView), "Unsubscribed from ${items[position].name}")
         items.removeAt(position)
-        // TODO notify user with feedback message
-        //notifyItemRemoved(position)
+        notifyItemRemoved(position)
     }
 
     fun editAt(position: Int, context: Context) {
@@ -44,18 +51,26 @@ class SwipeAdapter(private val items: MutableList<Newsgroup>) : RecyclerView.Ada
 
     private fun showEditDialog(newsgroup: Newsgroup, context: Context)
     {
+        val ctx = context as Activity
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setTitle("Edit Alias")
+        builder.setTitle("Edit Alias for ${newsgroup.name}")
 
         val input = EditText(context)
         input.inputType = InputType.TYPE_CLASS_TEXT
-        input.setText(newsgroup.alias.toString())
+        if (!newsgroup.alias.isNullOrEmpty()) {
+            input.setText(newsgroup.alias.toString())
+        }
         builder.setView(input)
 
         builder.setPositiveButton("Save") { _, _ ->
             newsgroup.alias = input.text.toString()
+            this.notifyDataSetChanged()
+            Feedback.showSuccess(ctx.findViewById(R.id.recyclerView), "Alias set for ${newsgroup.name}")
         }
-        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            this.notifyDataSetChanged()
+            dialog.cancel()
+        }
         builder.show()
     }
 }

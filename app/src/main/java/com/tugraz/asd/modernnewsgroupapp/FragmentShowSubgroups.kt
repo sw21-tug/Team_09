@@ -12,11 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
-import com.tugraz.asd.modernnewsgroupapp.helper.SwipeAdapter
-import com.tugraz.asd.modernnewsgroupapp.helper.SwipeToDeleteCallback
-import com.tugraz.asd.modernnewsgroupapp.helper.SwipeToEditCallback
+import com.tugraz.asd.modernnewsgroupapp.helper.SimpleSwipeCallback
+import com.tugraz.asd.modernnewsgroupapp.helper.SubscribedListAdapter
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 /**
@@ -48,29 +46,12 @@ class FragmentShowSubgroups : Fragment() {
 
         val subscribedNewsgroups = controller.currentServer.newsGroups?.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
 
+        val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = SwipeAdapter(subscribedNewsgroups)
+        binding.recyclerView.adapter = recycleAdapter
 
-        val swipeHandlerLeft = object : SwipeToDeleteCallback(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = binding.recyclerView.adapter as SwipeAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
-            }
-        }
-
-        val swipeHandlerRight = object : SwipeToEditCallback(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = binding.recyclerView.adapter as SwipeAdapter
-                adapter.editAt(viewHolder.adapterPosition, this@FragmentShowSubgroups.requireContext())
-            }
-        }
-
-        // initialize and adding touch helper with left/right swipe
-        val itemTouchHelperLeft = ItemTouchHelper(swipeHandlerLeft)
-        itemTouchHelperLeft.attachToRecyclerView(binding.recyclerView)
-
-        val itemTouchHelperRight = ItemTouchHelper(swipeHandlerRight)
-        itemTouchHelperRight.attachToRecyclerView(binding.recyclerView)
+        val itemTouchHelper = ItemTouchHelper(SimpleSwipeCallback(requireContext(), recycleAdapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
         binding.buttonAddSubgroups.setOnClickListener {
             findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
