@@ -54,7 +54,7 @@ class FragmentEditNewsgroup : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
-        controller = viewModel.data.value!!
+        controller = viewModel.controller.value!!
 
         binding.editTextNewsgroupAlias.setText(controller.currentServer.alias)
         binding.headerNewsgroupName.text = controller.currentServer.host

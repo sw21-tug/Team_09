@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +18,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 
 /**
@@ -53,11 +53,11 @@ class FragmentSubscribe : Fragment() {
 
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher)
 
-        viewModel.data.observe(viewLifecycleOwner, Observer {
+        viewModel.controller.observe(viewLifecycleOwner, Observer {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
 
-            newsgroupList = viewModel.data.value!!.currentServer.newsGroups as ArrayList<Newsgroup>
+            newsgroupList = viewModel.controller.value!!.currentNewsgroups as ArrayList<Newsgroup>
 
             //newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
@@ -68,7 +68,7 @@ class FragmentSubscribe : Fragment() {
 
                     // add parent newsgroup which does not exist (no subscribe possibility)
                     if (!newsgroupsToAdd.any{it.name == newsgroup.parent} && !newsgroupList!!.any {it.name == newsgroup.parent}) {
-                        val new = Newsgroup(newsgroup.parent!!)
+                        val new = Newsgroup(name = newsgroup.parent!!, newsgroupServerId = viewModel.controller.value!!.currentServer.id)
                         new.setParentNewsgroup()
                         new.setHierarchyLevel()
                         newsgroupsToAdd.add(new)
@@ -120,7 +120,7 @@ class FragmentSubscribe : Fragment() {
                 }
 
                 // subscribe / unsubscribe newsgroup if checked / unchecked
-                checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
                     newsgroupList!!.find { it.name == checkbox.text }?.subscribed = isChecked
                 }
             }
@@ -161,7 +161,7 @@ class FragmentSubscribe : Fragment() {
     }
 
     private fun onButtonFinishClick() {
-        viewModel.data.value!!.currentServer.newsGroups = newsgroupList
+        viewModel.controller.value!!.currentNewsgroups = newsgroupList!!
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 

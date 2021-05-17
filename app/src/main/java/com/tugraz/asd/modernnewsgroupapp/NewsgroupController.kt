@@ -1,23 +1,26 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
     lateinit var currentServer: NewsgroupServer
+    lateinit var currentNewsgroups: List<Newsgroup>
+    var skipSetup: Boolean = false
 
     fun addServer(server: NewsgroupServer) {
         servers[server] = NewsgroupConnection(server)
     }
 
     fun fetchNewsGroups() {
-        for ((server, con) in servers) {
-            server.newsGroups = con.getNewsGroups()
+        for ((_, con) in servers) {
+            currentNewsgroups = con.getNewsGroups()
         }
     }
 
     fun fetchNewsGroups(server: NewsgroupServer) {
-        server.newsGroups = servers.get(server)?.getNewsGroups()
+        currentNewsgroups = servers.get(server)?.getNewsGroups()!!
     }
 
     fun removeServer(server: NewsgroupServer) {

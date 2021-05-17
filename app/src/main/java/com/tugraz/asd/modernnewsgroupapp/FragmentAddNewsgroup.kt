@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import kotlinx.coroutines.launch
 
 
 /**
@@ -40,6 +43,16 @@ class FragmentAddNewsgroup : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
+
+
+        viewModel.controller.observe(viewLifecycleOwner, Observer {
+            if(viewModel.controller.value!!.skipSetup) {
+                viewModel.controller.value!!.skipSetup = false
+                findNavController().navigate(R.id.action_FragmentAddNewsgroup_to_FragmentShowSubgroups)
+            }
+        })
+
+
     }
 
     fun onButtonSubscribeClick() {
@@ -55,7 +68,7 @@ class FragmentAddNewsgroup : Fragment() {
         }
 
         val controller = NewsgroupController()
-        var server = NewsgroupServer(hostname.toString())
+        val server = NewsgroupServer(host = hostname.toString())
 
         controller.addServer(server)
 
@@ -86,13 +99,18 @@ class FragmentAddNewsgroup : Fragment() {
 
         thread.join()
 
-        if( viewModel.data.value == null)
-        {
-            val controller : NewsgroupController = NewsgroupController()
-            viewModel.data.value = controller
+
+        lifecycleScope.launch {
+            (activity as? MainActivity)?.db?.newsgroupServerDao()?.insertAll(server)
         }
-        viewModel.data.value!!.currentServer = server
-        viewModel.data.value!!.addServer(server)
+
+
+        if( viewModel.controller.value == null)
+        {
+            viewModel.controller.value = controller
+        }
+        viewModel.controller.value!!.currentServer = server
+        viewModel.controller.value!!.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
 

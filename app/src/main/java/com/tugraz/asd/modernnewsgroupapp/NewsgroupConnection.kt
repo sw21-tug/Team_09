@@ -19,7 +19,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server: " + e.message)
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.message)
                     }
                 }
             }
@@ -32,7 +32,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         var groups: ArrayList<Newsgroup> = ArrayList()
 
         for (group in response) {
-            groups.add(Newsgroup(group.newsgroup))
+            groups.add(Newsgroup(name = group.newsgroup, newsgroupServerId = server.id))
         }
 
         return groups
