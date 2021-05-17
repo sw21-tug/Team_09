@@ -75,5 +75,8 @@
         android:label="Message Fragment"
         tools:layout="@layout/fragment_show_message_threads">
 
+        <action
+            android:id="@+id/action_FragmentMessageThreads_to_FragmentShowSubgroups"
+            app:destination="@id/FragmentShowSubgroups" />
     </fragment>
 </navigation>

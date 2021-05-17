@@ -21,7 +21,7 @@ class NewsgroupController {
         server.newsGroups = servers.get(server)?.getNewsGroups()
     }
 
-    fun fetchArtcles(server: NewsgroupServer): ArrayList<Article>? {
+    fun fetchArticles(server: NewsgroupServer): ArrayList<Article>? {
         var articles = servers[server]?.getArticleHeaders(server.currentNewsgroup)
         return articles
     }

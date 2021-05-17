@@ -50,7 +50,6 @@
             android:inputType="textPersonName"
             app:backgroundTint="@color/berry" />
 
-
     </LinearLayout>
 
     <ScrollView
@@ -87,7 +86,8 @@
             android:id="@+id/button_back"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
+            android:textSize="16dp"
             android:backgroundTint="@android:color/transparent"
             android:shadowColor="@android:color/transparent"
             android:text="@string/button_back"
@@ -101,10 +101,11 @@
         <Button
             android:id="@+id/button_finish"
             android:layout_width="221dp"
-            android:layout_height="58dp"
+            android:layout_height="55dp"
             android:layout_marginStart="132dp"
             android:layout_marginLeft="132dp"
-            android:background="#AA4075"
+            android:textSize="16dp"
+            android:background="@drawable/button_corner_round"
             android:text="@string/button_finish"
             app:backgroundTint="#AA4075"
             app:cornerRadius="100dp"

@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_gradient_background"
-    tools:context=".FragmentAddNewsgroup">
+    tools:context=".FragmentShowMessages">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/simple_spinner_dropdown_item"
+        android:id="@+id/header_messages"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
@@ -17,11 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/button_close_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/button_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/icon_close"
+            android:background="@drawable/icon_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,17 +32,16 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.093"
-            app:layout_constraintStart_toEndOf="@+id/button_close_profile"
+            app:layout_constraintStart_toEndOf="@+id/button_back"
             tools:layout_editor_absoluteY="15dp">
 
             <TextView
-                android:id="@+id/header_subgroup_alias"
+                android:id="@+id/header_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Subgroup Alias"
+                android:gravity="left"
                 android:textColor="@color/darkgrey"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -51,28 +49,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="@string/header_message"
                 android:textColor="@color/darkgrey"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textSize="16dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scollview_show_message_threads"
-        android:layout_width="411dp"
-        android:layout_height="658dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/scrollView_show_messages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_add_subgroups"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/simple_spinner_dropdown_item">
+        app:layout_constraintTop_toBottomOf="@+id/header_messages">
 
         <LinearLayout
-            android:id="@+id/view_show_message_threads"
+            android:id="@+id/view_show_messages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            android:divider="?android:listDivider"/>
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/button_add_subgroups"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/button_round"
+        android:src="@drawable/icon_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

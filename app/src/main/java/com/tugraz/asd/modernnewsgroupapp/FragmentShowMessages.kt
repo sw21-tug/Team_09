@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import org.apache.commons.net.nntp.Article
+import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -35,7 +37,7 @@ class FragmentShowMessages : Fragment() {
         println("The element at ${controller.currentServer.currentNewsgroup}")
 
         val thread = Thread {
-            articles = controller.fetchArtcles(controller.currentServer)!!
+            articles = controller.fetchArticles(controller.currentServer)!!
         }
         try {
             thread.start()
@@ -53,23 +55,22 @@ class FragmentShowMessages : Fragment() {
 
         thread.join()
         val scale = getResources().getDisplayMetrics().density;
-        for(article in articles)
+        for(article in articles.reversed())
         {
             val textview = TextView(activity)
-            textview.text = article.subject
+            textview.text = formatDate(article.date) + System.getProperty("line.separator") + article.subject
             textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-            textview.height = (80 * scale.toInt())
+            textview.height = (100 * scale.toInt())
             textview.gravity = Gravity.CENTER or Gravity.LEFT
-            textview.setPadding(50 * scale.toInt(), 0,0,0)
+            textview.setPadding(50 * scale.toInt(), 0, 0, 0)
+            textview.textSize = 16f
             textview.setTextColor(Color.DKGRAY)
-            binding.viewShowMessageThreads.addView(textview)
+            binding.viewShowMessages.addView(textview)
         }
 
-        //var con = controller.getConnection(controller.currentServer)
-        //var messageThreads = con?.getMessages(controller.currentServer.currentNewsgroup)
-        print("hi")
-
-        binding.headerSubgroupName.text = controller.currentServer.currentNewsgroup!!.name
+        binding.buttonBack.setOnClickListener() {
+            onButtonBackClick()
+        }
 
         return binding.root
     }
@@ -77,7 +78,30 @@ class FragmentShowMessages : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(ServerObservable::class.java)
+        } ?: throw Exception("Invalid Activity")
+        controller = viewModel.data.value!!
 
+        if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
+            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }else {
+            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.alias)
+            binding.headerSubgroupName.setText(controller.currentServer.currentNewsgroup!!.name)
+        }
+    }
+
+    fun onButtonBackClick()
+    {
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
+    }
+
+    fun formatDate(date: String): String {
+        val dateShort = date.substring(5, 25)
+        val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val output: String = formatter.format(parser.parse(dateShort))
+
+        return output
     }
 
 }

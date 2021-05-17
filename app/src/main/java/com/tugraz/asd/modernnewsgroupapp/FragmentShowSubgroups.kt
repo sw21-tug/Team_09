@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -53,15 +54,13 @@ class FragmentShowSubgroups : Fragment() {
         if (subscribed_newsgroups != null) {
             for ((index, ng) in subscribed_newsgroups.withIndex()) {
                 val textview = TextView(activity)
-                val drawable = resources.getDrawable(R.drawable.border_top)
                 textview.text = ng.name
                 textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-                textview.height = (80 * scale.toInt())
+                textview.height = (100 * scale.toInt())
                 textview.gravity = Gravity.CENTER or Gravity.LEFT
                 textview.setPadding(50 * scale.toInt(), 0,0,0)
                 textview.setTextColor(Color.DKGRAY)
-                textview.background = drawable
-                textview.textSize = 20f
+                textview.textSize = 18f
                 textview.setTypeface(Typeface.DEFAULT_BOLD)
                 textview.setOnClickListener{
                     controller.currentServer.currentNewsgroup = ng
@@ -97,10 +96,7 @@ class FragmentShowSubgroups : Fragment() {
             }
         }
 
-
-
         val spinner : Spinner = binding.newsgroupsList
-
 
         val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
             list as List<Any?>

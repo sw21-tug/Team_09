@@ -35,6 +35,7 @@
     <string name="hint_server">Newsgroup-server *</string>
     <string name="filter">Filter...</string>
     <string name="profile_label_language">Language</string>
+    <string name="header_message">Inbox</string>
     <string-array name="languages_list">
         <item>English</item>
         <item>Russian</item>
