@@ -11,7 +11,6 @@ import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentProfileBinding
 import java.util.*
 import java.util.Locale;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -80,7 +79,7 @@ class FragmentProfile : Fragment() {
                 conf.locale = new_locale
                 res.updateConfiguration(conf, dm)
                 currentLocale = new_locale
-                val refresh = Intent(requireView().context, ActivityAddNewsgroup::class.java)
+                val refresh = Intent(requireView().context, MainActivity::class.java)
                 startActivity(refresh)
             } else {
                 findNavController().navigate(R.id.action_FragmentProfile_to_FragmentShowSubgroups)

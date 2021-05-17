@@ -17,7 +17,7 @@ class SnackBarTests {
 
     @Rule
     @JvmField
-    var  rule: ActivityScenarioRule<ActivityAddNewsgroup> = ActivityScenarioRule<ActivityAddNewsgroup>(ActivityAddNewsgroup::class.java)
+    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
 
     @Test
     fun checkIfSnackBarIsDisplayed()

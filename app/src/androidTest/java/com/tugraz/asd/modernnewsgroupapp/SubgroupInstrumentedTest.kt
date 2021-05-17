@@ -19,7 +19,7 @@ class SubgroupInstrumentedTest {
     @Rule
     @JvmField
 
-    var  rule: ActivityScenarioRule<ActivityAddNewsgroup> = ActivityScenarioRule<ActivityAddNewsgroup>(ActivityAddNewsgroup::class.java)
+    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
 
     private fun init() {
         val inputName = onView(withId(R.id.editText_name)).check(matches(ViewMatchers.isDisplayed()))
