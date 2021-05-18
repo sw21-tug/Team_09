@@ -19,6 +19,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
@@ -63,5 +64,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:rules:1.4.0-alpha06'
+
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestUtil 'androidx.test:orchestrator:1.1.0'
 
 }

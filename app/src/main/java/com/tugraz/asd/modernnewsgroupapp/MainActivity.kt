@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
             }
             setContentView(R.layout.activity_add_newsgroup)
         }
+        else
+        {
+            setContentView(R.layout.activity_add_newsgroup)
+
+        }
     }
 
 }

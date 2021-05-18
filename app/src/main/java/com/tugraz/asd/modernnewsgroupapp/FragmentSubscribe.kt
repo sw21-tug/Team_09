@@ -77,11 +77,28 @@ class FragmentSubscribe : Fragment() {
                     // newsgroup without subgroups
                     newsgroup.setHierarchyLevel()
                 }
+
+                val thread = Thread {
+
+                        (activity as? MainActivity)?.db?.newsgroupDao()?.insert(newsgroup)
+
+                }
+
+
+                thread.start()
+
             }
             newsgroupList!!.addAll(newsgroupsToAdd)
             createHierarchyView(binding.viewSubscribe, newsgroupList!!, 0)
             recursiveNewsgroupFilter(binding.viewSubscribe, "")
         })
+
+
+
+
+
+
+
 
         return binding.root
     }

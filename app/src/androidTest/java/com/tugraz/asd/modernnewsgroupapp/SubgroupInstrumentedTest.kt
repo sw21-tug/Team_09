@@ -9,7 +9,9 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.not
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,6 +32,11 @@ class SubgroupInstrumentedTest {
         inputEmail.perform(ViewActions.replaceText("test@test.com"), ViewActions.closeSoftKeyboard())
 
         onView(ViewMatchers.withText("NEXT")).perform(click())
+    }
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
     }
 
     @Test
