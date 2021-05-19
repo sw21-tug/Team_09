@@ -6,10 +6,11 @@ import org.apache.commons.net.nntp.NNTPClient
 import java.net.UnknownHostException
 import kotlin.Exception
 
-class NewsgroupConnection (var server: NewsgroupServer){
+class NewsgroupConnection (private var server: NewsgroupServer){
+
     private var client: NNTPClient = NNTPClient()
 
-    fun ensureConnection() {
+    private fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -28,8 +29,8 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
     fun getNewsGroups(): ArrayList<Newsgroup> {
         ensureConnection()
-        var response = client.listNewsgroups()
-        var groups: ArrayList<Newsgroup> = ArrayList()
+        val response = client.listNewsgroups()
+        val groups: ArrayList<Newsgroup> = ArrayList()
 
         for (group in response) {
             groups.add(Newsgroup(group.newsgroup))
@@ -41,6 +42,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
     /*
         Custom Exception class for newsgroup connection
      */
-    class NewsgroupConnectionException(message:String): Exception(message) {}
+    class NewsgroupConnectionException(message:String): Exception(message)
 
 }
