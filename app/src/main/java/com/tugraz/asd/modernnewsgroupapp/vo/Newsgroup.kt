@@ -8,8 +8,9 @@ import kotlin.text.count as count
 @Entity
 data class Newsgroup (
         @PrimaryKey(autoGenerate = true) var id: Int = 0,
-        @ColumnInfo(name = "name") val name: String,
-        @ColumnInfo(name = "newsgroup_server_id") val newsgroupServerId: Int,
+        @ColumnInfo(name = "name") var name: String,
+        @ColumnInfo(name = "alias") var alias: String? = null,
+        @ColumnInfo(name = "newsgroup_server_id") var newsgroupServerId: Int,
         @ColumnInfo(name = "parent") var parent: String? = null,
         @ColumnInfo(name = "hierarchy_level") var hierarchyLevel: Int? = null,
         @ColumnInfo(name = "subscribed") var subscribed: Boolean = false

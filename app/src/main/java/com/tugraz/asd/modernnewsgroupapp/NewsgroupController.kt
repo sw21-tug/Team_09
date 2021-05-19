@@ -39,13 +39,17 @@ class NewsgroupController {
     }
 
     suspend fun loadNewsgroupsFromDB() {
-        currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer.id)
+        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
+        //currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
     }
 
     suspend fun saveNewsgroups() {
-        if(this::currentServer.isInitialized) {
+        if(this::currentServer.isInitialized && this::currentNewsgroups.isInitialized) {
             println("Saving NGs to DB: " + currentNewsgroups.size)
+            for(ng in currentNewsgroups) {
+                ng.newsgroupServerId = currentServer.id
+            }
             db.newsgroupDao().insertAll(currentNewsgroups)
         }
     }

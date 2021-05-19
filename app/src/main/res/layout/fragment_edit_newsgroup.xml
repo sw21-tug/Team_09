@@ -48,7 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Newsgroup-Configuration"
+                android:id="@+id/subtitle_edit_groups"
+/>/                android:text="Newsgroup-Configuration"
                 android:textColor="@color/darkgrey"
                 android:textSize="14dp" />
         </LinearLayout>
@@ -67,9 +68,9 @@
         tools:layout_editor_absoluteX="24dp">
 
         <TextView
+            android:id="@+id/news_or_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_newsgroup_name"
             android:textAllCaps="true"
             android:textColor="@color/berry"
             android:textSize="20dp" />

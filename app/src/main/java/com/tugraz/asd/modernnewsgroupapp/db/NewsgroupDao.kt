@@ -30,6 +30,9 @@ interface NewsgroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(servers: List<Newsgroup>)
 
+    @Query("SELECT * FROM Newsgroup")
+    suspend fun getAll() : List<Newsgroup>
+
     @Delete
     suspend fun delete(newsgroup: Newsgroup)
 

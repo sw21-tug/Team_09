@@ -1,6 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +14,8 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
@@ -42,14 +42,14 @@ class FragmentSubscribe : Fragment() {
         binding = FragmentSubscribeBinding.inflate(layoutInflater)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        binding.buttonFinish.setOnClickListener() {
+        binding.buttonFinish.setOnClickListener {
             onButtonFinishClick()
         }
 
-        binding.buttonBack.setOnClickListener() {
+        binding.buttonBack.setOnClickListener {
             onButtonBackClick()
         }
 
@@ -79,7 +79,6 @@ class FragmentSubscribe : Fragment() {
                     // newsgroup without subgroups
                     newsgroup.setHierarchyLevel()
                 }
-
             }
             newsgroupList!!.addAll(newsgroupsToAdd)
             createHierarchyView(binding.viewSubscribe, newsgroupList!!, 0)
@@ -89,6 +88,7 @@ class FragmentSubscribe : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("InflateParams")
     private fun createHierarchyView(parentLayout: LinearLayout, newsgroups: List<Newsgroup>, level: Int) {
 
         for (item in newsgroups.filter { it.hierarchyLevel == level }) {
@@ -174,9 +174,4 @@ class FragmentSubscribe : Fragment() {
     private fun onButtonBackClick() {
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
 }
