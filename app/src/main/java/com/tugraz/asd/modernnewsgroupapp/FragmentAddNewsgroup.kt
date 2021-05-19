@@ -101,7 +101,8 @@ class FragmentAddNewsgroup : Fragment() {
 
 
         lifecycleScope.launch {
-            (activity as? MainActivity)?.db?.newsgroupServerDao()?.insertAll(server)
+            server.id =
+                (activity as? MainActivity)?.db?.newsgroupServerDao()?.insert(server)?.toInt() ?: 0
         }
 
 

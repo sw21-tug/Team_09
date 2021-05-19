@@ -70,7 +70,7 @@ class FragmentSubscribe : Fragment() {
 
                     // add parent newsgroup which does not exist (no subscribe possibility)
                     if (!newsgroupsToAdd.any{it.name == newsgroup.parent} && !newsgroupList!!.any {it.name == newsgroup.parent}) {
-                        val new = Newsgroup(name = newsgroup.parent!!, newsgroupServerId = viewModel.controller.value!!.currentServer.id)
+                        val new = Newsgroup(name = newsgroup.parent!!, newsgroupServerId = viewModel.controller.value!!.currentServer!!.id)
                         new.setParentNewsgroup()
                         new.setHierarchyLevel()
                         newsgroupsToAdd.add(new)

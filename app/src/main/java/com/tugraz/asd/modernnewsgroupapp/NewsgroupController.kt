@@ -6,7 +6,7 @@ import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
-    lateinit var currentServer: NewsgroupServer
+    var currentServer: NewsgroupServer? = null
     lateinit var currentNewsgroups: List<Newsgroup>
     lateinit var db: NewsgroupDb
     var skipSetup: Boolean = false
@@ -39,32 +39,34 @@ class NewsgroupController {
     }
 
     suspend fun loadNewsgroupsFromDB() {
-        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
-        //currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer.id)
+//        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
+        currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
     }
 
     suspend fun saveNewsgroups() {
-        if(this::currentServer.isInitialized && this::currentNewsgroups.isInitialized) {
-            println("Saving NGs to DB: " + currentNewsgroups.size)
+        if(currentServer != null && this::currentNewsgroups.isInitialized) {
+            println("Saving NGs to DB: " + currentNewsgroups.size + ". Server id:" + currentServer!!.id)
             for(ng in currentNewsgroups) {
-                ng.newsgroupServerId = currentServer.id
+                ng.newsgroupServerId = currentServer!!.id
             }
             db.newsgroupDao().insertAll(currentNewsgroups)
         }
     }
 
     suspend fun removeCurrentServer() {
-        if(this::currentServer.isInitialized) {
-            db.newsgroupServerDao().delete(currentServer)
-            db.newsgroupDao().deleteNewsgroupsForServerId(currentServer.id)
-            servers.remove(currentServer)
+        if(currentServer != null) {
+            db.newsgroupServerDao().delete(currentServer!!)
+            db.newsgroupDao().deleteNewsgroupsForServerId(currentServer!!.id)
+            servers.remove(currentServer!!)
+            currentServer = null
+            currentNewsgroups = emptyList()
         }
     }
 
     fun renameCurrentAlias(newAlias: String){
-        if(this::currentServer.isInitialized)
-            currentServer.alias = newAlias
+        if(currentServer != null)
+            currentServer!!.alias = newAlias
     }
 
 }

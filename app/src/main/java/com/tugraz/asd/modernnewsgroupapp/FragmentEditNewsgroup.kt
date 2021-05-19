@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentEditNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -37,16 +40,6 @@ class FragmentEditNewsgroup : Fragment() {
         }
         binding.buttonDeleteNewsgroup.setOnClickListener {
             deleteServer()
-            if(controller.servers.size == 0)
-            {
-                findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentAddNewsgroup)
-            }
-            else
-            {
-                controller.currentServer = controller.servers.keys.first()
-                println(controller.currentServer)
-                findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
-            }
         }
         return view
     }
@@ -59,15 +52,27 @@ class FragmentEditNewsgroup : Fragment() {
         } ?: throw Exception("Invalid Activity")
         controller = viewModel.controller.value!!
 
-        binding.editTextNewsgroupAlias.setText(controller.currentServer.alias)
-        binding.headerNewsgroupName.text = controller.currentServer.host
-        binding.bodyNewsgroupName.text = controller.currentServer.host
+        binding.editTextNewsgroupAlias.setText(controller.currentServer!!.alias)
+        binding.headerNewsgroupName.text = controller.currentServer!!.host
+        binding.bodyNewsgroupName.text = controller.currentServer!!.host
     }
 
     private fun deleteServer()
     {
         lifecycleScope.launch {
             controller.removeCurrentServer()
+            if (controller.servers.size > 0) {
+                controller.currentServer = controller.servers.keys.first()
+                controller.loadNewsgroupsFromDB()
+                viewModel.controller.postValue(controller)
+                withContext(Dispatchers.Main){
+                    findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
+                }
+            } else {
+                withContext(Dispatchers.Main){
+                    findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentAddNewsgroup)
+                }
+            }
         }
         Feedback.showSuccess(this.requireView(), "Newsgroup Server successfully deleted.")
     }

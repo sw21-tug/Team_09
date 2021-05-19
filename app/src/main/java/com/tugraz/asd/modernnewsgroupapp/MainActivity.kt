@@ -44,9 +44,6 @@ class MainActivity : AppCompatActivity() {
             println("Servers in DB: " + count)
             onDbFinished(count)
         }
-
-
-
     }
 
     fun onDbFinished(serverCount: Int) {

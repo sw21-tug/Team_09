@@ -33,6 +33,9 @@ interface NewsgroupServerDao {
     suspend fun getAll(): List<NewsgroupServer>
 
     @Insert
+    suspend fun insert(server: NewsgroupServer): Long
+
+    @Insert
     suspend fun insertAll(vararg servers: NewsgroupServer)
 
     @Delete
