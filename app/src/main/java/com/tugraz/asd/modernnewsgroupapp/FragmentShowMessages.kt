@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import org.apache.commons.net.nntp.Article
-import org.apache.commons.net.nntp.Threadable
-import org.apache.commons.net.nntp.Threader
+import java.io.PrintStream
 import java.text.SimpleDateFormat
 
 /**
@@ -56,8 +55,7 @@ class FragmentShowMessages : Fragment() {
         }
 
         thread.join()
-
-        val scale = getResources().getDisplayMetrics().density
+        showMessages(articles, 0)
        /* for(article in articles)
         {
             val textview = TextView(activity)
@@ -113,6 +111,29 @@ class FragmentShowMessages : Fragment() {
         val output: String = formatter.format(parser.parse(dateShort))
 
         return output
+    }
+
+    fun showMessages(article: Article, depth: Int) {
+        for (i in 0 until depth) {
+            //ps.print("==>")
+        }
+        //ps.println(article.subject + "\t" + article.from + "\t" + article.articleId)
+        val scale = getResources().getDisplayMetrics().density
+        val textview = TextView(activity)
+        textview.text = System.getProperty("line.separator") + article.subject
+        textview.width = ViewGroup.LayoutParams.MATCH_PARENT
+        textview.height = (100 * scale.toInt())
+        textview.gravity = Gravity.CENTER or Gravity.LEFT
+        textview.setPadding(1 + depth * 50 * scale.toInt(), 0, 0, 0)
+        textview.textSize = 16f
+        textview.setTextColor(Color.DKGRAY)
+        binding.viewShowMessages.addView(textview)
+        if (article.kid != null) {
+            showMessages(article.kid, depth + 1)
+        }
+        if (article.next != null) {
+            showMessages(article.next, depth)
+        }
     }
 
 }
