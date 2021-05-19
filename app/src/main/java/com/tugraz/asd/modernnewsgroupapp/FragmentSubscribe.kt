@@ -15,9 +15,11 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import kotlinx.coroutines.launch
 
 
 /**
@@ -78,27 +80,11 @@ class FragmentSubscribe : Fragment() {
                     newsgroup.setHierarchyLevel()
                 }
 
-                val thread = Thread {
-
-                        (activity as? MainActivity)?.db?.newsgroupDao()?.insert(newsgroup)
-
-                }
-
-
-                thread.start()
-
             }
             newsgroupList!!.addAll(newsgroupsToAdd)
             createHierarchyView(binding.viewSubscribe, newsgroupList!!, 0)
             recursiveNewsgroupFilter(binding.viewSubscribe, "")
         })
-
-
-
-
-
-
-
 
         return binding.root
     }
@@ -179,6 +165,9 @@ class FragmentSubscribe : Fragment() {
 
     private fun onButtonFinishClick() {
         viewModel.controller.value!!.currentNewsgroups = newsgroupList!!
+        lifecycleScope.launch {
+            viewModel.controller.value!!.saveNewsgroups()
+        }
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 

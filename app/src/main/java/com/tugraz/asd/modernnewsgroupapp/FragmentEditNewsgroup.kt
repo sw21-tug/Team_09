@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentEditNewsgroupBinding
+import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,6 +37,7 @@ class FragmentEditNewsgroup : Fragment() {
         }
         binding.buttonDeleteNewsgroup.setOnClickListener() {
             deleteServer()
+
             if(controller.servers.size == 0)
             {
                 findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentAddNewsgroup)
@@ -63,7 +67,9 @@ class FragmentEditNewsgroup : Fragment() {
 
     fun deleteServer()
     {
-        controller.removeCurrentServer()
+        lifecycleScope.launch {
+            controller.removeCurrentServer()
+        }
     }
 
     fun onButtonSaveNewsgroupClick()

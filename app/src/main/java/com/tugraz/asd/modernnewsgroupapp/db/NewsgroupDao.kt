@@ -16,11 +16,7 @@
 
 package com.tugraz.asd.modernnewsgroupapp.db
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 
 /**
@@ -29,5 +25,20 @@ import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 @Dao
 interface NewsgroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(newsgroup: Newsgroup)
+    suspend fun insert(newsgroup: Newsgroup)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(servers: List<Newsgroup>)
+
+    @Delete
+    suspend fun delete(newsgroup: Newsgroup)
+
+    @Query("DELETE FROM Newsgroup")
+    suspend fun deleteAll()
+
+    @Query("DELETE FROM Newsgroup WHERE newsgroup_server_id = :serverId")
+    suspend fun deleteNewsgroupsForServerId(serverId: Int)
+
+    @Query("SELECT * FROM Newsgroup WHERE newsgroup_server_id = :serverId ")
+    suspend fun getNewsgroupsForServerId(serverId: Int) : List<Newsgroup>
 }

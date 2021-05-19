@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,17 @@ class FragmentAddNewsgroup : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
+        viewModel = activity?.run {
+            ViewModelProvider(this).get(ServerObservable::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+
+        if((activity as? MainActivity)?.skipSetup!!) {
+            (activity as? MainActivity)?.skipSetup = false;
+            findNavController().navigate(R.id.action_FragmentAddNewsgroup_to_FragmentShowSubgroups)
+        }
+
         // Inflate the layout for this fragment
         binding = FragmentAddNewsgroupBinding.inflate(layoutInflater)
         val view = binding.root
@@ -37,23 +49,6 @@ class FragmentAddNewsgroup : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-
-        viewModel.controller.observe(viewLifecycleOwner, Observer {
-            if(viewModel.controller.value!!.skipSetup) {
-                viewModel.controller.value!!.skipSetup = false
-                findNavController().navigate(R.id.action_FragmentAddNewsgroup_to_FragmentShowSubgroups)
-            }
-        })
-
-
-    }
 
     fun onButtonSubscribeClick() {
         val email = binding.editTextEmail.text
@@ -67,8 +62,12 @@ class FragmentAddNewsgroup : Fragment() {
             return
         }
 
-        val controller = NewsgroupController()
-        val server = NewsgroupServer(host = hostname.toString())
+        val controller = viewModel.controller.value
+        val server = NewsgroupServer(host = hostname.toString(), username = name.toString())
+
+        if(controller == null) {
+            return;
+        }
 
         controller.addServer(server)
 
@@ -105,12 +104,9 @@ class FragmentAddNewsgroup : Fragment() {
         }
 
 
-        if( viewModel.controller.value == null)
-        {
-            viewModel.controller.value = controller
-        }
-        viewModel.controller.value!!.currentServer = server
-        viewModel.controller.value!!.addServer(server)
+
+        controller.currentServer = server
+        controller.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
 

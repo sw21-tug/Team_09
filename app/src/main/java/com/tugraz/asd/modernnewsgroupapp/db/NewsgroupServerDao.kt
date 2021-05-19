@@ -16,10 +16,10 @@
 
 package com.tugraz.asd.modernnewsgroupapp.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import androidx.room.FtsOptions.Order
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+
 
 /**
  * Interface for database access for User related operations.
@@ -34,4 +34,10 @@ interface NewsgroupServerDao {
 
     @Insert
     suspend fun insertAll(vararg servers: NewsgroupServer)
+
+    @Delete
+    suspend fun delete(server: NewsgroupServer)
+
+    @Query("DELETE FROM NewsgroupServer")
+    suspend fun deleteAll()
 }

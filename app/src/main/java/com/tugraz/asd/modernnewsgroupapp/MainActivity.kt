@@ -13,10 +13,15 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ServerObservable
+    var skipSetup: Boolean = false;
     lateinit var db: NewsgroupDb
+    var start: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        start = System.currentTimeMillis()
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_splash_screen_new)
 
         viewModel = this.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
@@ -31,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             count = db.newsgroupServerDao().getCount()
+            println("Servers in DB: " + count)
             onDbFinished(count)
         }
 
@@ -39,37 +45,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDbFinished(serverCount: Int) {
+        val controller = NewsgroupController()
+        controller.db = db
+
+
         if(serverCount > 0) {
-
             lifecycleScope.launch {
-                var servers: List<NewsgroupServer>? = null
-                val controller = NewsgroupController()
-                servers = db.newsgroupServerDao().getAll()
-
-                for (server in servers) {
-                    controller.addServer(server)
-                }
+                skipSetup = true;
+                controller.loadServersFromDB()
                 controller.currentServer = controller.servers.keys.first()
-
-                withContext(Dispatchers.IO) {
-                    controller.fetchNewsGroups()
-                }
-
-                controller.skipSetup = true
-
-
-                if( viewModel.controller.value == null)
-                {
-                    viewModel.controller.value = controller
-                }
+                controller.loadNewsgroupsFromDB();
+                viewModel.controller.postValue(controller)
             }
-            setContentView(R.layout.activity_add_newsgroup)
+        } else {
+            viewModel.controller.value = controller
         }
-        else
-        {
-            setContentView(R.layout.activity_add_newsgroup)
 
+        if(System.currentTimeMillis() - start < 3000) {
+            Thread.sleep(3000 - (System.currentTimeMillis() - start))
         }
+        setContentView(R.layout.activity_add_newsgroup)
     }
 
 }

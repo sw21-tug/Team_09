@@ -43,64 +43,63 @@ class FragmentShowSubgroups : Fragment() {
         viewModel.controller.observe(viewLifecycleOwner, Observer {
             controller = viewModel.controller.value!!
 
-            val subscribed_newsgroups = controller.currentNewsgroups.filter { newsgroup -> newsgroup.subscribed == true}
-            val scale = getResources().getDisplayMetrics().density;
+            if(controller.isCurrentNewsgroupsInitialised()) {
 
-            for(ng in subscribed_newsgroups) {
-                val textview = TextView(activity)
-                val drawable = resources.getDrawable(R.drawable.border_top)
-                textview.text = ng.name
-                textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-                textview.height = (80 * scale.toInt())
-                textview.gravity = Gravity.CENTER or Gravity.LEFT
-                textview.setPadding(50 * scale.toInt(), 0,0,0)
-                textview.setTextColor(Color.DKGRAY)
-                textview.background = drawable
-                textview.textSize = 20f
-                textview.setTypeface(Typeface.DEFAULT_BOLD)
+                val subscribed_newsgroups = controller.currentNewsgroups.filter { newsgroup -> newsgroup.subscribed == true }
+                val scale = getResources().getDisplayMetrics().density;
 
-                binding.viewShowSubgroups.addView(textview)
-            }
+                for (ng in subscribed_newsgroups) {
+                    val textview = TextView(activity)
+                    val drawable = resources.getDrawable(R.drawable.border_top)
+                    textview.text = ng.name
+                    textview.width = ViewGroup.LayoutParams.MATCH_PARENT
+                    textview.height = (80 * scale.toInt())
+                    textview.gravity = Gravity.CENTER or Gravity.LEFT
+                    textview.setPadding(50 * scale.toInt(), 0, 0, 0)
+                    textview.setTextColor(Color.DKGRAY)
+                    textview.background = drawable
+                    textview.textSize = 20f
+                    textview.setTypeface(Typeface.DEFAULT_BOLD)
 
-            binding.buttonAddSubgroups.setOnClickListener() {
-                findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
-            }
-
-
-            val list: MutableList<String> = ArrayList()
-            var currentServerIndex = 0
-
-            for ((key, _) in  controller.servers) {
-                var newsgroupServer = ""
-                if(key.alias.isEmpty())
-                {
-                    newsgroupServer = key.host.toString()
+                    binding.viewShowSubgroups.addView(textview)
                 }
-                else
-                {
-                    newsgroupServer = key.alias.toString() + " <" + key.host.toString() + ">"
-                }
-                list.add(newsgroupServer)
 
-                if(key == viewModel.controller.value!!.currentServer) {
-                    currentServerIndex = list.size -1
+                binding.buttonAddSubgroups.setOnClickListener() {
+                    findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
                 }
+
+
+                val list: MutableList<String> = ArrayList()
+                var currentServerIndex = 0
+
+                for ((key, _) in controller.servers) {
+                    var newsgroupServer = ""
+                    if (key.alias.isEmpty()) {
+                        newsgroupServer = key.host.toString()
+                    } else {
+                        newsgroupServer = key.alias.toString() + " <" + key.host.toString() + ">"
+                    }
+                    list.add(newsgroupServer)
+
+                    if (key == viewModel.controller.value!!.currentServer) {
+                        currentServerIndex = list.size - 1
+                    }
+                }
+
+
+                val spinner: Spinner = binding.newsgroupsList
+
+
+                val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
+                        list as List<Any?>
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = adapter
+
+
+                // Initializing an ArrayAdapter
+                spinner.setSelection(currentServerIndex)
             }
-
-
-
-            val spinner : Spinner = binding.newsgroupsList
-
-
-            val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
-                list as List<Any?>
-            )
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-
-
-            // Initializing an ArrayAdapter
-            spinner.setSelection(currentServerIndex)
         })
 
 

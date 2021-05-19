@@ -29,7 +29,7 @@ import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
     entities = [
         Newsgroup::class,
         NewsgroupServer::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class NewsgroupDb : RoomDatabase() {
