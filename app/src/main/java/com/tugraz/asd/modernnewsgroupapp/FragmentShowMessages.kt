@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import org.apache.commons.net.nntp.Article
+import org.apache.commons.net.nntp.Threadable
 import java.text.SimpleDateFormat
 
 /**
@@ -21,7 +22,7 @@ class FragmentShowMessages : Fragment() {
     private lateinit var binding: FragmentShowMessageThreadsBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
-    private lateinit var articles: ArrayList<Article>
+    private lateinit var articles: Threadable
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +55,9 @@ class FragmentShowMessages : Fragment() {
         }
 
         thread.join()
-        val scale = getResources().getDisplayMetrics().density;
-        for(article in articles.reversed())
+        val scale = getResources().getDisplayMetrics().density
+
+        /*for(article in articles.reversed())
         {
             val textview = TextView(activity)
             textview.text = formatDate(article.date) + System.getProperty("line.separator") + article.subject
@@ -67,7 +69,7 @@ class FragmentShowMessages : Fragment() {
             textview.setTextColor(Color.DKGRAY)
             binding.viewShowMessages.addView(textview)
         }
-
+        */
         binding.buttonBack.setOnClickListener() {
             onButtonBackClick()
         }

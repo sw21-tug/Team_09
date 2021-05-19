@@ -2,6 +2,7 @@ package com.tugraz.asd.modernnewsgroupapp
 
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.Article
+import org.apache.commons.net.nntp.Threadable
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
@@ -21,7 +22,7 @@ class NewsgroupController {
         server.newsGroups = servers.get(server)?.getNewsGroups()
     }
 
-    fun fetchArticles(server: NewsgroupServer): ArrayList<Article>? {
+    fun fetchArticles(server: NewsgroupServer): Threadable? {
         var articles = servers[server]?.getArticleHeaders(server.currentNewsgroup)
         return articles
     }
