@@ -33,7 +33,7 @@ class AddNewsGroupFunctionTest {
     private lateinit var db: NewsgroupDb
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(SplashScreen::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
     fun clearDb(){

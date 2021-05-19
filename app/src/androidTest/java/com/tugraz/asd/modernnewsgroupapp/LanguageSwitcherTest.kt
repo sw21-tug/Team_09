@@ -27,7 +27,7 @@ class LanguageSwitcherTest {
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(SplashScreen::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
     fun clearDb(){
