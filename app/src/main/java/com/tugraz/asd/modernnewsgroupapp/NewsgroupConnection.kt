@@ -11,7 +11,8 @@ import kotlin.Exception
 import kotlin.concurrent.thread
 
 class NewsgroupConnection (var server: NewsgroupServer){
-    private lateinit var graph: Threadable
+    private lateinit var resp: Iterable<Article>
+    private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
 
     fun ensureConnection() {
@@ -45,9 +46,8 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?): Threadable{
+    fun getArticleHeaders(sg: Newsgroup?): Article{
         ensureConnection()
-        var articles: ArrayList<Article> = ArrayList()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
             if(client.selectNewsgroup(sg.name))
@@ -58,17 +58,12 @@ class NewsgroupConnection (var server: NewsgroupServer){
         //var response = client.listNewsgroups()
         if (sg != null) {
             print("st")
-            var response = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
             var threader = Threader()
-            graph = threader.thread(response)
-            print("test")
-
-            for(article in response)
-            {
-                articles.add(article)
-            }
+            var graph = threader.thread(resp)
+            article = (graph as Article?)!!
         }
-        return graph
+        return article
     }
 
     fun getArticleBody(sg: Newsgroup?, id: Long)

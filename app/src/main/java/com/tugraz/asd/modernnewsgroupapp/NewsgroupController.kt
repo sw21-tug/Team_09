@@ -22,7 +22,7 @@ class NewsgroupController {
         server.newsGroups = servers.get(server)?.getNewsGroups()
     }
 
-    fun fetchArticles(server: NewsgroupServer): Threadable? {
+    fun fetchArticles(server: NewsgroupServer): Article? {
         var articles = servers[server]?.getArticleHeaders(server.currentNewsgroup)
         return articles
     }
