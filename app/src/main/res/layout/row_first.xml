@@ -17,8 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:text="TextView"
-            android:textColor="@color/black" />
+            android:text="TextView" />
     </RelativeLayout>
 
     <LinearLayout
