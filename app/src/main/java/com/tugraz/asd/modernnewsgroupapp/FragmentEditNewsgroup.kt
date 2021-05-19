@@ -65,7 +65,7 @@ class FragmentEditNewsgroup : Fragment() {
     private fun deleteServer()
     {
         controller.removeCurrentServer()
-        Feedback.showSuccess(this.requireView(), "Newsgroup Server successfully deleted.")
+        Feedback.showSuccess(this.requireView(), getString(R.string.feedback_ng_server_deleted))
     }
 
     private fun onButtonSaveNewsgroupClick()
@@ -73,6 +73,6 @@ class FragmentEditNewsgroup : Fragment() {
         val serverAlias = binding.editTextNewsgroupAlias.text
         controller.renameCurrentAlias(serverAlias.toString())
         findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
-        Feedback.showSuccess(this.requireView(), "Server alias successfully set.")
+        Feedback.showSuccess(this.requireView(), getString(R.string.feedback_ng_server_alias_set))
     }
 }

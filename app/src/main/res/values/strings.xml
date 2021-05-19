@@ -51,4 +51,11 @@
     <string name="feedback_wrong_email">Enter valid email address.</string>
     <string name="feedback_server_connection_error">Connection to the server failed.</string>
     <string name="feedback_settings_saved">Successfully saved!</string>
+    <string name="feedback_unsubscribed">"Unsubscribed from "</string>
+    <string name="feedback_alias_set">"Alias set for "</string>
+    <string name="edit_alias_dialog_title">"Edit Alias for "</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="feedback_ng_server_deleted">Newsgroup server successfully deleted.</string>
+    <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
 </resources>

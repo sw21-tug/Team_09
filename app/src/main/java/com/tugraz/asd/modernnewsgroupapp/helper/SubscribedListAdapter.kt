@@ -32,7 +32,8 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
     fun removeAt(position: Int, context: Context) {
         val ctx = context as Activity
         items[position].subscribed = false
-        Feedback.showInfo(ctx.findViewById(R.id.recyclerView), "Unsubscribed from ${items[position].name}")
+        Feedback.showInfo(ctx.findViewById(R.id.recyclerView),
+                ctx.getString(R.string.feedback_unsubscribed) + items[position].name)
         items.removeAt(position)
         notifyItemRemoved(position)
     }
@@ -42,7 +43,8 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
     }
 
     class VH(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.subgroup_list_entry, parent, false)) {
+        LayoutInflater.from(parent.context)
+                .inflate(R.layout.subgroup_list_entry, parent, false)) {
 
         fun bind(name: String) = with(itemView) {
             tv_subgroup_name.text = name
@@ -53,7 +55,7 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
     {
         val ctx = context as Activity
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setTitle("Edit Alias for ${newsgroup.name}")
+        builder.setTitle(ctx.getString(R.string.edit_alias_dialog_title) + newsgroup.name)
 
         val input = EditText(context)
         input.inputType = InputType.TYPE_CLASS_TEXT
@@ -62,12 +64,13 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
         }
         builder.setView(input)
 
-        builder.setPositiveButton("Save") { _, _ ->
+        builder.setPositiveButton(ctx.getString(R.string.save)) { _, _ ->
             newsgroup.alias = input.text.toString()
             this.notifyDataSetChanged()
-            Feedback.showSuccess(ctx.findViewById(R.id.recyclerView), "Alias set for ${newsgroup.name}")
+            Feedback.showSuccess(ctx.findViewById(R.id.recyclerView),
+                    ctx.getString(R.string.feedback_alias_set) + newsgroup.name)
         }
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(ctx.getString(R.string.cancel)) { dialog, _ ->
             this.notifyDataSetChanged()
             dialog.cancel()
         }
