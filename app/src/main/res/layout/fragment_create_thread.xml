@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_gradient_background"
-    tools:context=".FragmentShowMessages">
+    tools:context=".FragmentCreateThread">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_messages"
@@ -16,11 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/button_back"
+            android:id="@+id/button_close_thread"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/icon_back"
+            android:background="@drawable/icon_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,11 +32,11 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.093"
-            app:layout_constraintStart_toEndOf="@+id/button_back"
+            app:layout_constraintStart_toEndOf="@+id/button_close_thread"
             tools:layout_editor_absoluteY="15dp">
 
             <TextView
-                android:id="@+id/header_text"
+                android:id="@+id/header_create_thread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -48,43 +48,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/header_message"
+                android:text="@string/header_create_thread"
                 android:textColor="@color/darkgrey"
                 android:textSize="16dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView_show_messages"
+    <EditText
+        android:id="@+id/thread_subject"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_create_thread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_messages">
-
-        <LinearLayout
-            android:id="@+id/view_show_messages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:showDividers="middle"
-            android:divider="?android:listDivider"/>
-    </ScrollView>
-
-    <ImageButton
-        android:id="@+id/button_create_thread"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/button_round"
-        android:src="@drawable/icon_add"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/thread_message"
+        app:layout_constraintTop_toBottomOf="@+id/header_messages" />
+    <EditText
+        android:id="@+id/thread_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="556dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

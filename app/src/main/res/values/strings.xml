@@ -36,6 +36,7 @@
     <string name="filter">Filter...</string>
     <string name="profile_label_language">Language</string>
     <string name="header_message">Inbox</string>
+    <string name="header_create_thread">Create Thread</string>
     <string-array name="languages_list">
         <item>English</item>
         <item>Russian</item>

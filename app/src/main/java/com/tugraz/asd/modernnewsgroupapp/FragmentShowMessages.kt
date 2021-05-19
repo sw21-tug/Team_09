@@ -74,6 +74,10 @@ class FragmentShowMessages : Fragment() {
             onButtonBackClick()
         }
 
+        binding.buttonCreateThread.setOnClickListener() {
+            onButtonCreateThreadClick()
+        }
+
         return binding.root
     }
 
@@ -86,15 +90,19 @@ class FragmentShowMessages : Fragment() {
         controller = viewModel.data.value!!
 
         if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
-            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }else {
+            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }
+        else {
             binding.headerText.setText(controller.currentServer.currentNewsgroup!!.alias)
-            binding.headerSubgroupName.setText(controller.currentServer.currentNewsgroup!!.name)
         }
     }
 
     fun onButtonBackClick()
     {
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
+    }
+
+    private fun onButtonCreateThreadClick() {
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 
     fun formatDate(date: String): String {
