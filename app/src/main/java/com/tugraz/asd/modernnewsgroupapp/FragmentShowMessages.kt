@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
+import kotlinx.android.synthetic.main.fragment_show_message_threads.*
 import org.apache.commons.net.nntp.Article
-import java.io.PrintStream
 import java.text.SimpleDateFormat
 
 /**
@@ -23,6 +23,9 @@ class FragmentShowMessages : Fragment() {
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
     lateinit var articles: Article
+
+    val header : MutableList<String> = ArrayList()
+    val body : MutableList<MutableList<String>> = ArrayList()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -55,19 +58,7 @@ class FragmentShowMessages : Fragment() {
         }
 
         thread.join()
-        showMessages(articles, 0)
-       /* for(article in articles)
-        {
-            val textview = TextView(activity)
-            textview.text = formatDate(article.date) + System.getProperty("line.separator") + article.subject
-            textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-            textview.height = (100 * scale.toInt())
-            textview.gravity = Gravity.CENTER or Gravity.LEFT
-            textview.setPadding(50 * scale.toInt(), 0, 0, 0)
-            textview.textSize = 16f
-            textview.setTextColor(Color.DKGRAY)
-            binding.viewShowMessages.addView(textview)
-        }*/
+        //showMessages(articles, 0)
 
         binding.buttonBack.setOnClickListener() {
             onButtonBackClick()
@@ -80,12 +71,54 @@ class FragmentShowMessages : Fragment() {
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(ServerObservable::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        //TODO: Fill in correct data
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        val testList1 : MutableList<String> = ArrayList()
+        testList1.add("Value 1")
+        testList1.add("Value 2")
+        testList1.add("Value 3")
+        testList1.add("Value 4")
+        testList1.add("Value 5")
+
+        val testList2 : MutableList<String> = ArrayList()
+        testList2.add("Value 1")
+        testList2.add("Value 2")
+        testList2.add("Value 3")
+        testList2.add("Value 4")
+        testList2.add("Value 5")
+
+        val testList3 : MutableList<String> = ArrayList()
+        testList3.add("Value 1")
+        testList3.add("Value 2")
+        testList3.add("Value 3")
+        testList3.add("Value 4")
+        testList3.add("Value 5")
+
+        header.add("Test 1")
+        header.add("Test 2")
+        header.add("Test 3")
+
+        body.add(testList1)
+        body.add(testList2)
+        body.add(testList3)
+
+        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+
         controller = viewModel.data.value!!
 
         if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
@@ -118,7 +151,7 @@ class FragmentShowMessages : Fragment() {
             //ps.print("==>")
         }
         //ps.println(article.subject + "\t" + article.from + "\t" + article.articleId)
-        val scale = getResources().getDisplayMetrics().density
+        /*val scale = getResources().getDisplayMetrics().density
         val textview = TextView(activity)
         textview.text = System.getProperty("line.separator") + article.subject
         textview.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -127,7 +160,7 @@ class FragmentShowMessages : Fragment() {
         textview.setPadding(1 + depth * 50 * scale.toInt(), 0, 0, 0)
         textview.textSize = 16f
         textview.setTextColor(Color.DKGRAY)
-        binding.viewShowMessages.addView(textview)
+        binding.viewShowMessages.addView(textview)*/
         if (article.kid != null) {
             showMessages(article.kid, depth + 1)
         }
