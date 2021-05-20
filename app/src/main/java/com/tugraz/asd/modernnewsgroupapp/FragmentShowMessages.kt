@@ -23,6 +23,7 @@ class FragmentShowMessages : Fragment() {
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
     lateinit var articles: Article
+    var testList : MutableList<String> = ArrayList()
 
     val header : MutableList<String> = ArrayList()
     val body : MutableList<MutableList<String>> = ArrayList()
@@ -58,16 +59,14 @@ class FragmentShowMessages : Fragment() {
         }
 
         thread.join()
-        //showMessages(articles, 0)
 
-        binding.buttonBack.setOnClickListener() {
-            onButtonBackClick()
+        controller = viewModel.data.value!!
+
+        if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
+            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }
+        else {
+            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.alias)
         }
-
-        binding.buttonCreateThread.setOnClickListener() {
-            onButtonCreateThreadClick()
-        }
-
         return binding.root
     }
 
@@ -88,43 +87,14 @@ class FragmentShowMessages : Fragment() {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        val testList1 : MutableList<String> = ArrayList()
-        testList1.add("Value 1")
-        testList1.add("Value 2")
-        testList1.add("Value 3")
-        testList1.add("Value 4")
-        testList1.add("Value 5")
+        showMessages(articles, 0)
 
-        val testList2 : MutableList<String> = ArrayList()
-        testList2.add("Value 1")
-        testList2.add("Value 2")
-        testList2.add("Value 3")
-        testList2.add("Value 4")
-        testList2.add("Value 5")
+        binding.buttonBack.setOnClickListener() {
+            onButtonBackClick()
+        }
 
-        val testList3 : MutableList<String> = ArrayList()
-        testList3.add("Value 1")
-        testList3.add("Value 2")
-        testList3.add("Value 3")
-        testList3.add("Value 4")
-        testList3.add("Value 5")
-
-        header.add("Test 1")
-        header.add("Test 2")
-        header.add("Test 3")
-
-        body.add(testList1)
-        body.add(testList2)
-        body.add(testList3)
-
-        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
-
-        controller = viewModel.data.value!!
-
-        if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
-            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }
-        else {
-            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.alias)
+        binding.buttonCreateThread.setOnClickListener() {
+            onButtonCreateThreadClick()
         }
     }
 
@@ -147,13 +117,36 @@ class FragmentShowMessages : Fragment() {
     }
 
     fun showMessages(article: Article, depth: Int) {
-        for (i in 0 until depth) {
-            //ps.print("==>")
+
+        testList = ArrayList()
+        var current_article : Article
+        var article_temp = article
+
+        do {
+            current_article = article_temp
+            if(article_temp.kid != null && depth == 0)
+            {
+                if(article_temp.from != null)
+                    header.add(article_temp.from)
+                while(article_temp.kid != null)
+                {
+                    testList.add(article_temp.kid.from)
+                    article_temp = article_temp.kid
+                }
+                article_temp = current_article
+            }
+            body.add(testList)
+            testList = ArrayList()
+            article_temp = article_temp.next
         }
+        while(article_temp.next != null)
+
+        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+
         //ps.println(article.subject + "\t" + article.from + "\t" + article.articleId)
         /*val scale = getResources().getDisplayMetrics().density
         val textview = TextView(activity)
-        textview.text = System.getProperty("line.separator") + article.subject
+        textview.text = arrow + System.getProperty("line.separator") + article.subject
         textview.width = ViewGroup.LayoutParams.MATCH_PARENT
         textview.height = (100 * scale.toInt())
         textview.gravity = Gravity.CENTER or Gravity.LEFT
@@ -161,12 +154,7 @@ class FragmentShowMessages : Fragment() {
         textview.textSize = 16f
         textview.setTextColor(Color.DKGRAY)
         binding.viewShowMessages.addView(textview)*/
-        if (article.kid != null) {
-            showMessages(article.kid, depth + 1)
-        }
-        if (article.next != null) {
-            showMessages(article.next, depth)
-        }
+
     }
 
 }
