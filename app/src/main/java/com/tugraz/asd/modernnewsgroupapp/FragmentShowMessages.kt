@@ -1,12 +1,9 @@
 package com.tugraz.asd.modernnewsgroupapp
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -27,6 +24,7 @@ class FragmentShowMessages : Fragment() {
 
     val header : MutableList<String> = ArrayList()
     val body : MutableList<MutableList<String>> = ArrayList()
+    var body_buffer : MutableList<String> = ArrayList()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +87,11 @@ class FragmentShowMessages : Fragment() {
 
         showMessages(articles, 0)
 
+        body.add(body_buffer)
+        body_buffer = ArrayList()
+        body.removeFirst()
+        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+
         binding.buttonBack.setOnClickListener() {
             onButtonBackClick()
         }
@@ -117,44 +120,20 @@ class FragmentShowMessages : Fragment() {
     }
 
     fun showMessages(article: Article, depth: Int) {
-
-        testList = ArrayList()
-        var current_article : Article
-        var article_temp = article
-
-        do {
-            current_article = article_temp
-            if(article_temp.kid != null && depth == 0)
-            {
-                if(article_temp.from != null)
-                    header.add(article_temp.from)
-                while(article_temp.kid != null)
-                {
-                    testList.add(article_temp.kid.from)
-                    article_temp = article_temp.kid
-                }
-                article_temp = current_article
-            }
-            body.add(testList)
-            testList = ArrayList()
-            article_temp = article_temp.next
+        if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
+            header.add(formatDate(article.date) + System.getProperty("line.separator") + article.subject)
+            body.add(body_buffer)
+            body_buffer = ArrayList()
         }
-        while(article_temp.next != null)
 
-        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
-
-        //ps.println(article.subject + "\t" + article.from + "\t" + article.articleId)
-        /*val scale = getResources().getDisplayMetrics().density
-        val textview = TextView(activity)
-        textview.text = arrow + System.getProperty("line.separator") + article.subject
-        textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-        textview.height = (100 * scale.toInt())
-        textview.gravity = Gravity.CENTER or Gravity.LEFT
-        textview.setPadding(1 + depth * 50 * scale.toInt(), 0, 0, 0)
-        textview.textSize = 16f
-        textview.setTextColor(Color.DKGRAY)
-        binding.viewShowMessages.addView(textview)*/
-
+        if (article.kid != null) {
+            if(article.kid.articleNumber > 0)
+                body_buffer.add(formatDate(article.kid.date) + System.getProperty("line.separator") + article.kid.subject)
+            showMessages(article.kid, depth + 1)
+        }
+        if (article.next != null) {
+            showMessages(article.next, depth)
+        }
     }
 
 }

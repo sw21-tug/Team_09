@@ -1,12 +1,15 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.content.Context
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ExpandableListView
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 
 class ExpandableListAdapter(var context: Context, var expandableListView: ExpandableListView, var header: MutableList<String>, var body: MutableList<MutableList<String>>) : BaseExpandableListAdapter() {
     override fun getGroupCount(): Int {
@@ -45,12 +48,20 @@ class ExpandableListAdapter(var context: Context, var expandableListView: Expand
         }
         val title = convertView?.findViewById<TextView>(R.id.thread_title)
         title?.text = getGroup(groupPosition)
-        title?.setOnClickListener {
-            if(expandableListView.isGroupExpanded(groupPosition))
-                expandableListView.collapseGroup(groupPosition)
-            else
-                expandableListView.expandGroup(groupPosition)
+        System.out.print(getChildrenCount(groupPosition))
+        convertView?.findViewById<ImageView>(R.id.image_arrow)?.isVisible = false
+        if(getChildrenCount(groupPosition) > 0) {
+            convertView?.findViewById<ImageView>(R.id.image_arrow)?.isVisible = true
+            convertView?.findViewById<ImageView>(R.id.image_arrow)?.setSelected(isExpanded)
+            title?.setOnClickListener {
+                if (expandableListView.isGroupExpanded(groupPosition))
+                    expandableListView.collapseGroup(groupPosition)
+                else
+                    expandableListView.expandGroup(groupPosition)
+
+            }
         }
+
         return convertView
     }
 

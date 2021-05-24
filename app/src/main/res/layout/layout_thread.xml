@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/thread_title"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-    android:textSize = "16dp"
-    android:textColor= "@color/darkgrey">
-</TextView>
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/thread_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/darkgrey"
+        android:textSize="16dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="20dp"/>
+
+    <ImageView
+        android:id="@+id/image_arrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/group_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/thread_title"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

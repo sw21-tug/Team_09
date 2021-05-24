@@ -7,7 +7,9 @@ import org.apache.commons.net.nntp.NNTPClient
 import org.apache.commons.net.nntp.Threadable
 import org.apache.commons.net.nntp.Threader
 import java.net.UnknownHostException
+import java.util.*
 import kotlin.Exception
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 class NewsgroupConnection (var server: NewsgroupServer){
@@ -57,7 +59,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
         }
         //var response = client.listNewsgroups()
         if (sg != null) {
-            print("st")
             resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
             var threader = Threader()
             var graph = threader.thread(resp)
