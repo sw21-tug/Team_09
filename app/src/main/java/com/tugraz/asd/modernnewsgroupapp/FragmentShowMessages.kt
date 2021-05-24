@@ -127,8 +127,9 @@ class FragmentShowMessages : Fragment() {
         }
 
         if (article.kid != null) {
-            if(article.kid.articleNumber > 0)
+            if(article.kid.articleNumber > 0) {
                 body_buffer.add(formatDate(article.kid.date) + System.getProperty("line.separator") + article.kid.subject)
+            }
             showMessages(article.kid, depth + 1)
         }
         if (article.next != null) {

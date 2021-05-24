@@ -65,7 +65,6 @@
             android:layout_marginTop="10dp"
             android:textSize="18dp"
             android:hint="@string/hint_name"
-            android:text="Berni"
             android:inputType="text"
             android:maxLines="1"
             app:backgroundTint="@color/berry"/>
@@ -75,7 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="berni@test.com"
             android:layout_marginTop="10dp"
             android:hint="@string/hint_email_address"
             android:inputType="textEmailAddress"

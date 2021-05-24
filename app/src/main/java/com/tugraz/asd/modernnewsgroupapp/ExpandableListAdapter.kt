@@ -48,7 +48,6 @@ class ExpandableListAdapter(var context: Context, var expandableListView: Expand
         }
         val title = convertView?.findViewById<TextView>(R.id.thread_title)
         title?.text = getGroup(groupPosition)
-        System.out.print(getChildrenCount(groupPosition))
         convertView?.findViewById<ImageView>(R.id.image_arrow)?.isVisible = false
         if(getChildrenCount(groupPosition) > 0) {
             convertView?.findViewById<ImageView>(R.id.image_arrow)?.isVisible = true
