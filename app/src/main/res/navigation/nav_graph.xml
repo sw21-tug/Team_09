@@ -32,11 +32,16 @@
             android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups"
             app:destination="@id/FragmentShowSubgroups" />
         <action
-            android:id="@+id/action_FragmentEditNewsgroup_to_FragmentShowSubgroups2"
-            app:destination="@id/FragmentShowSubgroups" />
-        <action
             android:id="@+id/action_FragmentEditNewsgroup_to_FragmentAddNewsgroup"
             app:destination="@id/FragmentAddNewsgroup" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="default" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="default" />
     </fragment>
     <fragment
         android:id="@+id/FragmentAddNewsgroup"

@@ -17,7 +17,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
     private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
 
-    fun ensureConnection() {
+    private fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -36,8 +36,8 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
     fun getNewsGroups(): ArrayList<Newsgroup> {
         ensureConnection()
-        var response = client.listNewsgroups()
-        var groups: ArrayList<Newsgroup> = ArrayList()
+        val response = client.listNewsgroups()
+        val groups: ArrayList<Newsgroup> = ArrayList()
 
         for (group in response) {
             var ng = Newsgroup(group.newsgroup)
@@ -75,6 +75,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
     /*
         Custom Exception class for newsgroup connection
      */
-    class NewsgroupConnectionException(message:String): Exception(message) {}
+    class NewsgroupConnectionException(message:String): Exception(message)
 
 }

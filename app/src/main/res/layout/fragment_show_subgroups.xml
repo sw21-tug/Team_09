@@ -2,12 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_gradient_background"
+    android:name="androidx.navigation.fragment.NavHostFragment"
     tools:context=".FragmentAddNewsgroup">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/simple_spinner_dropdown_item"
         android:layout_width="match_parent"
@@ -60,8 +62,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView_show_subgroups"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="25dp"
@@ -76,5 +78,4 @@
             android:orientation="vertical"
             android:showDividers="middle"
             android:divider="?android:listDivider"/>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
