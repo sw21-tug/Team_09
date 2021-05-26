@@ -12,7 +12,7 @@ import kotlin.Exception
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
-class NewsgroupConnection (var server: NewsgroupServer){
+class NewsgroupConnection (private var server: NewsgroupServer){
     private lateinit var resp: Iterable<Article>
     private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
@@ -27,7 +27,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server: " + e.message)
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.message)
                     }
                 }
             }
@@ -40,10 +40,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         val groups: ArrayList<Newsgroup> = ArrayList()
 
         for (group in response) {
-            var ng = Newsgroup(group.newsgroup)
-            ng.firstArticle = group.firstArticleLong
-            ng.lastArticle = group.lastArticleLong
-            groups.add(ng)
+            groups.add(Newsgroup(name = group.newsgroup, newsgroupServerId = server.id, firstArticle = group.firstArticleLong, lastArticle = group.lastArticleLong))
         }
         return groups
     }

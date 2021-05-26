@@ -35,12 +35,12 @@ class FragmentShowMessages : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
-        controller = viewModel.data.value!!
+        controller = viewModel.controller.value!!
 
-        println("The element at ${controller.currentServer.currentNewsgroup}")
+        println("The element at ${controller.currentNewsgroup}")
 
         val thread = Thread {
-            articles = controller.fetchArticles(controller.currentServer)!!
+            articles = controller.currentServer?.let { controller.fetchArticles(it) }!!
         }
         try {
             thread.start()
@@ -58,12 +58,12 @@ class FragmentShowMessages : Fragment() {
 
         thread.join()
 
-        controller = viewModel.data.value!!
+        controller = viewModel.controller.value!!
 
-        if(controller.currentServer.currentNewsgroup!!.alias.isEmpty()){
-            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.name) }
+        if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
+            binding.headerText.setText(controller.currentNewsgroup!!.name) }
         else {
-            binding.headerText.setText(controller.currentServer.currentNewsgroup!!.alias)
+            binding.headerText.setText(controller.currentNewsgroup!!.alias)
         }
         return binding.root
     }

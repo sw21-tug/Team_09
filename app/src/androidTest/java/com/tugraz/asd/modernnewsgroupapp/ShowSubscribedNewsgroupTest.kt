@@ -6,6 +6,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,7 +17,7 @@ class ShowSubscribedNewsgroupTest {
 
     @Rule
     @JvmField
-    var  rule: ActivityScenarioRule<ActivityAddNewsgroup> = ActivityScenarioRule(ActivityAddNewsgroup::class.java)
+    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     private fun init() {
         val inputName = onView(withId(R.id.editText_name)).check(matches(isDisplayed()))
@@ -27,6 +29,11 @@ class ShowSubscribedNewsgroupTest {
         onView(withText("NEXT")).perform(click())
         onView(withText("tu-graz.algorithmen")).perform(click())
         onView(withText("FINISH")).perform(click())
+    }
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
     }
 
     @Test

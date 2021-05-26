@@ -5,14 +5,12 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentEditNewsgroup">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#F5F5F5"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent">
 

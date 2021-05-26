@@ -32,12 +32,12 @@ class FragmentCreateThread : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
-        controller = viewModel.data.value!!
+        controller = viewModel.controller.value!!
 
-        if (controller.currentServer.currentNewsgroup!!.alias.isEmpty()) {
-            binding.headerCreateThread.setText(controller.currentServer.currentNewsgroup!!.name)
+        if (controller.currentNewsgroup!!.alias.isNullOrEmpty()) {
+            binding.headerCreateThread.setText(controller.currentNewsgroup!!.name)
         } else {
-            binding.headerCreateThread.setText(controller.currentServer.currentNewsgroup!!.alias)
+            binding.headerCreateThread.setText(controller.currentNewsgroup!!.alias)
         }
     }
 

@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 
 open class ServerObservable : ViewModel()
 {
-    val data = MutableLiveData<NewsgroupController>()
+    val controller = MutableLiveData<NewsgroupController>()
 
     fun data(item: NewsgroupController) {
-        data.value = item
+        controller.value = item
     }
 }

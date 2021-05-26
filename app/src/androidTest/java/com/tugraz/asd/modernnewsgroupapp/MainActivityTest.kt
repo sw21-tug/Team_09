@@ -8,24 +8,30 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class ActivityAddNewsgroupTest {
+class MainActivityTest {
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(ActivityAddNewsgroup::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
 
     @Test
     fun activityAddNewsgroupTest() {
