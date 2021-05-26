@@ -26,7 +26,7 @@
     <string name="splash_image_description">Изображение ягоды</string>
     <string name="splash_subtutle">Ваш мобильный ридер групп новостей</string>
     <string name="splash_title">Ягодная коробка</string>
-    <string name="filter">Фильтр...</string>
+    <string name="filter">Фильтр…</string>
     <string name="profile_label_language">Язык</string>
     <string name="header_message">Входящие</string>
     <string name="header_create_thread">Create Thread</string>
@@ -47,4 +47,8 @@
     <string name="cancel">Отмена</string>
     <string name="feedback_ng_server_deleted">Сервер группы новостей успешно удален.</string>
     <string name="feedback_ng_server_alias_set">Псевдоним сервера успешно установлен.</string>
+    <string name="feedback_missing_message">Пожалуйста, введите сообщение</string>
+    <string name="feedback_missing_subject">Пожалуйста, введите тему</string>
+    <string name="feedback_send_fail">Сообщение не отправлено</string>
+    <string name="feedback_send_succeeded">Сообщение опубликовано</string>
 </resources>

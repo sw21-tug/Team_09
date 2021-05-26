@@ -33,7 +33,7 @@ class NewsgroupController {
     fun fetchArticles(server: NewsgroupServer): Article? {
         if(::currentNewsgroups.isInitialized)
         {
-            var articles = servers[server]?.getArticleHeaders(currentNewsgroup)
+            val articles = servers[server]?.getArticleHeaders(currentNewsgroup)
             return articles
         }else
             return null
@@ -43,7 +43,7 @@ class NewsgroupController {
         if(currentServer == null || currentNewsgroup == null) return false
 
         return servers.get(currentServer!!)!!
-            .postArticle(currentNewsgroup!!, currentServer!!.username, subject, message)
+            .postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
     }
 
     suspend fun loadServersFromDB() {

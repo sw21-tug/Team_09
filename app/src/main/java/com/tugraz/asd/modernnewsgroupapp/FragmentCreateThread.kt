@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentCreateThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.net.nntp.Article
 
 /**
@@ -67,9 +67,22 @@ class FragmentCreateThread : Fragment() {
             return
         }
 
-        if(!controller.postArticle(subject.toString(), text.toString())) {
-            Feedback.showError(this.requireView(), getString(R.string.feedback_send_fail))
-            findNavController().navigate(R.id.action_FragmentCreateThread_to_FragmentMessageThreads)
+
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                if(!controller.postArticle(subject.toString(), text.toString())) {
+                    withContext(Dispatchers.Main) {
+                        Feedback.showError(requireView(), getString(R.string.feedback_send_fail))
+                    }
+
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Feedback.showSuccess(requireView(), getString(R.string.feedback_send_succeeded))
+                        findNavController().navigate(R.id.action_FragmentCreateThread_to_FragmentMessageThreads)
+                    }
+                }
+            }
         }
     }
 
