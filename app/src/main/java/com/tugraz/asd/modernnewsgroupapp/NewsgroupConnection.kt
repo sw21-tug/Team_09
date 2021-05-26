@@ -20,7 +20,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server: " + e.message)
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.message)
                     }
                 }
             }
@@ -33,7 +33,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         val groups: ArrayList<Newsgroup> = ArrayList()
 
         for (group in response) {
-            groups.add(Newsgroup(group.newsgroup))
+            groups.add(Newsgroup(name = group.newsgroup, newsgroupServerId = server.id))
         }
 
         return groups

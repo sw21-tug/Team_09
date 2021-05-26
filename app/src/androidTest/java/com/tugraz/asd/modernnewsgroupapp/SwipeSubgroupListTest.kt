@@ -21,7 +21,7 @@ class SwipeSubgroupListTest {
 
     @Rule
     @JvmField
-    var  rule: ActivityScenarioRule<ActivityAddNewsgroup> = ActivityScenarioRule(ActivityAddNewsgroup::class.java)
+    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     private fun init() {
         val inputName = onView(ViewMatchers.withId(R.id.editText_name)).check(matches(isDisplayed()))

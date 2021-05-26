@@ -1,6 +1,9 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,54 +41,58 @@ class FragmentShowSubgroups : Fragment() {
 
         binding = FragmentShowSubgroupsBinding.inflate(layoutInflater)
 
-        viewModel.data.observe(viewLifecycleOwner, {
-            controller = viewModel.data.value!!
+        viewModel.controller.observe(viewLifecycleOwner, {
+            controller = viewModel.controller.value!!
+            onControllerChange()
         })
-        controller = viewModel.data.value!!
 
-
-        val subscribedNewsgroups = controller.currentServer.newsGroups?.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
-
-        val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = recycleAdapter
-
-        val itemTouchHelper = ItemTouchHelper(SimpleSwipeCallback(requireContext(), recycleAdapter))
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-
-        binding.buttonAddSubgroups.setOnClickListener {
-            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
-        }
-
-
-        val list: MutableList<String> = ArrayList()
-        var currentServerIndex = 0
-
-        for ((key, _) in  controller.servers) {
-
-            val newsgroupServer = if (key.alias.isEmpty()) {
-                key.host
-            } else {
-                key.alias + " <" + key.host + ">"
-            }
-
-            list.add(newsgroupServer)
-
-            if(key == viewModel.data.value!!.currentServer) {
-                currentServerIndex = list.size -1
-            }
-        }
-
-        val spinner : Spinner = binding.newsgroupsList
-        val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
-                list as List<Any?>
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-
-        // Initializing an ArrayAdapter
-        spinner.setSelection(currentServerIndex)
         return binding.root
+    }
+
+    private fun onControllerChange() {
+        if(controller.isCurrentNewsgroupsInitialised()) {
+            val subscribedNewsgroups = controller.currentNewsgroups.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
+
+            val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups)
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+            binding.recyclerView.adapter = recycleAdapter
+
+            val itemTouchHelper = ItemTouchHelper(SimpleSwipeCallback(requireContext(), recycleAdapter))
+            itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+            binding.buttonAddSubgroups.setOnClickListener {
+                findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
+            }
+
+
+            val list: MutableList<String> = ArrayList()
+            var currentServerIndex = 0
+
+            for ((key, _) in controller.servers) {
+
+                val newsgroupServer = if (key.alias.isEmpty()) {
+                    key.host
+                } else {
+                    key.alias + " <" + key.host + ">"
+                }
+
+                list.add(newsgroupServer)
+
+                if (key == viewModel.controller.value!!.currentServer) {
+                    currentServerIndex = list.size - 1
+                }
+            }
+
+            val spinner: Spinner = binding.newsgroupsList
+            val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
+                list as List<Any?>
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            // Initializing an ArrayAdapter
+            spinner.setSelection(currentServerIndex)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -14,10 +14,12 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import kotlinx.coroutines.launch
 
 
 /**
@@ -53,11 +55,11 @@ class FragmentSubscribe : Fragment() {
 
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher)
 
-        viewModel.data.observe(viewLifecycleOwner, Observer {
+        viewModel.controller.observe(viewLifecycleOwner, Observer {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
 
-            newsgroupList = viewModel.data.value!!.currentServer.newsGroups as ArrayList<Newsgroup>
+            newsgroupList = viewModel.controller.value!!.currentNewsgroups as ArrayList<Newsgroup>
 
             //newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
@@ -68,7 +70,7 @@ class FragmentSubscribe : Fragment() {
 
                     // add parent newsgroup which does not exist (no subscribe possibility)
                     if (!newsgroupsToAdd.any{it.name == newsgroup.parent} && !newsgroupList!!.any {it.name == newsgroup.parent}) {
-                        val new = Newsgroup(newsgroup.parent!!)
+                        val new = Newsgroup(name = newsgroup.parent!!, newsgroupServerId = viewModel.controller.value!!.currentServer!!.id)
                         new.setParentNewsgroup()
                         new.setHierarchyLevel()
                         newsgroupsToAdd.add(new)
@@ -162,7 +164,10 @@ class FragmentSubscribe : Fragment() {
     }
 
     private fun onButtonFinishClick() {
-        viewModel.data.value!!.currentServer.newsGroups = newsgroupList
+        viewModel.controller.value!!.currentNewsgroups = newsgroupList!!
+        lifecycleScope.launch {
+            viewModel.controller.value!!.saveNewsgroups()
+        }
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 
