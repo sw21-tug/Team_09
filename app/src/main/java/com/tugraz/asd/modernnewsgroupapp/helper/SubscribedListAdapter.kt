@@ -5,16 +5,25 @@ import android.app.AlertDialog
 import android.content.Context
 import android.text.InputType
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.tugraz.asd.modernnewsgroupapp.NewsgroupController
 import com.tugraz.asd.modernnewsgroupapp.R
+import com.tugraz.asd.modernnewsgroupapp.ServerObservable
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import kotlinx.android.synthetic.main.activity_splash_screen_new.view.*
 import kotlinx.android.synthetic.main.subgroup_list_entry.view.*
+import kotlinx.android.synthetic.main.subgroup_list_entry.view.tv_subgroup_name
 
-class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : RecyclerView.Adapter<SubscribedListAdapter.VH>() {
+
+class SubscribedListAdapter(private val items: MutableList<Newsgroup>, private val viewmodel: ServerObservable) : RecyclerView.Adapter<SubscribedListAdapter.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val v: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.subgroup_list_entry, parent, false)
         return VH(parent)
     }
 
@@ -24,6 +33,11 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
             holder.bind(newsgroup.alias + " <${newsgroup.name}>")
         } else {
             holder.bind(newsgroup.name)
+        }
+        holder.itemView.setOnClickListener{
+            val controller = viewmodel.controller.value!!
+            controller.currentNewsgroup = items[position]
+            viewmodel.controller.postValue(controller)
         }
     }
 
@@ -41,6 +55,7 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>) : Recycle
     fun editAt(position: Int, context: Context) {
         showEditDialog(items[position], context)
     }
+
 
     class VH(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)

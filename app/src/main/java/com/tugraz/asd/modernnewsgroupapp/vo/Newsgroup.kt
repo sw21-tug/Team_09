@@ -13,7 +13,9 @@ data class Newsgroup (
         @ColumnInfo(name = "newsgroup_server_id") var newsgroupServerId: Int,
         @ColumnInfo(name = "parent") var parent: String? = null,
         @ColumnInfo(name = "hierarchy_level") var hierarchyLevel: Int? = null,
-        @ColumnInfo(name = "subscribed") var subscribed: Boolean = false
+        @ColumnInfo(name = "subscribed") var subscribed: Boolean = false,
+        @ColumnInfo(name = "first_article") var firstArticle: Long = 0,
+        @ColumnInfo(name = "last_article") var lastArticle: Long = 0
 ) {
     // if newsgroup has at least a dot in its name -> indicates subgroup
     fun isSubgroup(): Boolean {

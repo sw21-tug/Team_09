@@ -8,7 +8,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -31,8 +35,8 @@ class FragmentShowSubgroups : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         viewModel = activity?.run {
@@ -50,10 +54,14 @@ class FragmentShowSubgroups : Fragment() {
     }
 
     private fun onControllerChange() {
+        if(controller.currentNewsgroup != null)
+        {
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentMessageThreads)
+        }
         if(controller.isCurrentNewsgroupsInitialised()) {
             val subscribedNewsgroups = controller.currentNewsgroups.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
 
-            val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups)
+            val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups, viewModel)
             binding.recyclerView.layoutManager = LinearLayoutManager(context)
             binding.recyclerView.adapter = recycleAdapter
 
