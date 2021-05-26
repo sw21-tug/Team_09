@@ -95,5 +95,8 @@
         android:name="com.tugraz.asd.modernnewsgroupapp.FragmentCreateThread"
         android:label="Create Thread"
         tools:layout="@layout/fragment_create_thread">
+        <action
+            android:id="@+id/action_FragmentCreateThread_to_FragmentMessageThreads"
+            app:destination="@id/FragmentMessageThreads" />
     </fragment>
 </navigation>

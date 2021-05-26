@@ -62,4 +62,7 @@
     <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
 
     <string name="language_pref_key">language</string>
+    <string name="feedback_missing_message">Please enter a message</string>
+    <string name="feedback_missing_subject">Please enter the subject</string>
+    <string name="feedback_send_fail">Message post failed</string>
 </resources>
