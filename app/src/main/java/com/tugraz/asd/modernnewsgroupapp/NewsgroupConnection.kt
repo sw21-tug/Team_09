@@ -2,10 +2,7 @@ package com.tugraz.asd.modernnewsgroupapp
 
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
-import org.apache.commons.net.nntp.Article
-import org.apache.commons.net.nntp.NNTPClient
-import org.apache.commons.net.nntp.Threadable
-import org.apache.commons.net.nntp.Threader
+import org.apache.commons.net.nntp.*
 import java.net.UnknownHostException
 import java.util.*
 import kotlin.Exception
@@ -66,6 +63,26 @@ class NewsgroupConnection (private var server: NewsgroupServer){
 
     fun getArticleBody(sg: Newsgroup?, id: Long)
     {
+
+    }
+
+    fun postArticle(newsgroup: Newsgroup, from: String, subject: String, message: String): Boolean {
+        ensureConnection()
+
+        if(!client.isAllowedToPost) return false
+
+        client.selectNewsgroup(newsgroup.name)
+
+        val writer = client.postArticle() ?: return false
+
+        val header = SimpleNNTPHeader(from, subject)
+        header.addNewsgroup(newsgroup.name)
+        writer.write(header.toString());
+        writer.write(message);
+        writer.close();
+        client.completePendingCommand()
+        return true
+
 
     }
 

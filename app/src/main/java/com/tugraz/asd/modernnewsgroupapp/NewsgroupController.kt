@@ -39,8 +39,11 @@ class NewsgroupController {
             return null
     }
 
-    fun removeServer(server: NewsgroupServer) {
-        servers.remove(server)
+    fun postArticle(subject: String, message: String): Boolean {
+        if(currentServer == null || currentNewsgroup == null) return false
+
+        return servers.get(currentServer!!)!!
+            .postArticle(currentNewsgroup!!, currentServer!!.username, subject, message)
     }
 
     suspend fun loadServersFromDB() {
