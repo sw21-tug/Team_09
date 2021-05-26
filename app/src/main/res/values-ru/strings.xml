@@ -38,4 +38,11 @@
     <string name="feedback_wrong_email">Введите действующий адрес электронной почты.</string>
     <string name="feedback_server_connection_error">Не удалось подключиться к серверу.</string>
     <string name="feedback_settings_saved">Сохранены успешно</string>
+    <string name="feedback_unsubscribed">"Отписался от "</string>
+    <string name="feedback_alias_set">"Псевдоним установлен для "</string>
+    <string name="edit_alias_dialog_title">"Изменить псевдоним для "</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="feedback_ng_server_deleted">Сервер группы новостей успешно удален.</string>
+    <string name="feedback_ng_server_alias_set">Псевдоним сервера успешно установлен.</string>
 </resources>
