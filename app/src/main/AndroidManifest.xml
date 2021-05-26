@@ -11,14 +11,8 @@
         android:roundIcon="@mipmap/berry_box_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ModernNewsgroupApp">
-        <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity
-            android:name=".ActivityAddNewsgroup"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.ModernNewsgroupApp.NoActionBar">
             <intent-filter>

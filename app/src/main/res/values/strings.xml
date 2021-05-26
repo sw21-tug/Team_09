@@ -58,4 +58,6 @@
     <string name="cancel">Cancel</string>
     <string name="feedback_ng_server_deleted">Newsgroup server successfully deleted.</string>
     <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
+
+    <string name="language_pref_key">language</string>
 </resources>

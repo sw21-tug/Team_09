@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,10 @@ import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentProfileBinding
 import java.util.*
 import java.util.Locale;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.preference.PreferenceManager
 import android.util.DisplayMetrics;
 
 
@@ -50,8 +51,8 @@ class FragmentProfile : Fragment() {
         }
 
         res = resources
-        dm = res.getDisplayMetrics()
-        conf = res.getConfiguration()
+        dm = res.displayMetrics
+        conf = res.configuration
 
         currentLocale = conf.locale
 
@@ -80,7 +81,16 @@ class FragmentProfile : Fragment() {
                 conf.locale = new_locale
                 res.updateConfiguration(conf, dm)
                 currentLocale = new_locale
-                val refresh = Intent(requireView().context, ActivityAddNewsgroup::class.java)
+                val refresh = Intent(requireView().context, MainActivity::class.java)
+
+                val prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                if (prefs != null) {
+                    with (prefs.edit()) {
+                        putString(getString(R.string.language_pref_key), lang)
+                        apply()
+                    }
+                }
+
                 startActivity(refresh)
             } else {
                 findNavController().navigate(R.id.action_FragmentProfile_to_FragmentShowSubgroups)
