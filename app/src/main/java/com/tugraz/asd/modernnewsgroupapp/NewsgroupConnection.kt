@@ -12,7 +12,7 @@ import kotlin.Exception
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
-class NewsgroupConnection (private var server: NewsgroupServer){
+class NewsgroupConnection (var server: NewsgroupServer){
     private lateinit var resp: Iterable<Article>
     private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
@@ -56,10 +56,17 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         }
         //var response = client.listNewsgroups()
         if (sg != null) {
-            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            if(sg.lastArticle < sg.firstArticle)
+                resp = client.iterateArticleInfo(sg.firstArticle, sg.firstArticle)
+            else
+                resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+
             var threader = Threader()
             var graph = threader.thread(resp)
-            article = (graph as Article?)!!
+            if(graph != null)
+                article = (graph as Article?)!!
+            else
+                article = Article()
         }
         return article
     }

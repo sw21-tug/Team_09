@@ -50,7 +50,7 @@ class NewsgroupController {
         }
     }
 
-    suspend fun loadNewsgroupsFromDB() {
+     suspend fun loadNewsgroupsFromDB() {
 //        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
         currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
