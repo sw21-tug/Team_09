@@ -4,13 +4,11 @@ import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.Article
 import org.apache.commons.net.nntp.NNTPClient
-import org.apache.commons.net.nntp.Threadable
 import org.apache.commons.net.nntp.Threader
+import java.io.BufferedReader
 import java.net.UnknownHostException
-import java.util.*
 import kotlin.Exception
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 class NewsgroupConnection (private var server: NewsgroupServer){
     private lateinit var resp: Iterable<Article>
@@ -57,17 +55,20 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         //var response = client.listNewsgroups()
         if (sg != null) {
             resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
-            var threader = Threader()
-            var graph = threader.thread(resp)
+            val threader = Threader()
+            val graph = threader.thread(resp)
             article = (graph as Article?)!!
         }
         return article
     }
 
-    fun getArticleBody(sg: Newsgroup?, id: Long)
-    {
-
+    fun getArticleBody(articleId: Long) : String {
+        return client.retrieveArticleBody(articleId).use(BufferedReader::readText)
     }
+
+    /*fun getCurrentArticle(articleId: Long) : Article {
+        return client.retrieveArticle(articleId)
+    }*/
 
     /*
         Custom Exception class for newsgroup connection

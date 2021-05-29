@@ -4,13 +4,13 @@ import com.tugraz.asd.modernnewsgroupapp.db.NewsgroupDb
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.Article
-import org.apache.commons.net.nntp.Threadable
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
     var currentServer: NewsgroupServer? = null
     lateinit var currentNewsgroups: List<Newsgroup>
     var currentNewsgroup: Newsgroup? = null
+    var currentArticle: Article? = null
     lateinit var db: NewsgroupDb
     var skipSetup: Boolean = false
 
@@ -31,12 +31,17 @@ class NewsgroupController {
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
     fun fetchArticles(server: NewsgroupServer): Article? {
-        if(::currentNewsgroups.isInitialized)
-        {
-            var articles = servers[server]?.getArticleHeaders(currentNewsgroup)
-            return articles
-        }else
-            return null
+        if(::currentNewsgroups.isInitialized) {
+            return servers[server]?.getArticleHeaders(currentNewsgroup)
+        }
+        return null
+    }
+
+    fun fetchCurrentArticleBody(server: NewsgroupServer): String? {
+        if(::currentNewsgroups.isInitialized && currentArticle != null) {
+            return servers[server]?.getArticleBody(currentArticle!!.articleNumberLong)
+        }
+        return null
     }
 
     fun removeServer(server: NewsgroupServer) {

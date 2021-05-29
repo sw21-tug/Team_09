@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
@@ -22,18 +23,18 @@ class FragmentShowMessages : Fragment() {
     lateinit var articles: Article
     var testList : MutableList<String> = ArrayList()
 
-    val header : MutableList<String> = ArrayList()
-    val body : MutableList<MutableList<String>> = ArrayList()
-    var body_buffer : MutableList<String> = ArrayList()
+    val header : MutableList<Article> = ArrayList()
+    val body : MutableList<MutableList<Article>> = ArrayList()
+    var body_buffer : MutableList<Article> = ArrayList()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentShowMessageThreadsBinding.inflate(layoutInflater)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
         controller = viewModel.controller.value!!
 
@@ -48,7 +49,7 @@ class FragmentShowMessages : Fragment() {
             when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
                     // TODO: show error message
-                    System.out.println("Error on Server connection: " + e.message)
+                    println("Error on Server connection: " + e.message)
                 }
                 else -> {
                     throw e
@@ -65,32 +66,28 @@ class FragmentShowMessages : Fragment() {
         else {
             binding.headerText.setText(controller.currentNewsgroup!!.alias)
         }
+
+        viewModel.controller.observe(viewLifecycleOwner, {
+            controller = viewModel.controller.value!!
+            //onControllerChange()
+            if(controller.currentArticle != null)
+            {
+                findNavController().navigate(R.id.action_FragmentMessageThreads_to_fragmentOpenThread)
+            }
+        })
+
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-        //TODO: Fill in correct data
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
-        } ?: throw Exception("Invalid Activity")
 
         showMessages(articles, 0)
 
         body.add(body_buffer)
         body_buffer = ArrayList()
         body.removeFirst()
-        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body, viewModel))
 
         binding.buttonBack.setOnClickListener() {
             onButtonBackClick()
@@ -101,8 +98,8 @@ class FragmentShowMessages : Fragment() {
         }
     }
 
-    fun onButtonBackClick()
-    {
+    private fun onButtonBackClick() {
+        controller.currentNewsgroup = null
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
     }
 
@@ -110,25 +107,16 @@ class FragmentShowMessages : Fragment() {
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 
-    fun formatDate(date: String): String {
-        val dateShort = date.substring(5, 25)
-        val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        val output: String = formatter.format(parser.parse(dateShort))
-
-        return output
-    }
-
     fun showMessages(article: Article, depth: Int) {
         if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
-            header.add(formatDate(article.date) + System.getProperty("line.separator") + article.subject)
+            header.add(article)
             body.add(body_buffer)
             body_buffer = ArrayList()
         }
 
         if (article.kid != null) {
             if(article.kid.articleNumber > 0) {
-                body_buffer.add(formatDate(article.kid.date) + System.getProperty("line.separator") + article.kid.subject)
+                body_buffer.add(article.kid)
             }
             showMessages(article.kid, depth + 1)
         }

@@ -89,11 +89,23 @@
         <action
             android:id="@+id/action_FragmentMessageThreads_to_FragmentCreateThread"
             app:destination="@id/FragmentCreateThread" />
+        <action
+            android:id="@+id/action_FragmentMessageThreads_to_fragmentOpenThread"
+            app:destination="@id/fragmentOpenThread" />
     </fragment>
     <fragment
         android:id="@+id/FragmentCreateThread"
         android:name="com.tugraz.asd.modernnewsgroupapp.FragmentCreateThread"
         android:label="Create Thread"
         tools:layout="@layout/fragment_create_thread">
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentOpenThread"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentOpenThread"
+        android:label="fragment_open_thread"
+        tools:layout="@layout/fragment_open_thread" >
+        <action
+            android:id="@+id/action_fragmentOpenThread_to_FragmentMessageThreads"
+            app:destination="@id/FragmentMessageThreads" />
     </fragment>
 </navigation>
