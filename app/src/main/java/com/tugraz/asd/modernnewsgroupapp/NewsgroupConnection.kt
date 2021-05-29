@@ -7,13 +7,16 @@ import org.apache.commons.net.nntp.NNTPClient
 import org.apache.commons.net.nntp.Threader
 import java.io.BufferedReader
 import java.net.UnknownHostException
+import java.nio.charset.Charset
 import kotlin.Exception
 import kotlin.collections.ArrayList
 
 class NewsgroupConnection (private var server: NewsgroupServer){
+
+    private var article: Article? = null
     private lateinit var resp: Iterable<Article>
-    private lateinit var article: Article
-    private  var client: NNTPClient = NNTPClient()
+
+    private var client: NNTPClient = NNTPClient()
 
     private fun ensureConnection() {
         if(!client.isConnected) {
@@ -43,7 +46,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?): Article{
+    fun getArticleHeaders(sg: Newsgroup?): Article? {
         ensureConnection()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
@@ -52,12 +55,15 @@ class NewsgroupConnection (private var server: NewsgroupServer){
             else
                 print("Failed select newsgroup")
         }
-        //var response = client.listNewsgroups()
         if (sg != null) {
             resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
             val threader = Threader()
             val graph = threader.thread(resp)
-            article = (graph as Article?)!!
+            if (graph != null) {
+                article = graph as Article?
+            } else {
+                article = null
+            }
         }
         return article
     }
@@ -65,10 +71,6 @@ class NewsgroupConnection (private var server: NewsgroupServer){
     fun getArticleBody(articleId: Long) : String {
         return client.retrieveArticleBody(articleId).use(BufferedReader::readText)
     }
-
-    /*fun getCurrentArticle(articleId: Long) : Article {
-        return client.retrieveArticle(articleId)
-    }*/
 
     /*
         Custom Exception class for newsgroup connection

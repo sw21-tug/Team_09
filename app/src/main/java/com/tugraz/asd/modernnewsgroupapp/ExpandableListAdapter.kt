@@ -1,6 +1,7 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import org.apache.commons.net.nntp.Article
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 
-class ExpandableListAdapter(var context: Context,
-                            private var expandableListView: ExpandableListView,
-                            private var header: MutableList<Article>,
-                            private var body: MutableList<MutableList<Article>>,
-                            private val viewModel: ServerObservable) : BaseExpandableListAdapter() {
+class ExpandableListAdapter(
+    var context: Context,
+    private var expandableListView: ExpandableListView,
+    private var header: MutableList<Article>,
+    private var body: MutableList<MutableList<Article>>,
+    private val viewModel: ServerObservable
+) : BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int {
         return header.size
@@ -48,11 +53,16 @@ class ExpandableListAdapter(var context: Context,
         return false
     }
 
-    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View? {
+    override fun getGroupView(
+        groupPosition: Int,
+        isExpanded: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View? {
         var convertView = convertView
         if(convertView == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = inflater.inflate(R.layout.layout_thread ,null)
+            convertView = inflater.inflate(R.layout.layout_thread, null)
         }
         val title = convertView?.findViewById<TextView>(R.id.thread_title)
         title?.text = getGroup(groupPosition)
@@ -80,11 +90,17 @@ class ExpandableListAdapter(var context: Context,
         return convertView
     }
 
-    override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View? {
+    override fun getChildView(
+        groupPosition: Int,
+        childPosition: Int,
+        isLastChild: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View? {
         var convertView = convertView
             if(convertView == null) {
                 val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                convertView = inflater.inflate(R.layout.layout_thread_child ,null)
+                convertView = inflater.inflate(R.layout.layout_thread_child, null)
             }
         val title = convertView?.findViewById<TextView>(R.id.thread_child)
         title?.text = getChild(groupPosition, childPosition)

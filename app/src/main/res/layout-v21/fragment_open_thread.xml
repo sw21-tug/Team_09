@@ -37,15 +37,14 @@
 
             <TextView
                 android:id="@+id/header_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="start"
+                android:maxLines="1"
                 android:textColor="@color/darkgrey"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:maxLength="30"
-                android:ellipsize="end" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_message_date"
@@ -54,7 +53,7 @@
                 android:gravity="center"
                 android:text="@string/header_message"
                 android:textColor="@color/darkgrey"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

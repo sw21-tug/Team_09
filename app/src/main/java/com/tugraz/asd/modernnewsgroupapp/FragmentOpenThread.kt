@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -22,8 +24,8 @@ class FragmentOpenThread : Fragment() {
     private var messageThread: String? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentOpenThreadBinding.inflate(layoutInflater)
@@ -51,14 +53,17 @@ class FragmentOpenThread : Fragment() {
     private fun getMessageThread(controller: NewsgroupController)
     {
         val thread = Thread {
-            messageThread = controller.currentServer?.let { controller.fetchCurrentArticleBody(it) }!!
+            messageThread = controller.currentServer?.let { controller.fetchCurrentArticleBody(it) }
         }
         try {
             thread.start()
         } catch (e: Exception) {
             when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
-                    Feedback.showError(requireView(), getString(R.string.feedback_server_connection_error))
+                    Feedback.showError(
+                        requireView(),
+                        getString(R.string.feedback_server_connection_error)
+                    )
                     println("Error on Server connection: " + e.message)
                 }
                 else -> {

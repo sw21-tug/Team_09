@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
 import org.apache.commons.net.nntp.Article
-import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -20,12 +20,12 @@ class FragmentShowMessages : Fragment() {
     private lateinit var binding: FragmentShowMessageThreadsBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
-    lateinit var articles: Article
-    var testList : MutableList<String> = ArrayList()
 
-    val header : MutableList<Article> = ArrayList()
-    val body : MutableList<MutableList<Article>> = ArrayList()
-    var body_buffer : MutableList<Article> = ArrayList()
+    private var articles: Article? = null
+
+    private val header : MutableList<Article> = ArrayList()
+    private val body : MutableList<MutableList<Article>> = ArrayList()
+    private var bodyBuffer : MutableList<Article> = ArrayList()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +41,14 @@ class FragmentShowMessages : Fragment() {
         println("The element at ${controller.currentNewsgroup}")
 
         val thread = Thread {
-            articles = controller.currentServer?.let { controller.fetchArticles(it) }!!
+            articles = controller.currentServer?.let { controller.fetchArticles(it) }
         }
         try {
             thread.start()
         } catch (e: Exception) {
             when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
-                    // TODO: show error message
+                    Feedback.showError(requireView(), getString(R.string.feedback_server_connection_error))
                     println("Error on Server connection: " + e.message)
                 }
                 else -> {
@@ -62,14 +62,13 @@ class FragmentShowMessages : Fragment() {
         controller = viewModel.controller.value!!
 
         if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
-            binding.headerText.setText(controller.currentNewsgroup!!.name) }
-        else {
-            binding.headerText.setText(controller.currentNewsgroup!!.alias)
+            binding.headerText.text = controller.currentNewsgroup!!.name
+        } else {
+            binding.headerText.text = controller.currentNewsgroup!!.alias
         }
 
         viewModel.controller.observe(viewLifecycleOwner, {
             controller = viewModel.controller.value!!
-            //onControllerChange()
             if(controller.currentArticle != null)
             {
                 findNavController().navigate(R.id.action_FragmentMessageThreads_to_fragmentOpenThread)
@@ -82,18 +81,31 @@ class FragmentShowMessages : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showMessages(articles, 0)
+        if (articles == null) {
+            Feedback.showInfo(requireView(), getString(R.string.feedback_no_message_threads))
+        } else {
+            showMessages(articles!!, 0)
 
-        body.add(body_buffer)
-        body_buffer = ArrayList()
-        body.removeFirst()
-        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body, viewModel))
+            body.add(bodyBuffer)
+            bodyBuffer = ArrayList()
+            body.removeFirst()
+            expandableView_show_messages.setAdapter(
+                ExpandableListAdapter(
+                    requireActivity(),
+                    expandableView_show_messages,
+                    header,
+                    body,
+                    viewModel
+                )
+            )
+        }
 
-        binding.buttonBack.setOnClickListener() {
+        binding.buttonBack.setOnClickListener {
+            articles = null
             onButtonBackClick()
         }
 
-        binding.buttonCreateThread.setOnClickListener() {
+        binding.buttonCreateThread.setOnClickListener {
             onButtonCreateThreadClick()
         }
     }
@@ -107,16 +119,17 @@ class FragmentShowMessages : Fragment() {
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 
-    fun showMessages(article: Article, depth: Int) {
-        if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
+    private fun showMessages(article: Article, depth: Int) {
+
+        if(article.articleNumberLong > 0 && !article.subjectIsReply()) {
             header.add(article)
-            body.add(body_buffer)
-            body_buffer = ArrayList()
+            body.add(bodyBuffer)
+            bodyBuffer = ArrayList()
         }
 
         if (article.kid != null) {
-            if(article.kid.articleNumber > 0) {
-                body_buffer.add(article.kid)
+            if(article.kid.articleNumberLong > 0) {
+                bodyBuffer.add(article.kid)
             }
             showMessages(article.kid, depth + 1)
         }
@@ -124,5 +137,4 @@ class FragmentShowMessages : Fragment() {
             showMessages(article.next, depth)
         }
     }
-
 }

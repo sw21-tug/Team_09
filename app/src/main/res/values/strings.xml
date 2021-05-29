@@ -62,4 +62,5 @@
     <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
 
     <string name="language_pref_key">language</string>
+    <string name="feedback_no_message_threads">Newsgroup does not contain any threads yet.</string>
 </resources>
