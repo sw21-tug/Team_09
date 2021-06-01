@@ -44,6 +44,13 @@ class NewsgroupController {
         return null
     }
 
+    fun fetchArticleBodyById(server: NewsgroupServer, articleId: Long): String? {
+        if(::currentNewsgroups.isInitialized && currentArticle != null) {
+            return servers[server]?.getArticleBody(articleId)
+        }
+        return null
+    }
+
     fun removeServer(server: NewsgroupServer) {
         servers.remove(server)
     }

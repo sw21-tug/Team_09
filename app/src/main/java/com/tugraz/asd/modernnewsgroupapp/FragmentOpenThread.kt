@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenThreadBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import com.tugraz.asd.modernnewsgroupapp.helper.ThreadMessagesAdapter
+import kotlinx.android.synthetic.main.fragment_show_message_threads.*
+import org.apache.commons.net.nntp.Article
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -22,6 +27,9 @@ class FragmentOpenThread : Fragment() {
     private lateinit var controller: NewsgroupController
 
     private var messageThread: String? = null
+
+    private val header : MutableList<Article> = ArrayList()
+    private val body : HashMap<String, String> = HashMap()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +48,7 @@ class FragmentOpenThread : Fragment() {
 
         controller = viewModel.controller.value!!
 
-        getMessageThread(controller)
+        getThreadMessages(controller)
 
         binding.headerText.text = controller.currentArticle?.subject
         binding.tvMessageDate.text = controller.currentArticle?.date
@@ -50,10 +58,27 @@ class FragmentOpenThread : Fragment() {
         return binding.root
     }
 
-    private fun getMessageThread(controller: NewsgroupController)
+    private fun getThreadMessages(controller: NewsgroupController)
     {
         val thread = Thread {
+            val currentArticle = controller.currentArticle
             messageThread = controller.currentServer?.let { controller.fetchCurrentArticleBody(it) }
+
+            if (currentArticle?.kid != null) {
+                generateReplyMessages(currentArticle.kid)
+
+                binding.expandableViewShowReplies.setAdapter(
+                    ThreadMessagesAdapter(
+                        requireActivity(),
+                        binding.expandableViewShowReplies,
+                        header,
+                        body
+                    )
+                )
+
+            } else {
+                binding.expandableViewShowReplies.isVisible = false
+            }
         }
         try {
             thread.start()
@@ -72,6 +97,23 @@ class FragmentOpenThread : Fragment() {
             }
         }
         thread.join()
+    }
+
+    private fun generateReplyMessages(article: Article) {
+
+        header.add(article)
+        val articleMessage = controller.currentServer?.let { controller.fetchArticleBodyById(it, article.articleNumberLong) }
+        if (articleMessage != null) {
+            body[article.articleId] = articleMessage
+        }
+
+        if (article.kid != null) {
+            generateReplyMessages(article.kid)
+        }
+
+        if (article.next != null) {
+            generateReplyMessages(article.next)
+        }
     }
 
     private fun onButtonBackClick() {

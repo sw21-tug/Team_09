@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
 import org.apache.commons.net.nntp.Article

@@ -59,24 +59,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--<ExpandableListView
-        android:id="@+id/expandableView_show_messages"
-        android:groupIndicator="@null"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_create_thread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_messages" />-->
-
     <ScrollView
         android:id="@+id/sv_thread_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_reply_thread"
-        app:layout_constraintTop_toBottomOf="@+id/header_messages"
-        tools:layout_editor_absoluteX="88dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/expandableView_show_replies"
+        app:layout_constraintTop_toBottomOf="@+id/header_messages">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,6 +81,17 @@
                 android:text="@string/tv_text" />
         </LinearLayout>
     </ScrollView>
+
+    <ExpandableListView
+        android:id="@+id/expandableView_show_replies"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:groupIndicator="@null"
+        app:layout_constraintBottom_toTopOf="@+id/button_reply_thread"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sv_thread_scroll_view" />
 
     <ImageButton
         android:id="@+id/button_reply_thread"

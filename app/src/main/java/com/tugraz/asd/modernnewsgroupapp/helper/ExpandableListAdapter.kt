@@ -1,7 +1,6 @@
-package com.tugraz.asd.modernnewsgroupapp
+package com.tugraz.asd.modernnewsgroupapp.helper
 
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.tugraz.asd.modernnewsgroupapp.R
+import com.tugraz.asd.modernnewsgroupapp.ServerObservable
 import org.apache.commons.net.nntp.Article
-import java.net.URLDecoder
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
 
 class ExpandableListAdapter(
