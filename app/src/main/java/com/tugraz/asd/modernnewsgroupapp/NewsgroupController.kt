@@ -11,6 +11,7 @@ class NewsgroupController {
     lateinit var currentNewsgroups: List<Newsgroup>
     var currentNewsgroup: Newsgroup? = null
     var currentArticle: Article? = null
+    var currentReplyArticle: Article? = null
     lateinit var db: NewsgroupDb
     var skipSetup: Boolean = false
 

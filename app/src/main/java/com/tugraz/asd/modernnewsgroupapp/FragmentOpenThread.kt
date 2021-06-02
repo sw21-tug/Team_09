@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
@@ -26,6 +27,7 @@ class FragmentOpenThread : Fragment() {
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
 
+    private var article: Article? = null
     private var messageThread: String? = null
 
     private val header : MutableList<Article> = ArrayList()
@@ -70,9 +72,10 @@ class FragmentOpenThread : Fragment() {
                 binding.expandableViewShowReplies.setAdapter(
                     ThreadMessagesAdapter(
                         requireActivity(),
-                        binding.expandableViewShowReplies,
+
                         header,
-                        body
+                        body,
+                        viewModel
                     )
                 )
 

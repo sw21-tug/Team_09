@@ -5,14 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentOpenThread">
+    tools:context=".FragmentOpenReplyThread">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_messages"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
-        android:background="#F5F5F5"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -36,7 +35,7 @@
             tools:layout_editor_absoluteY="15dp">
 
             <TextView
-                android:id="@+id/header_text"
+                android:id="@+id/reply_header_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -47,7 +46,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_message_date"
+                android:id="@+id/tv_reply_message_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -60,12 +59,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/sv_thread_scroll_view"
+        android:id="@+id/sv_reply_thread_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_reply_replied_thread"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/expandableView_show_replies"
         app:layout_constraintTop_toBottomOf="@+id/header_messages">
 
         <LinearLayout
@@ -74,27 +73,16 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_thread_messages_body"
+                android:id="@+id/tv_thread_reply_messages_body"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="20sp"
                 android:text="@string/tv_text" />
         </LinearLayout>
     </ScrollView>
 
-    <ExpandableListView
-        android:id="@+id/expandableView_show_replies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:groupIndicator="@null"
-        android:maxHeight="150sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_reply_thread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="150sp"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageButton
-        android:id="@+id/button_reply_thread"
+        android:id="@+id/button_reply_replied_thread"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginBottom="25dp"

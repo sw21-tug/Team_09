@@ -107,5 +107,17 @@
         <action
             android:id="@+id/action_fragmentOpenThread_to_FragmentMessageThreads"
             app:destination="@id/FragmentMessageThreads" />
+        <action
+            android:id="@+id/action_fragmentOpenThread_to_fragmentOpenReplyThread"
+            app:destination="@id/fragmentOpenReplyThread" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentOpenReplyThread"
+        android:name="com.tugraz.asd.modernnewsgroupapp.FragmentOpenReplyThread"
+        android:label="fragment_open_reply_thread"
+        tools:layout="@layout/fragment_open_reply_thread" >
+        <action
+            android:id="@+id/action_fragmentOpenReplyThread_to_fragmentOpenThread"
+            app:destination="@id/fragmentOpenThread" />
     </fragment>
 </navigation>
