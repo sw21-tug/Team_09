@@ -42,7 +42,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?): Article{
+    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article{
         ensureConnection()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
@@ -53,7 +53,19 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         }
         //var response = client.listNewsgroups()
         if (sg != null) {
-            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            try {
+                resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            } catch (e: Exception) {
+                if (retry < 5) {
+                    client.disconnect()
+                    client = NNTPClient()
+                    client.connect(server.host, server.port)
+                    return getArticleHeaders(sg, retry + 1)
+                } else  {
+                    throw e
+                }
+            }
+
             val threader = Threader()
             val graph = threader.thread(resp)
             article = (graph as Article?)!!
@@ -82,8 +94,6 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         writer.close();
         client.completePendingCommand()
         return true
-
-
     }
 
     /*

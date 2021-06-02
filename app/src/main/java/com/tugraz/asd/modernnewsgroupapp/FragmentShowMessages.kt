@@ -44,7 +44,7 @@ class FragmentShowMessages : Fragment() {
             if(!::controller.isInitialized || controller.currentArticles == null) {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
-//                        viewModel.controller.value!!.fetchArticles()
+                        viewModel.controller.value!!.fetchArticles()
                         controller = viewModel.controller.value!!
                         viewModel.controller.postValue(viewModel.controller.value)
                     }
@@ -93,6 +93,8 @@ class FragmentShowMessages : Fragment() {
 
     fun onButtonBackClick()
     {
+        controller.currentNewsgroup = null
+        controller.currentArticles = null
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
     }
 

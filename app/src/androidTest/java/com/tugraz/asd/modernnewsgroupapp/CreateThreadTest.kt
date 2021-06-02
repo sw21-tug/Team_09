@@ -5,18 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,6 +29,11 @@ class CreateThreadTest {
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
 
     @Test
     fun createThreadTest() {
@@ -44,7 +50,7 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText.perform(replaceText("tes"), closeSoftKeyboard())
+        appCompatEditText.perform(replaceText("asdtest"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
             allOf(
@@ -59,9 +65,7 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText2.perform(replaceText("test@test.at"), closeSoftKeyboard())
-
-        pressBack()
+        appCompatEditText2.perform(replaceText("asdtest@local.local"), closeSoftKeyboard())
 
         val materialButton = onView(
             allOf(
@@ -115,25 +119,7 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText4.perform(click())
-
-        val appCompatEditText5 = onView(
-            allOf(
-                withId(R.id.editTextGroupFilter),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.linearLayout3),
-                        childAtPosition(
-                            withId(R.id.linearLayout2),
-                            0
-                        )
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        appCompatEditText5.perform(replaceText("test"), closeSoftKeyboard())
+        appCompatEditText4.perform(replaceText("test"), closeSoftKeyboard())
 
         val materialCheckBox = onView(
             allOf(
@@ -194,7 +180,7 @@ class CreateThreadTest {
         )
         appCompatImageButton.perform(click())
 
-        val appCompatEditText6 = onView(
+        val appCompatEditText5 = onView(
             allOf(
                 withId(R.id.thread_subject),
                 childAtPosition(
@@ -207,9 +193,9 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText6.perform(replaceText("THREAD TEST"), closeSoftKeyboard())
+        appCompatEditText5.perform(replaceText("Test"), closeSoftKeyboard())
 
-        val appCompatEditText7 = onView(
+        val appCompatEditText6 = onView(
             allOf(
                 withId(R.id.thread_message),
                 childAtPosition(
@@ -222,7 +208,7 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText7.perform(replaceText("testing threads"), closeSoftKeyboard())
+        appCompatEditText6.perform(replaceText("test"), closeSoftKeyboard())
 
         val appCompatImageButton2 = onView(
             allOf(
@@ -238,6 +224,15 @@ class CreateThreadTest {
             )
         )
         appCompatImageButton2.perform(click())
+
+        val textView = onView(
+            allOf(
+                withId(R.id.header_text), withText("tu-graz.test"),
+                withParent(withParent(withId(R.id.header_messages))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(withText("tu-graz.test")))
     }
 
     private fun childAtPosition(

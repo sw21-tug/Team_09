@@ -21,6 +21,14 @@ class NewsgroupController {
         }
     }
 
+    fun getConnById(id: Int): NewsgroupConnection? {
+        for ((server, connection) in servers) {
+            if(server.id == id)
+                return connection
+        }
+        return null
+    }
+
     fun fetchNewsGroups() {
         for ((_, con) in servers) {
             currentNewsgroups = con.getNewsGroups()
@@ -36,15 +44,15 @@ class NewsgroupController {
     fun fetchArticles() {
         if(currentServer != null)
         {
-            val con = servers.filter { it.key.id == currentServer!!.id }.entries.first().value
-            currentArticles = con.getArticleHeaders(currentNewsgroup)
+            val con = getConnById(currentServer!!.id)
+            currentArticles = con?.getArticleHeaders(currentNewsgroup)
         }
     }
 
     fun postArticle(subject: String, message: String): Boolean {
         if(currentServer == null || currentNewsgroup == null) return false
 
-        val con = servers.filter { it.key.id == currentServer!!.id }.entries.first().value
+        val con = getConnById(currentServer!!.id) ?: return false
 
         return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
     }
