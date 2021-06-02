@@ -10,11 +10,14 @@ class NewsgroupController {
     var currentServer: NewsgroupServer? = null
     lateinit var currentNewsgroups: List<Newsgroup>
     var currentNewsgroup: Newsgroup? = null
+    var currentArticles: Article? = null
     lateinit var db: NewsgroupDb
     var skipSetup: Boolean = false
 
     fun addServer(server: NewsgroupServer) {
-        servers[server] = NewsgroupConnection(server)
+        if(!servers.containsKey(server)) {
+            servers[server] = NewsgroupConnection(server)
+        }
     }
 
     fun getConnById(id: Int): NewsgroupConnection? {
@@ -37,19 +40,20 @@ class NewsgroupController {
 
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
-    fun fetchArticles(server: NewsgroupServer): Article? {
-        val conn = getConnById(server.id)
-
-        if(::currentNewsgroups.isInitialized && conn != null)
+    fun fetchArticles() {
+        if(currentServer != null)
         {
-            var articles = conn?.getArticleHeaders(currentNewsgroup)
-            return articles
-        }else
-            return null
+            val con = getConnById(currentServer!!.id)
+            currentArticles = con?.getArticleHeaders(currentNewsgroup)
+        }
     }
 
-    fun removeServer(server: NewsgroupServer) {
-        servers.remove(server)
+    fun postArticle(subject: String, message: String): Boolean {
+        if(currentServer == null || currentNewsgroup == null) return false
+
+        val con = getConnById(currentServer!!.id) ?: return false
+
+        return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
     }
 
     suspend fun loadServersFromDB() {
@@ -67,8 +71,7 @@ class NewsgroupController {
         db.newsgroupServerDao().updateCurrentServer(id, current)
     }
 
-     suspend fun loadNewsgroupsFromDB() {
-//        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
+    suspend fun loadNewsgroupsFromDB() {
         currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
     }

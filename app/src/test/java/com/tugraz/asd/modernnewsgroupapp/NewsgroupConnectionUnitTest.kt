@@ -16,7 +16,7 @@ class NewsgroupConnectionUnitTest {
 
     @Test
     fun establishConnection() {
-        val server = NewsgroupServer(HOST)
+        val server = NewsgroupServer(0, HOST)
         val con = NewsgroupConnection(server)
         val groups = con.getNewsGroups()
 
@@ -25,14 +25,14 @@ class NewsgroupConnectionUnitTest {
 
     @Test(expected = NewsgroupConnection.NewsgroupConnectionException::class)
     fun establishWithWrongHost() {
-        val server = NewsgroupServer("wrong.tugraz.at")
+        val server = NewsgroupServer(0, "wrong.tugraz.at")
         val con = NewsgroupConnection(server)
         val groups = con.getNewsGroups()
     }
 
     @Test(expected = NewsgroupConnection.NewsgroupConnectionException::class)
     fun establishWithWrongPort() {
-        val server = NewsgroupServer(HOST, 0)
+        val server = NewsgroupServer(0, HOST, 0)
         val con = NewsgroupConnection(server)
         con.getNewsGroups()
     }

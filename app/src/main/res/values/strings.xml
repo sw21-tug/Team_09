@@ -35,7 +35,7 @@
         <item> tu.graz-lv.third.newsgroup </item>
     </string-array>
     <string name="hint_server">Newsgroup-server *</string>
-    <string name="filter">Filter...</string>
+    <string name="filter">Filter…</string>
     <string name="profile_label_language">Language</string>
     <string name="header_message">Inbox</string>
     <string name="header_create_thread">Create Thread</string>
@@ -61,5 +61,11 @@
     <string name="feedback_ng_server_deleted">Newsgroup server successfully deleted.</string>
     <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
 
-    <string name="language_pref_key">language</string>
+    <string name="language_pref_key" translatable="false">language</string>
+    <string name="feedback_missing_message">Please enter a message</string>
+    <string name="feedback_missing_subject">Please enter the subject</string>
+    <string name="feedback_send_fail">Message post failed</string>
+    <string name="feedback_send_succeeded">Message posted</string>
+    <string name="input_subject">Subject</string>
+    <string name="input_message">Message</string>
 </resources>

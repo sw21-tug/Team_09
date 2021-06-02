@@ -35,7 +35,7 @@ class FragmentAddNewsgroup : Fragment() {
 
 
         if((activity as? MainActivity)?.skipSetup!!) {
-            (activity as? MainActivity)?.skipSetup = false;
+            (activity as? MainActivity)?.skipSetup = false
             findNavController().navigate(R.id.action_FragmentAddNewsgroup_to_FragmentShowSubgroups)
         }
 
@@ -68,10 +68,10 @@ class FragmentAddNewsgroup : Fragment() {
         val controller = viewModel.controller.value
 
         if(controller == null) {
-            return;
+            return
         }
 
-        val server = NewsgroupServer(host = hostname.toString(), username = name.toString())
+        val server = NewsgroupServer(host = hostname.toString(), username = name.text.toString(), email = email.toString())
         controller.addServer(server)
 
         val thread = Thread {
@@ -114,7 +114,6 @@ class FragmentAddNewsgroup : Fragment() {
         }
 
         controller.currentServer = server
-        //controller.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
     }
