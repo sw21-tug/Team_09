@@ -24,7 +24,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.message)
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.toString() + ":" + e.message)
                     }
                 }
             }
@@ -54,8 +54,8 @@ class NewsgroupConnection (private var server: NewsgroupServer){
         //var response = client.listNewsgroups()
         if (sg != null) {
             resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
-            var threader = Threader()
-            var graph = threader.thread(resp)
+            val threader = Threader()
+            val graph = threader.thread(resp)
             article = (graph as Article?)!!
         }
         return article

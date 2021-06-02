@@ -66,4 +66,6 @@
     <string name="feedback_missing_subject">Please enter the subject</string>
     <string name="feedback_send_fail">Message post failed</string>
     <string name="feedback_send_succeeded">Message posted</string>
+    <string name="input_subject">Subject</string>
+    <string name="input_message">Message</string>
 </resources>

@@ -51,4 +51,6 @@
     <string name="feedback_missing_subject">Пожалуйста, введите тему</string>
     <string name="feedback_send_fail">Сообщение не отправлено</string>
     <string name="feedback_send_succeeded">Сообщение опубликовано</string>
+    <string name="input_subject">Тема</string>
+    <string name="input_message">Сообщение</string>
 </resources>

@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.net.nntp.Article
 import java.text.SimpleDateFormat
 
@@ -19,8 +25,6 @@ class FragmentShowMessages : Fragment() {
     private lateinit var binding: FragmentShowMessageThreadsBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
-    lateinit var articles: Article
-    var testList : MutableList<String> = ArrayList()
 
     val header : MutableList<String> = ArrayList()
     val body : MutableList<MutableList<String>> = ArrayList()
@@ -33,64 +37,39 @@ class FragmentShowMessages : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentShowMessageThreadsBinding.inflate(layoutInflater)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
-        controller = viewModel.controller.value!!
 
-        println("The element at ${controller.currentNewsgroup}")
-
-        val thread = Thread {
-            articles = controller.currentServer?.let { controller.fetchArticles(it) }!!
+        viewModel.controller.observe(viewLifecycleOwner) {
+            controller = viewModel.controller.value!!
+            onControllerChange()
         }
-        try {
-            thread.start()
-        } catch (e: Exception) {
-            when(e) {
-                is NewsgroupConnection.NewsgroupConnectionException -> {
-                    // TODO: show error message
-                    System.out.println("Error on Server connection: " + e.message)
-                }
-                else -> {
-                    throw e
-                }
-            }
-        }
+        return binding.root
+    }
 
-        thread.join()
-
-        controller = viewModel.controller.value!!
-
+    private fun onControllerChange() {
         if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
             binding.headerText.setText(controller.currentNewsgroup!!.name) }
         else {
             binding.headerText.setText(controller.currentNewsgroup!!.alias)
         }
-        return binding.root
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-        //TODO: Fill in correct data
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                controller.fetchArticles()
+            }
+            controller.currentArticles?.let {
+                showMessages(it, 0)
+                body.add(body_buffer)
+                body_buffer = ArrayList()
+                body.removeFirst()
+                expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-        showMessages(articles, 0)
-
-        body.add(body_buffer)
-        body_buffer = ArrayList()
-        body.removeFirst()
-        expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
 
         binding.buttonBack.setOnClickListener() {
             onButtonBackClick()
@@ -120,6 +99,7 @@ class FragmentShowMessages : Fragment() {
     }
 
     fun showMessages(article: Article, depth: Int) {
+        println("current article subject: " + article.subject)
         if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
             header.add(formatDate(article.date) + System.getProperty("line.separator") + article.subject)
             body.add(body_buffer)

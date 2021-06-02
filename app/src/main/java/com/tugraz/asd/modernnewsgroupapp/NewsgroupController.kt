@@ -11,6 +11,7 @@ class NewsgroupController {
     var currentServer: NewsgroupServer? = null
     lateinit var currentNewsgroups: List<Newsgroup>
     var currentNewsgroup: Newsgroup? = null
+    var currentArticles: Article? = null
     lateinit var db: NewsgroupDb
     var skipSetup: Boolean = false
 
@@ -30,13 +31,11 @@ class NewsgroupController {
 
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
-    fun fetchArticles(server: NewsgroupServer): Article? {
+    fun fetchArticles() {
         if(::currentNewsgroups.isInitialized)
         {
-            val articles = servers[server]?.getArticleHeaders(currentNewsgroup)
-            return articles
-        }else
-            return null
+            currentArticles = servers[currentServer]?.getArticleHeaders(currentNewsgroup)
+        }
     }
 
     fun postArticle(subject: String, message: String): Boolean {
