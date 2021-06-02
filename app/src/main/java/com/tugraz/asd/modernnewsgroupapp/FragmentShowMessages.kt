@@ -41,9 +41,23 @@ class FragmentShowMessages : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         viewModel.controller.observe(viewLifecycleOwner) {
-            controller = viewModel.controller.value!!
-            onControllerChange()
+            if(!::controller.isInitialized || controller.currentArticles == null) {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        viewModel.controller.value!!.fetchArticles()
+                        controller = viewModel.controller.value!!
+                        viewModel.controller.postValue(viewModel.controller.value)
+                    }
+                }
+            } else {
+                controller = viewModel.controller.value!!
+                onControllerChange()
+            }
+
         }
+
+
+
         return binding.root
     }
 
@@ -54,17 +68,14 @@ class FragmentShowMessages : Fragment() {
             binding.headerText.setText(controller.currentNewsgroup!!.alias)
         }
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                controller.fetchArticles()
-            }
-            controller.currentArticles?.let {
-                showMessages(it, 0)
-                body.add(body_buffer)
-                body_buffer = ArrayList()
-                body.removeFirst()
-                expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
-            }
+        controller.currentArticles?.let {
+            showMessages(it, 0)
+            body.add(body_buffer)
+            body_buffer = ArrayList()
+            body.removeFirst()
+            expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+
+
         }
     }
 

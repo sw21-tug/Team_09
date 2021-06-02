@@ -16,7 +16,9 @@ class NewsgroupController {
     var skipSetup: Boolean = false
 
     fun addServer(server: NewsgroupServer) {
-        servers[server] = NewsgroupConnection(server)
+        if(!servers.containsKey(server)) {
+            servers[server] = NewsgroupConnection(server)
+        }
     }
 
     fun fetchNewsGroups() {
@@ -32,17 +34,19 @@ class NewsgroupController {
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
     fun fetchArticles() {
-        if(::currentNewsgroups.isInitialized)
+        if(currentServer != null)
         {
-            currentArticles = servers[currentServer]?.getArticleHeaders(currentNewsgroup)
+            val con = servers.filter { it.key.id == currentServer!!.id }.entries.first().value
+            currentArticles = con.getArticleHeaders(currentNewsgroup)
         }
     }
 
     fun postArticle(subject: String, message: String): Boolean {
         if(currentServer == null || currentNewsgroup == null) return false
 
-        return servers.get(currentServer!!)!!
-            .postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
+        val con = servers.filter { it.key.id == currentServer!!.id }.entries.first().value
+
+        return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
     }
 
     suspend fun loadServersFromDB() {
@@ -53,7 +57,6 @@ class NewsgroupController {
     }
 
     suspend fun loadNewsgroupsFromDB() {
-//        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
         currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
     }

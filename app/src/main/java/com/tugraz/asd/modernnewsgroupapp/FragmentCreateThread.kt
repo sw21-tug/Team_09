@@ -78,10 +78,10 @@ class FragmentCreateThread : Fragment() {
 
                 } else {
                     controller.fetchArticles()
-                    viewModel.controller.postValue(viewModel.controller.value)
                     withContext(Dispatchers.Main) {
                         Feedback.showSuccess(requireView(), getString(R.string.feedback_send_succeeded))
                         findNavController().navigate(R.id.action_FragmentCreateThread_to_FragmentMessageThreads)
+                        viewModel.controller.postValue(viewModel.controller.value)
                     }
                 }
             }
