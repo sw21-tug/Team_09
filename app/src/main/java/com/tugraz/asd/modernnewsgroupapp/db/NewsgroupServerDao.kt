@@ -43,4 +43,13 @@ interface NewsgroupServerDao {
 
     @Query("DELETE FROM NewsgroupServer")
     suspend fun deleteAll()
+
+    @Query("UPDATE NewsgroupServer SET alias=:serverAlias WHERE id=:serverId")
+    suspend fun updateAlias(serverId: Int, serverAlias: String)
+
+    @Query("SELECT * FROM NewsgroupServer WHERE current=1")
+    suspend fun getCurrentServer(): NewsgroupServer
+
+    @Query("UPDATE NewsgroupServer SET current=:current WHERE id=:serverId")
+    suspend fun updateCurrentServer(serverId: Int, current: Boolean)
 }

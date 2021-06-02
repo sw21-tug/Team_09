@@ -79,9 +79,12 @@ class FragmentEditNewsgroup : Fragment() {
 
     private fun onButtonSaveNewsgroupClick()
     {
-        val serverAlias = binding.editTextNewsgroupAlias.text
-        controller.renameCurrentAlias(serverAlias.toString())
-        findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
-        Feedback.showSuccess(this.requireView(), getString(R.string.feedback_ng_server_alias_set))
+        lifecycleScope.launch {
+            val serverAlias = binding.editTextNewsgroupAlias.text
+            controller.renameCurrentAlias(serverAlias.toString())
+            findNavController().navigate(R.id.action_FragmentEditNewsgroup_to_FragmentShowSubgroups)
+        }
+        Feedback.showSuccess(this.requireView(), getString(R.string.feedback_ng_server_alias_set)
+        )
     }
 }

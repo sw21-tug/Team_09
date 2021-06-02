@@ -10,5 +10,6 @@ data class NewsgroupServer(
         @ColumnInfo(name = "host") val host: String,
         @ColumnInfo(name = "port") val port: Int = 119,
         @ColumnInfo(name = "alias") var alias: String = "",
-        @ColumnInfo(name = "username") var username: String = ""
+        @ColumnInfo(name = "username") var username: String = "",
+        @ColumnInfo(name = "current") var current: Boolean = false
 )

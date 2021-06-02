@@ -106,6 +106,12 @@ class FragmentAddNewsgroup : Fragment() {
         }
 
 
+        lifecycleScope.launch {
+            if (controller.currentServer != null)
+                controller.setCurrentServerDB(controller.currentServer!!.id, false)
+
+            controller.setCurrentServerDB(server.id, true)
+        }
 
         controller.currentServer = server
         //controller.addServer(server)

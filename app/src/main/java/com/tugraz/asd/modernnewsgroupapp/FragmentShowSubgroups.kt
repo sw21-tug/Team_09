@@ -1,17 +1,11 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -20,11 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
-import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.helper.SimpleSwipeCallback
 import com.tugraz.asd.modernnewsgroupapp.helper.SubscribedListAdapter
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import kotlinx.coroutines.launch
 
 /**
@@ -117,6 +109,8 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
         if(viewModel.controller.value!!.currentServer != con.server)
         {
             lifecycleScope.launch {
+                controller.currentServer?.id?.let { controller.setCurrentServerDB(it, false) }
+                controller.setCurrentServerDB(con.server.id, true)
                 viewModel.controller.value!!.currentServer = con.server
                 controller.loadNewsgroupsFromDB()
                 println("NG loaded from server")
