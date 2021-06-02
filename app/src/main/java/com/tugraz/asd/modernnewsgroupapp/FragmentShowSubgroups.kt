@@ -120,7 +120,9 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
                 lifecycleScope.launch {
                     viewModel.controller.value!!.currentServer = con.server
                     controller.loadNewsgroupsFromDB()
+                    println("NG loaded from server")
                     onControllerChange()
+
                 }
             }
 
@@ -138,7 +140,6 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
                     }
                 }
             }
-
         }
     }
 

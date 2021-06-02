@@ -17,7 +17,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
     private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
 
-    private fun ensureConnection() {
+    fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -56,10 +56,8 @@ class NewsgroupConnection (var server: NewsgroupServer){
         }
         //var response = client.listNewsgroups()
         if (sg != null) {
-            if(sg.lastArticle < sg.firstArticle)
-                resp = client.iterateArticleInfo(sg.firstArticle, sg.firstArticle)
-            else
-                resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+
+            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
 
             var threader = Threader()
             var graph = threader.thread(resp)
