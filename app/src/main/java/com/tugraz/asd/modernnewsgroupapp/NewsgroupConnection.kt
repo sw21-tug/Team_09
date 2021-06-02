@@ -9,12 +9,12 @@ import kotlin.Exception
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
-class NewsgroupConnection (private var server: NewsgroupServer){
+class NewsgroupConnection (var server: NewsgroupServer){
     private lateinit var resp: Iterable<Article>
     private lateinit var article: Article
     private  var client: NNTPClient = NNTPClient()
 
-    private fun ensureConnection() {
+    fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -66,9 +66,12 @@ class NewsgroupConnection (private var server: NewsgroupServer){
                 }
             }
 
-            val threader = Threader()
-            val graph = threader.thread(resp)
-            article = (graph as Article?)!!
+            var threader = Threader()
+            var graph = threader.thread(resp)
+            if(graph != null)
+                article = (graph as Article?)!!
+            else
+                article = Article()
         }
         return article
     }

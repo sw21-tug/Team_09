@@ -112,7 +112,6 @@ class FragmentShowMessages : Fragment() {
     }
 
     fun showMessages(article: Article, depth: Int) {
-        println("current article subject: " + article.subject)
         if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
             header.add(formatDate(article.date) + System.getProperty("line.separator") + article.subject)
             body.add(body_buffer)

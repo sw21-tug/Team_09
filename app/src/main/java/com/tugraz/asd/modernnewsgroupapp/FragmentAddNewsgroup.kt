@@ -73,7 +73,6 @@ class FragmentAddNewsgroup : Fragment() {
 
         val server = NewsgroupServer(host = hostname.toString(), username = name.text.toString(), email = email.toString())
         controller.addServer(server)
-        controller.currentServer = server
 
         val thread = Thread {
             controller.fetchNewsGroups()
@@ -105,6 +104,10 @@ class FragmentAddNewsgroup : Fragment() {
             server.id =
                 (activity as? MainActivity)?.db?.newsgroupServerDao()?.insert(server)?.toInt() ?: 0
         }
+
+
+
+        controller.currentServer = server
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
     }
