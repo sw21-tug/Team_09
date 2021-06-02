@@ -116,35 +116,17 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
 
         if(viewModel.controller.value!!.currentServer != con.server)
         {
-            val thread = Thread {
-                lifecycleScope.launch {
-                    viewModel.controller.value!!.currentServer = con.server
-                    controller.loadNewsgroupsFromDB()
-                    println("NG loaded from server")
-                    onControllerChange()
-
-                }
-            }
-
-            try {
-                thread.start()
-            } catch (e: Exception) {
-                when(e) {
-                    is NewsgroupConnection.NewsgroupConnectionException -> {
-                        Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
-                        println("Error on Server connection: " + e.message)
-                        return
-                    }
-                    else -> {
-                        throw e
-                    }
-                }
+            lifecycleScope.launch {
+                viewModel.controller.value!!.currentServer = con.server
+                controller.loadNewsgroupsFromDB()
+                println("NG loaded from server")
+                onControllerChange()
             }
         }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {
-        // Another interface callback
+        // Needed
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
