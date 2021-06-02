@@ -11,7 +11,7 @@ import java.nio.charset.Charset
 import kotlin.Exception
 import kotlin.collections.ArrayList
 
-class NewsgroupConnection (private var server: NewsgroupServer){
+class NewsgroupConnection (var server: NewsgroupServer){
 
     private var article: Article? = null
     private lateinit var resp: Iterable<Article>
