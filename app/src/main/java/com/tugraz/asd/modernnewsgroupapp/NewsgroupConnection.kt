@@ -2,10 +2,7 @@ package com.tugraz.asd.modernnewsgroupapp
 
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
-import org.apache.commons.net.nntp.Article
-import org.apache.commons.net.nntp.NNTPClient
-import org.apache.commons.net.nntp.Threadable
-import org.apache.commons.net.nntp.Threader
+import org.apache.commons.net.nntp.*
 import java.net.UnknownHostException
 import java.util.*
 import kotlin.Exception
@@ -27,7 +24,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
                         throw NewsgroupConnectionException("Unknown host while connecting to newsgroup server")
                     }
                     else -> {
-                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.message)
+                        throw NewsgroupConnectionException("IOException while connecting to newsgroup server " + server.host + ": " + e.toString() + ":" + e.message)
                     }
                 }
             }
@@ -45,7 +42,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?): Article{
+    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article{
         ensureConnection()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
@@ -56,8 +53,18 @@ class NewsgroupConnection (var server: NewsgroupServer){
         }
         //var response = client.listNewsgroups()
         if (sg != null) {
-
-            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            try {
+                resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
+            } catch (e: Exception) {
+                if (retry < 5) {
+                    client.disconnect()
+                    client = NNTPClient()
+                    client.connect(server.host, server.port)
+                    return getArticleHeaders(sg, retry + 1)
+                } else  {
+                    throw e
+                }
+            }
 
             var threader = Threader()
             var graph = threader.thread(resp)
@@ -72,6 +79,24 @@ class NewsgroupConnection (var server: NewsgroupServer){
     fun getArticleBody(sg: Newsgroup?, id: Long)
     {
 
+    }
+
+    fun postArticle(newsgroup: Newsgroup, from: String, subject: String, message: String): Boolean {
+        ensureConnection()
+
+        if(!client.isAllowedToPost) return false
+
+        client.selectNewsgroup(newsgroup.name)
+
+        val writer = client.postArticle() ?: return false
+
+        val header = SimpleNNTPHeader(from, subject)
+        header.addNewsgroup(newsgroup.name)
+        writer.write(header.toString());
+        writer.write(message);
+        writer.close();
+        client.completePendingCommand()
+        return true
     }
 
     /*

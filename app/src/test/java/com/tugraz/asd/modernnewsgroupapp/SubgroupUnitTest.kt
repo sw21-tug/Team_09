@@ -17,7 +17,7 @@ class SubgroupUnitTest {
 
     private fun init()
     {
-        val server = NewsgroupServer(HOST)
+        val server = NewsgroupServer(0, HOST)
         val con = NewsgroupConnection(server)
         this.newsgroupList = con.getNewsGroups()
     }
