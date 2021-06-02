@@ -18,6 +18,14 @@ class NewsgroupController {
         servers[server] = NewsgroupConnection(server)
     }
 
+    fun getConnById(id: Int): NewsgroupConnection? {
+        for ((server, connection) in servers) {
+            if(server.id == id)
+                return connection
+        }
+        return null
+    }
+
     fun fetchNewsGroups() {
         for ((_, con) in servers) {
             currentNewsgroups = con.getNewsGroups()
@@ -31,9 +39,11 @@ class NewsgroupController {
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
     fun fetchArticles(server: NewsgroupServer): Article? {
-        if(::currentNewsgroups.isInitialized)
+        val conn = getConnById(server.id)
+
+        if(::currentNewsgroups.isInitialized && conn != null)
         {
-            var articles = servers[server]?.getArticleHeaders(currentNewsgroup)
+            var articles = conn?.getArticleHeaders(currentNewsgroup)
             return articles
         }else
             return null
@@ -50,7 +60,7 @@ class NewsgroupController {
         }
     }
 
-    suspend fun loadNewsgroupsFromDB() {
+     suspend fun loadNewsgroupsFromDB() {
 //        currentNewsgroups = db.newsgroupDao().getAll() // TODO: only get NGs for this server (also save the right id for the NGs)
         currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)

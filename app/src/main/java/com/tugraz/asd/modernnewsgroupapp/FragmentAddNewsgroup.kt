@@ -108,7 +108,7 @@ class FragmentAddNewsgroup : Fragment() {
 
 
         controller.currentServer = server
-        controller.addServer(server)
+        //controller.addServer(server)
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
     }
