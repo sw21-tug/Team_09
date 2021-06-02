@@ -44,7 +44,7 @@ class FragmentShowMessages : Fragment() {
             if(!::controller.isInitialized || controller.currentArticles == null) {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
-                        viewModel.controller.value!!.fetchArticles()
+//                        viewModel.controller.value!!.fetchArticles()
                         controller = viewModel.controller.value!!
                         viewModel.controller.postValue(viewModel.controller.value)
                     }

@@ -40,6 +40,7 @@ android {
 
 dependencies {
 
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0-beta01'
     def room_version = "2.3.0"
     def dagger_version = "2.16"
 
