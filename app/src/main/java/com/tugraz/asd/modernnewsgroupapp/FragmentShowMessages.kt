@@ -112,6 +112,7 @@ class FragmentShowMessages : Fragment() {
     }
 
     private fun onButtonBackClick() {
+    {
         controller.currentNewsgroup = null
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
     }

@@ -18,7 +18,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
 
     private var client: NNTPClient = NNTPClient()
 
-    private fun ensureConnection() {
+    fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -56,6 +56,7 @@ class NewsgroupConnection (private var server: NewsgroupServer){
                 print("Failed select newsgroup")
         }
         if (sg != null) {
+
             resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
             val threader = Threader()
             val graph = threader.thread(resp)
