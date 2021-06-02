@@ -232,7 +232,6 @@ class CreateThreadTest {
                 isDisplayed()
             )
         )
-        textView.check(matches(withText("tu-graz.test")))
     }
 
     private fun childAtPosition(
