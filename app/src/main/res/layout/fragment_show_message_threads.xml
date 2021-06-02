@@ -27,14 +27,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|left"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.093"
-            app:layout_constraintStart_toEndOf="@+id/button_back"
-            tools:layout_editor_absoluteY="15dp">
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/header_text"
@@ -58,25 +56,28 @@
 
     <ExpandableListView
         android:id="@+id/expandableView_show_messages"
-        android:groupIndicator="@null"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_create_thread"
+        android:groupIndicator="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_messages" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_create_thread"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/button_round"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:fabCustomSize="45dp"
         android:src="@drawable/icon_add"
+        app:backgroundTint="@color/berry"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

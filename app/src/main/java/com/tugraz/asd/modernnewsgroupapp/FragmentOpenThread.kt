@@ -9,13 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenThreadBinding
-import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.helper.ThreadMessagesAdapter
-import kotlinx.android.synthetic.main.fragment_show_message_threads.*
 import org.apache.commons.net.nntp.Article
-import java.net.URLDecoder
-import java.net.URLEncoder
+import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -51,7 +48,7 @@ class FragmentOpenThread : Fragment() {
         getThreadMessages(controller)
 
         binding.headerText.text = controller.currentArticle?.subject
-        binding.tvMessageDate.text = controller.currentArticle?.date
+        binding.tvMessageDate.text = formatDate(controller.currentArticle?.date)
 
         binding.tvThreadMessagesBody.text = messageThread
 
@@ -123,5 +120,17 @@ class FragmentOpenThread : Fragment() {
 
     private fun onButtonReplyThreadClick() {
         //findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+    }
+
+    fun formatDate(date: String?): String {
+        var output = ""
+        if(!date.isNullOrEmpty()) {
+            val dateShort = date?.substring(5, 25)
+            val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+            val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
+            output = formatter.format(parser.parse(dateShort))
+        }
+
+        return output
     }
 }
