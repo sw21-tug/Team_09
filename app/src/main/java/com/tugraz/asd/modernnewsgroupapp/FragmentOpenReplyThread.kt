@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenReplyThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -41,7 +42,7 @@ class FragmentOpenReplyThread : Fragment() {
         getReplyThreadMessage(controller)
 
         binding.replyHeaderText.text = controller.currentReplyArticle?.subject
-        binding.tvReplyMessageDate.text = controller.currentReplyArticle?.date
+        binding.tvReplyMessageDate.text = formatDate(controller.currentReplyArticle?.date)
 
         binding.tvThreadReplyMessagesBody.text = messageThread
 
@@ -80,5 +81,16 @@ class FragmentOpenReplyThread : Fragment() {
 
     private fun onButtonReplyThreadClick() {
         //findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+    }
+
+    fun formatDate(date: String?): String {
+        var output = ""
+        if(!date.isNullOrEmpty()) {
+            val dateShort = date?.substring(5, 25)
+            val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+            val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
+            output = formatter.format(parser.parse(dateShort))
+        }
+        return output
     }
 }

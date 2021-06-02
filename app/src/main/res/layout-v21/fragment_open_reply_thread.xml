@@ -62,7 +62,7 @@
         android:id="@+id/sv_reply_thread_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_reply_replied_thread"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_messages">
@@ -81,16 +81,20 @@
         </LinearLayout>
     </ScrollView>
 
-    <ImageButton
-        android:id="@+id/button_reply_replied_thread"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_reply_thread"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:fabCustomSize="45dp"
+        android:src="@drawable/icon_reply"
+        app:backgroundTint="@color/berry"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/button_round"
-        android:src="@drawable/icon_add"
+        android:layout_marginRight="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
