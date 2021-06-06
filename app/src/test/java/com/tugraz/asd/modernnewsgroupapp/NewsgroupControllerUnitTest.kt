@@ -17,28 +17,23 @@ class NewsgroupControllerUnitTest {
     @Test
     fun fetchServers() {
         val controller = NewsgroupController()
-        val server = NewsgroupServer(HOST)
+        val server = NewsgroupServer(0, HOST)
 
         controller.addServer(server)
         controller.fetchNewsGroups()
 
-        assertTrue("No groups fetched", server.newsGroups!!.isNotEmpty())
+        assertTrue("No groups fetched", controller.currentNewsgroups.isNotEmpty())
     }
 
     @Test
     fun fetchSingleServer() {
         val controller = NewsgroupController()
-        val server = NewsgroupServer(HOST)
+        val server = NewsgroupServer(0, HOST)
 
         controller.addServer(server)
         controller.fetchNewsGroups(server)
 
-        assertTrue("No groups fetched", server.newsGroups!!.isNotEmpty())
-    }
-
-    @Test
-    fun getSplashScreenDuration() {
-        assertEquals(3000, splashScreenDuration)
+        assertTrue("No groups fetched", controller.currentNewsgroups.isNotEmpty())
     }
 
 

@@ -58,15 +58,34 @@
     <EditText
         android:id="@+id/thread_subject"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/thread_message"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/input_subject"
         app:layout_constraintTop_toBottomOf="@+id/header_messages" />
+
     <EditText
         android:id="@+id/thread_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="556dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="64dp"
+        android:gravity="top|left"
+        android:hint="@string/input_message"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thread_subject"
         tools:layout_editor_absoluteX="16dp" />
+
+    <ImageButton
+        android:id="@+id/button_send"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/button_round_green"
+        android:src="@drawable/icon_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

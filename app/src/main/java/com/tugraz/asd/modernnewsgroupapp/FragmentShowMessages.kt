@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.net.nntp.Article
 
 /**
@@ -37,9 +41,9 @@ class FragmentShowMessages : Fragment() {
         viewModel = activity?.run {
             ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
-        controller = viewModel.controller.value!!
 
-        println("The element at ${controller.currentNewsgroup}")
+
+        /*println("The element at ${controller.currentNewsgroup}")
 
         val thread = Thread {
             articles = controller.currentServer?.let { controller.fetchArticles(it) }
@@ -53,22 +57,36 @@ class FragmentShowMessages : Fragment() {
                     println("Error on Server connection: " + e.message)
                 }
                 else -> {
-                    throw e
+                    throw e*/
+        viewModel.controller.observe(viewLifecycleOwner) {
+            if(!::controller.isInitialized || controller.currentArticles == null) {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        viewModel.controller.value!!.fetchArticles()
+                        controller = viewModel.controller.value!!
+                        viewModel.controller.postValue(viewModel.controller.value)
+                    }
                 }
+            } else {
+                controller = viewModel.controller.value!!
+                onControllerChange()
             }
+
         }
 
-        thread.join()
 
-        controller = viewModel.controller.value!!
 
+        return binding.root
+    }
+
+    private fun onControllerChange() {
         if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
             binding.headerText.text = controller.currentNewsgroup!!.name
         } else {
             binding.headerText.text = controller.currentNewsgroup!!.alias
         }
 
-        viewModel.controller.observe(viewLifecycleOwner, {
+        /*viewModel.controller.observe(viewLifecycleOwner, {
             controller = viewModel.controller.value!!
             if(controller.currentArticle != null)
             {
@@ -76,12 +94,24 @@ class FragmentShowMessages : Fragment() {
             }
         })
 
-        return binding.root
+        return binding.root*/
+
+        controller.currentArticles?.let {
+            showMessages(it, 0)
+            body.add(body_buffer)
+            body_buffer = ArrayList()
+            body.removeFirst()
+            expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+
+
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         if (articles == null) {
             Feedback.showInfo(requireView(), getString(R.string.feedback_no_message_threads))
         } else {
@@ -99,7 +129,7 @@ class FragmentShowMessages : Fragment() {
                     viewModel
                 )
             )
-        }
+        }*/
 
         binding.buttonBack.setOnClickListener {
             articles = null
@@ -113,6 +143,7 @@ class FragmentShowMessages : Fragment() {
 
     private fun onButtonBackClick() {
         controller.currentNewsgroup = null
+        controller.currentArticles = null
         findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
     }
 
