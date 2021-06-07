@@ -53,17 +53,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
                 print("Failed select newsgroup")
         }
         if (sg != null) {
-      /*
-
-            resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
-            val threader = Threader()
-            val graph = threader.thread(resp)
-            if (graph != null) {
-                article = graph as Article?
-            } else {
-                article = null
-            }
-*/
             try {
                 resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
             } catch (e: Exception) {

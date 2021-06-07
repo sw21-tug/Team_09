@@ -43,59 +43,51 @@ class FragmentShowMessages : Fragment() {
             ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        controller = viewModel.controller.value!!
-
-        println("The element at ${controller.currentNewsgroup}")
-
-        val thread = Thread {
-            articles = controller.currentServer?.let { controller.fetchArticles(it) }
-        }
-        try {
-            thread.start()
-        } catch (e: Exception) {
-            when (e) {
-                is NewsgroupConnection.NewsgroupConnectionException -> {
-                    Feedback.showError(
-                        requireView(),
-                        getString(R.string.feedback_server_connection_error)
-                    )
-                    println("Error on Server connection: " + e.message)
+        viewModel.controller.observe(viewLifecycleOwner) {
+            if(!::controller.isInitialized) {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        viewModel.controller.value!!.fetchArticles()
+                        controller = viewModel.controller.value!!
+                        viewModel.controller.postValue(viewModel.controller.value)
+                    }
                 }
-                else -> {
-                    throw e
-                }
+            } else {
+                controller = viewModel.controller.value!!
+                onControllerChange()
             }
-        }
-
-        thread.join()
-
-        binding.buttonBack.setOnClickListener {
-            onButtonBackClick()
-        }
-
-        binding.buttonCreateThread.setOnClickListener {
-            onButtonCreateThreadClick()
         }
 
         return binding.root
     }
 
+    private fun onControllerChange() {
+
+        if(controller.currentArticle != null) {
+            findNavController().navigate(R.id.action_FragmentMessageThreads_to_fragmentOpenThread)
+        } else {
+
+            if (controller.currentNewsgroup!!.alias.isNullOrEmpty()) {
+                binding.headerText.text = controller.currentNewsgroup!!.name
+            } else {
+                binding.headerText.text = controller.currentNewsgroup!!.alias
+            }
+
+            articles = controller.currentArticles
+            buildMessageList()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.controller.observe(viewLifecycleOwner, {
-            controller = viewModel.controller.value!!
-            if(controller.currentArticle != null)
-            {
-                findNavController().navigate(R.id.action_FragmentMessageThreads_to_fragmentOpenThread)
-            }
-        })
+        super.onViewCreated(view, savedInstanceState)
 
-        buildMessageList()
+        binding.buttonBack.setOnClickListener() {
+            onButtonBackClick()
+        }
 
-        if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
-            binding.headerText.text = controller.currentNewsgroup!!.name
-        } else {
-            binding.headerText.text = controller.currentNewsgroup!!.alias
+        binding.buttonCreateThread.setOnClickListener() {
+            onButtonCreateThreadClick()
         }
     }
 

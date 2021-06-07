@@ -32,12 +32,12 @@ class ExpandableListAdapter(
 
     override fun getGroup(groupPosition: Int): String {
         val article = header[groupPosition]
-        return formatDate(article.date) + System.getProperty("line.separator") + article.subject
+        return Helper.formatDate(article.date) + System.getProperty("line.separator") + article.subject
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): String {
         val article = body[groupPosition][childPosition]
-        return formatDate(article.date) + System.getProperty("line.separator") + article.subject
+        return Helper.formatDate(article.date) + System.getProperty("line.separator") + article.subject
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -116,14 +116,5 @@ class ExpandableListAdapter(
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
         return true
-    }
-
-    fun formatDate(date: String): String {
-        val dateShort = date.substring(5, 25)
-        val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        val output: String = formatter.format(parser.parse(dateShort))
-
-        return output
     }
 }

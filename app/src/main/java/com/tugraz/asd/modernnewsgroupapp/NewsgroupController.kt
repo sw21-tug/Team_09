@@ -42,12 +42,12 @@ class NewsgroupController {
 
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
-    fun fetchArticles(server: NewsgroupServer): Article? {
+    /*fun fetchArticles(server: NewsgroupServer): Article? {
         if(::currentNewsgroups.isInitialized) {
             return servers[server]?.getArticleHeaders(currentNewsgroup)
         }
         return null
-    }
+    }*/
 
     fun fetchCurrentArticleBody(server: NewsgroupServer): String? {
         if(::currentNewsgroups.isInitialized && currentArticle != null) {
@@ -63,13 +63,13 @@ class NewsgroupController {
         return null
     }
 
-    /*fun fetchArticles() {
+    fun fetchArticles() {
         if(currentServer != null)
         {
             val con = getConnById(currentServer!!.id)
-            currentArticle = con?.getArticleHeaders(currentNewsgroup)
+            currentArticles = con?.getArticleHeaders(currentNewsgroup)
         }
-    }*/
+    }
 
     fun postArticle(subject: String, message: String): Boolean {
         if(currentServer == null || currentNewsgroup == null) return false
