@@ -60,7 +60,6 @@
     <string name="cancel">Cancel</string>
     <string name="feedback_ng_server_deleted">Newsgroup server successfully deleted.</string>
     <string name="feedback_ng_server_alias_set">Server alias successfully set.</string>
-    <string name="language_pref_key">language</string>
     <string name="feedback_no_message_threads">Newsgroup does not contain any threads yet.</string>
     <string name="language_pref_key" translatable="false">language</string>
     <string name="feedback_missing_message">Please enter a message</string>

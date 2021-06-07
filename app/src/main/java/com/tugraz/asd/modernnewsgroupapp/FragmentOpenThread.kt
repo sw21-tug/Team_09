@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
+import com.tugraz.asd.modernnewsgroupapp.helper.Helper
 import com.tugraz.asd.modernnewsgroupapp.helper.ThreadMessagesAdapter
 import org.apache.commons.net.nntp.Article
-import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -24,7 +23,6 @@ class FragmentOpenThread : Fragment() {
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
 
-    private var article: Article? = null
     private var messageThread: String? = null
 
     private val header : MutableList<Article> = ArrayList()
@@ -47,17 +45,17 @@ class FragmentOpenThread : Fragment() {
 
         controller = viewModel.controller.value!!
 
-        getThreadMessages(controller)
+        getThreadMessages()
 
         binding.headerText.text = controller.currentArticle?.subject
-        binding.tvMessageDate.text = formatDate(controller.currentArticle?.date)
+        binding.tvMessageDate.text = Helper.formatDate(controller.currentArticle?.date)
 
         binding.tvThreadMessagesBody.text = messageThread
 
         return binding.root
     }
 
-    private fun getThreadMessages(controller: NewsgroupController)
+    private fun getThreadMessages()
     {
         val thread = Thread {
             val currentArticle = controller.currentArticle
@@ -69,7 +67,6 @@ class FragmentOpenThread : Fragment() {
                 binding.expandableViewShowReplies.setAdapter(
                     ThreadMessagesAdapter(
                         requireActivity(),
-
                         header,
                         body,
                         viewModel
@@ -122,18 +119,7 @@ class FragmentOpenThread : Fragment() {
     }
 
     private fun onButtonReplyThreadClick() {
-        //findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
-    }
-
-    fun formatDate(date: String?): String {
-        var output = ""
-        if(!date.isNullOrEmpty()) {
-            val dateShort = date?.substring(5, 25)
-            val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-            val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-            output = formatter.format(parser.parse(dateShort))
-        }
-
-        return output
+        // TODO call to reply to current thread
+        // findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 }

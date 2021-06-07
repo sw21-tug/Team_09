@@ -5,7 +5,6 @@ import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import java.io.BufferedReader
 import org.apache.commons.net.nntp.*
 import java.net.UnknownHostException
-import java.nio.charset.Charset
 import kotlin.Exception
 import kotlin.collections.ArrayList
 
@@ -16,7 +15,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
     private var client: NNTPClient = NNTPClient()
 
-    fun ensureConnection() {
+    private fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -44,7 +43,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article{
+    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article? {
         ensureConnection()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
@@ -78,12 +77,12 @@ class NewsgroupConnection (var server: NewsgroupServer){
                 }
             }
 
-            var threader = Threader()
-            var graph = threader.thread(resp)
-            if(graph != null)
+            val threader = Threader()
+            val graph = threader.thread(resp)
+            if (graph != null)
                 article = (graph as Article?)!!
             else
-                article = Article()
+                article = null
         }
         return article
     }
@@ -103,9 +102,9 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
         val header = SimpleNNTPHeader(from, subject)
         header.addNewsgroup(newsgroup.name)
-        writer.write(header.toString());
-        writer.write(message);
-        writer.close();
+        writer.write(header.toString())
+        writer.write(message)
+        writer.close()
         client.completePendingCommand()
         return true
     }

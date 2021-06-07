@@ -22,6 +22,7 @@ import org.apache.commons.net.nntp.Article
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FragmentShowMessages : Fragment() {
+
     private lateinit var binding: FragmentShowMessageThreadsBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
@@ -42,8 +43,9 @@ class FragmentShowMessages : Fragment() {
             ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        controller = viewModel.controller.value!!
 
-        /*println("The element at ${controller.currentNewsgroup}")
+        println("The element at ${controller.currentNewsgroup}")
 
         val thread = Thread {
             articles = controller.currentServer?.let { controller.fetchArticles(it) }
@@ -51,42 +53,36 @@ class FragmentShowMessages : Fragment() {
         try {
             thread.start()
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
-                    Feedback.showError(requireView(), getString(R.string.feedback_server_connection_error))
+                    Feedback.showError(
+                        requireView(),
+                        getString(R.string.feedback_server_connection_error)
+                    )
                     println("Error on Server connection: " + e.message)
                 }
                 else -> {
-                    throw e*/
-        viewModel.controller.observe(viewLifecycleOwner) {
-            if(!::controller.isInitialized || controller.currentArticles == null) {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        viewModel.controller.value!!.fetchArticles()
-                        controller = viewModel.controller.value!!
-                        viewModel.controller.postValue(viewModel.controller.value)
-                    }
+                    throw e
                 }
-            } else {
-                controller = viewModel.controller.value!!
-                onControllerChange()
             }
-
         }
 
+        thread.join()
 
+        binding.buttonBack.setOnClickListener {
+            onButtonBackClick()
+        }
+
+        binding.buttonCreateThread.setOnClickListener {
+            onButtonCreateThreadClick()
+        }
 
         return binding.root
     }
 
-    private fun onControllerChange() {
-        if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
-            binding.headerText.text = controller.currentNewsgroup!!.name
-        } else {
-            binding.headerText.text = controller.currentNewsgroup!!.alias
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        /*viewModel.controller.observe(viewLifecycleOwner, {
+        viewModel.controller.observe(viewLifecycleOwner, {
             controller = viewModel.controller.value!!
             if(controller.currentArticle != null)
             {
@@ -94,24 +90,17 @@ class FragmentShowMessages : Fragment() {
             }
         })
 
-        return binding.root*/
+        buildMessageList()
 
-        controller.currentArticles?.let {
-            showMessages(it, 0)
-            body.add(body_buffer)
-            body_buffer = ArrayList()
-            body.removeFirst()
-            expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
-
-
+        if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
+            binding.headerText.text = controller.currentNewsgroup!!.name
+        } else {
+            binding.headerText.text = controller.currentNewsgroup!!.alias
         }
-
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun buildMessageList() {
 
-        /*
         if (articles == null) {
             Feedback.showInfo(requireView(), getString(R.string.feedback_no_message_threads))
         } else {
@@ -129,26 +118,7 @@ class FragmentShowMessages : Fragment() {
                     viewModel
                 )
             )
-        }*/
-
-        binding.buttonBack.setOnClickListener {
-            articles = null
-            onButtonBackClick()
         }
-
-        binding.buttonCreateThread.setOnClickListener {
-            onButtonCreateThreadClick()
-        }
-    }
-
-    private fun onButtonBackClick() {
-        controller.currentNewsgroup = null
-        controller.currentArticles = null
-        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
-    }
-
-    private fun onButtonCreateThreadClick() {
-        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 
     private fun showMessages(article: Article, depth: Int) {
@@ -168,5 +138,15 @@ class FragmentShowMessages : Fragment() {
         if (article.next != null) {
             showMessages(article.next, depth)
         }
+    }
+
+    private fun onButtonBackClick() {
+        controller.currentNewsgroup = null
+        controller.currentArticles = null
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
+    }
+
+    private fun onButtonCreateThreadClick() {
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
     }
 }

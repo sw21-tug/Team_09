@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenReplyThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
-import java.text.SimpleDateFormat
+import com.tugraz.asd.modernnewsgroupapp.helper.Helper
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -39,17 +39,17 @@ class FragmentOpenReplyThread : Fragment() {
 
         controller = viewModel.controller.value!!
 
-        getReplyThreadMessage(controller)
+        getReplyThreadMessage()
 
         binding.replyHeaderText.text = controller.currentReplyArticle?.subject
-        binding.tvReplyMessageDate.text = formatDate(controller.currentReplyArticle?.date)
+        binding.tvReplyMessageDate.text = Helper.formatDate(controller.currentReplyArticle?.date)
 
         binding.tvThreadReplyMessagesBody.text = messageThread
 
         return binding.root
     }
 
-    private fun getReplyThreadMessage(controller: NewsgroupController)
+    private fun getReplyThreadMessage()
     {
         val thread = Thread {
             val currentReplyArticle = controller.currentReplyArticle
@@ -80,17 +80,7 @@ class FragmentOpenReplyThread : Fragment() {
     }
 
     private fun onButtonReplyThreadClick() {
+        // TODO call to reply to current reply thread
         //findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
-    }
-
-    fun formatDate(date: String?): String {
-        var output = ""
-        if(!date.isNullOrEmpty()) {
-            val dateShort = date?.substring(5, 25)
-            val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-            val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-            output = formatter.format(parser.parse(dateShort))
-        }
-        return output
     }
 }

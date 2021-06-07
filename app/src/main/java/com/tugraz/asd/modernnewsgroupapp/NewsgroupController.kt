@@ -10,6 +10,7 @@ class NewsgroupController {
     var currentServer: NewsgroupServer? = null
     lateinit var currentNewsgroups: List<Newsgroup>
     var currentNewsgroup: Newsgroup? = null
+    var currentArticles: Article? = null
     var currentArticle: Article? = null
     var currentReplyArticle: Article? = null
     lateinit var db: NewsgroupDb
@@ -41,13 +42,12 @@ class NewsgroupController {
 
     fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
 
-  /*
     fun fetchArticles(server: NewsgroupServer): Article? {
         if(::currentNewsgroups.isInitialized) {
             return servers[server]?.getArticleHeaders(currentNewsgroup)
         }
         return null
-    }*/
+    }
 
     fun fetchCurrentArticleBody(server: NewsgroupServer): String? {
         if(::currentNewsgroups.isInitialized && currentArticle != null) {
@@ -57,18 +57,19 @@ class NewsgroupController {
     }
 
     fun fetchArticleBodyById(server: NewsgroupServer, articleId: Long): String? {
-        if(::currentNewsgroups.isInitialized && currentArticle != null) {
+        if (::currentNewsgroups.isInitialized && currentArticle != null) {
             return servers[server]?.getArticleBody(articleId)
         }
         return null
+    }
 
-    fun fetchArticles() {
+    /*fun fetchArticles() {
         if(currentServer != null)
         {
             val con = getConnById(currentServer!!.id)
-            currentArticles = con?.getArticleHeaders(currentNewsgroup)
+            currentArticle = con?.getArticleHeaders(currentNewsgroup)
         }
-    }
+    }*/
 
     fun postArticle(subject: String, message: String): Boolean {
         if(currentServer == null || currentNewsgroup == null) return false
