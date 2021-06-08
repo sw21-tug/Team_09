@@ -36,7 +36,7 @@ class MessageThreadTest {
     }
 
     @Test
-    fun messageThreadTest_() {
+    fun messageThreadTest() {
         Thread.sleep(3000);
         val appCompatEditText = onView(
             allOf(
@@ -66,6 +66,7 @@ class MessageThreadTest {
                 isDisplayed()
             )
         )
+
         appCompatEditText2.perform(replaceText("tes@t"), closeSoftKeyboard())
 
         val appCompatEditText3 = onView(
@@ -210,6 +211,7 @@ class MessageThreadTest {
             )
         )
         recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+
         Thread.sleep(3000);
         val materialTextView = onView(
             allOf(

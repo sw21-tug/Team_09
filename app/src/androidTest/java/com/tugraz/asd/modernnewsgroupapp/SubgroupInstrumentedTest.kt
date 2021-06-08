@@ -85,7 +85,7 @@ class SubgroupInstrumentedTest {
     fun checkHigherHierarchyExpands() {
         init()
         //onView(ViewMatchers.withText("tu-graz")).perform(click())
-        onView(ViewMatchers.withText("tu-graz")).perform(ViewActions.swipeUp())
+//        onView(ViewMatchers.withText("tu-graz")).perform(ViewActions.swipeUp())
         onView(ViewMatchers.withText("tu-graz.lv")).perform(scrollTo())
         onView(ViewMatchers.withText("tu-graz.lv")).perform(click())
         onView(ViewMatchers.withText("tu-graz.lv.prog0")).perform(scrollTo())

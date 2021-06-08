@@ -45,7 +45,8 @@ class LanguageSwitcherTest {
     }
 
     @Test
-    fun languageSwitcherTest___() {
+
+    fun languageSwitcherTest() {
         Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
