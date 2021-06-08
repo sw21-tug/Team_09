@@ -11,6 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
@@ -21,9 +23,14 @@ class SwipeSubgroupListTest {
 
     @Rule
     @JvmField
-    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    private fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
 
     private fun init() {
+        Thread.sleep(3000)
         val inputName = onView(ViewMatchers.withId(R.id.editText_name)).check(matches(isDisplayed()))
         val inputEmail = onView(ViewMatchers.withId(R.id.editText_email)).check(matches(isDisplayed()))
 
@@ -38,6 +45,7 @@ class SwipeSubgroupListTest {
     @Test (expected = NoMatchingViewException::class)
     fun checkLeftSwipeForDeletion()
     {
+        clearDb()
         init()
         onView(withText("vc-graz")).perform(swipeLeft())
         onView(withText("vc-graz")).check(matches((isDisplayed())))
@@ -46,8 +54,9 @@ class SwipeSubgroupListTest {
     @Test
     fun checkRightSwipeForEditing()
     {
+        clearDb()
         init()
         onView(withText("vc-graz")).perform(swipeRight())
-        onView(withText("Edit Alias for vc-graz")).check(matches(isDisplayed()))
+        onView(withText("SAVE")).check(matches(isDisplayed()))
     }
 }

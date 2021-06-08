@@ -36,7 +36,7 @@ class ServerMenuTest {
 
     @Test
     fun serverMenuTest() {
-        Thread.sleep(5000)
+        Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),
@@ -100,56 +100,20 @@ class ServerMenuTest {
         )
         materialButton.perform(click())
 
-        val checkBox = onView(
+        val materialCheckBox = onView(
             allOf(
-                withText("tu-graz.algorithmen"),
+                withId(R.id.checkBox), withText("tu-graz.algorithmen"),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
+                    childAtPosition(
+                        withId(R.id.linear_scroll),
+                        0
                     ),
                     0
-                )
+                ),
+                isDisplayed()
             )
         )
-        checkBox.perform(scrollTo(), click())
-
-        val checkBox2 = onView(
-            allOf(
-                withText("tu-graz.anzeigen.arbeitsmarkt"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
-                    ),
-                    1
-                )
-            )
-        )
-        checkBox2.perform(scrollTo(), click())
-
-        val checkBox3 = onView(
-            allOf(
-                withText("tu-graz.anzeigen.computer"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
-                    ),
-                    2
-                )
-            )
-        )
-        checkBox3.perform(scrollTo(), click())
+        materialCheckBox.perform(click())
 
         val materialButton2 = onView(
             allOf(

@@ -35,7 +35,7 @@ class DeleteLastServerTest {
 
     @Test
     fun deleteLastServerTest() {
-        Thread.sleep(5000)
+        Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),
@@ -84,22 +84,20 @@ class DeleteLastServerTest {
         )
         materialButton.perform(click())
 
-        val checkBox = onView(
+        val materialCheckBox = onView(
             allOf(
-                withText("vc-graz"),
+                withId(R.id.checkBox), withText("tu-graz.algorithmen"),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
+                    childAtPosition(
+                        withId(R.id.linear_scroll),
+                        0
                     ),
                     0
-                )
+                ),
+                isDisplayed()
             )
         )
-        checkBox.perform(scrollTo(), click())
+        materialCheckBox.perform(click())
 
         val materialButton2 = onView(
             allOf(
@@ -155,19 +153,6 @@ class DeleteLastServerTest {
         )
         materialButton3.perform(click())
 
-        val button = onView(
-            allOf(
-                withId(R.id.button_subscribe), withText("NEXT"),
-                withParent(
-                    allOf(
-                        withId(R.id.linearLayout5),
-                        withParent(withId(R.id.linearLayout2))
-                    )
-                ),
-                isDisplayed()
-            )
-        )
-        button.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(
