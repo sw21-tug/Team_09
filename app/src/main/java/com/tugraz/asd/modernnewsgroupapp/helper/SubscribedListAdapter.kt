@@ -8,15 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.navigation.Navigation.findNavController
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
-import com.tugraz.asd.modernnewsgroupapp.NewsgroupController
 import com.tugraz.asd.modernnewsgroupapp.R
 import com.tugraz.asd.modernnewsgroupapp.ServerObservable
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import kotlinx.android.synthetic.main.activity_splash_screen_new.view.*
 import kotlinx.android.synthetic.main.subgroup_list_entry.view.*
 import kotlinx.android.synthetic.main.subgroup_list_entry.view.tv_subgroup_name
+import kotlinx.coroutines.launch
 
 
 class SubscribedListAdapter(private val items: MutableList<Newsgroup>, private val viewmodel: ServerObservable) : RecyclerView.Adapter<SubscribedListAdapter.VH>() {
@@ -45,7 +47,11 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>, private v
 
     fun removeAt(position: Int, context: Context) {
         val ctx = context as Activity
-        items[position].subscribed = false
+
+        viewmodel.viewModelScope.launch {
+            viewmodel.controller.value!!.removeNewsgroup(items[position])
+        }
+
         Feedback.showInfo(ctx.findViewById(R.id.recyclerView),
                 ctx.getString(R.string.feedback_unsubscribed) + items[position].name)
         items.removeAt(position)
@@ -80,7 +86,9 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>, private v
         builder.setView(input)
 
         builder.setPositiveButton(ctx.getString(R.string.save)) { _, _ ->
-            newsgroup.alias = input.text.toString()
+            viewmodel.viewModelScope.launch {
+                viewmodel.controller.value!!.renameNewsgroupAlias(newsgroup, input.text.toString())
+            }
             this.notifyDataSetChanged()
             Feedback.showSuccess(ctx.findViewById(R.id.recyclerView),
                     ctx.getString(R.string.feedback_alias_set) + newsgroup.name)
