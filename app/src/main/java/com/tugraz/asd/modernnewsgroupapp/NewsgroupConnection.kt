@@ -2,19 +2,20 @@ package com.tugraz.asd.modernnewsgroupapp
 
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import java.io.BufferedReader
 import org.apache.commons.net.nntp.*
 import java.net.UnknownHostException
-import java.util.*
 import kotlin.Exception
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 class NewsgroupConnection (var server: NewsgroupServer){
-    private lateinit var resp: Iterable<Article>
-    private lateinit var article: Article
-    private  var client: NNTPClient = NNTPClient()
 
-    fun ensureConnection() {
+    private var article: Article? = null
+    private lateinit var resp: Iterable<Article>
+
+    private var client: NNTPClient = NNTPClient()
+
+    private fun ensureConnection() {
         if(!client.isConnected) {
             try {
                 client.connect(server.host, server.port)
@@ -42,7 +43,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return groups
     }
 
-    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article{
+    fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article? {
         ensureConnection()
         if (sg != null) {
             print("name of ng to select: " + sg.name)
@@ -51,7 +52,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
             else
                 print("Failed select newsgroup")
         }
-        //var response = client.listNewsgroups()
         if (sg != null) {
             try {
                 resp = client.iterateArticleInfo(sg.firstArticle, sg.lastArticle)
@@ -66,19 +66,18 @@ class NewsgroupConnection (var server: NewsgroupServer){
                 }
             }
 
-            var threader = Threader()
-            var graph = threader.thread(resp)
-            if(graph != null)
+            val threader = Threader()
+            val graph = threader.thread(resp)
+            if (graph != null)
                 article = (graph as Article?)!!
             else
-                article = Article()
+                article = null
         }
         return article
     }
 
-    fun getArticleBody(sg: Newsgroup?, id: Long)
-    {
-
+    fun getArticleBody(articleId: Long) : String {
+        return client.retrieveArticleBody(articleId).use(BufferedReader::readText)
     }
 
     fun postArticle(newsgroup: Newsgroup, from: String, subject: String, message: String): Boolean {
@@ -92,9 +91,9 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
         val header = SimpleNNTPHeader(from, subject)
         header.addNewsgroup(newsgroup.name)
-        writer.write(header.toString());
-        writer.write(message);
-        writer.close();
+        writer.write(header.toString())
+        writer.write(message)
+        writer.close()
         client.completePendingCommand()
         return true
     }

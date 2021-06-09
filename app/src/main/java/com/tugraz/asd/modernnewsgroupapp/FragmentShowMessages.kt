@@ -6,34 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowMessageThreadsBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.ExpandableListAdapter
+import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import kotlinx.android.synthetic.main.fragment_show_message_threads.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.commons.net.nntp.Article
-import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FragmentShowMessages : Fragment() {
+
     private lateinit var binding: FragmentShowMessageThreadsBinding
     private lateinit var viewModel: ServerObservable
     private lateinit var controller: NewsgroupController
 
-    val header : MutableList<String> = ArrayList()
-    val body : MutableList<MutableList<String>> = ArrayList()
-    var body_buffer : MutableList<String> = ArrayList()
+    private var articles: Article? = null
+
+    private val header : MutableList<Article> = ArrayList()
+    private val body : MutableList<MutableList<Article>> = ArrayList()
+    private var bodyBuffer : MutableList<Article> = ArrayList()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentShowMessageThreadsBinding.inflate(layoutInflater)
         viewModel = activity?.run {
@@ -41,7 +44,7 @@ class FragmentShowMessages : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         viewModel.controller.observe(viewLifecycleOwner) {
-            if(!::controller.isInitialized || controller.currentArticles == null) {
+            if(!::controller.isInitialized) {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         viewModel.controller.value!!.fetchArticles()
@@ -53,33 +56,30 @@ class FragmentShowMessages : Fragment() {
                 controller = viewModel.controller.value!!
                 onControllerChange()
             }
-
         }
-
-
 
         return binding.root
     }
 
     private fun onControllerChange() {
-        if(controller.currentNewsgroup!!.alias.isNullOrEmpty()){
-            binding.headerText.setText(controller.currentNewsgroup!!.name) }
-        else {
-            binding.headerText.setText(controller.currentNewsgroup!!.alias)
-        }
 
-        controller.currentArticles?.let {
-            showMessages(it, 0)
-            body.add(body_buffer)
-            body_buffer = ArrayList()
-            body.removeFirst()
-            expandableView_show_messages.setAdapter(ExpandableListAdapter(requireActivity(), expandableView_show_messages, header, body))
+        if(controller.currentArticle != null) {
+            findNavController().navigate(R.id.action_FragmentMessageThreads_to_fragmentOpenThread)
+        } else {
 
+            if (controller.currentNewsgroup!!.alias.isNullOrEmpty()) {
+                binding.headerText.text = controller.currentNewsgroup!!.name
+            } else {
+                binding.headerText.text = controller.currentNewsgroup!!.alias
+            }
 
+            articles = controller.currentArticles
+            buildMessageList()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonBack.setOnClickListener() {
@@ -91,36 +91,39 @@ class FragmentShowMessages : Fragment() {
         }
     }
 
-    fun onButtonBackClick()
-    {
-        controller.currentNewsgroup = null
-        controller.currentArticles = null
-        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
+    private fun buildMessageList() {
+
+        if (articles == null) {
+            Feedback.showInfo(requireView(), getString(R.string.feedback_no_message_threads))
+        } else {
+            showMessages(articles!!, 0)
+
+            body.add(bodyBuffer)
+            bodyBuffer = ArrayList()
+            body.removeFirst()
+            expandableView_show_messages.setAdapter(
+                ExpandableListAdapter(
+                    requireActivity(),
+                    expandableView_show_messages,
+                    header,
+                    body,
+                    viewModel
+                )
+            )
+        }
     }
 
-    private fun onButtonCreateThreadClick() {
-        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
-    }
+    private fun showMessages(article: Article, depth: Int) {
 
-    fun formatDate(date: String): String {
-        val dateShort = date.substring(5, 25)
-        val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        val output: String = formatter.format(parser.parse(dateShort))
-
-        return output
-    }
-
-    fun showMessages(article: Article, depth: Int) {
-        if(article.articleNumber > 0 && !(article.subject.startsWith("Re"))) {
-            header.add(formatDate(article.date) + System.getProperty("line.separator") + article.subject)
-            body.add(body_buffer)
-            body_buffer = ArrayList()
+        if(article.articleNumberLong > 0 && !article.subjectIsReply()) {
+            header.add(article)
+            body.add(bodyBuffer)
+            bodyBuffer = ArrayList()
         }
 
         if (article.kid != null) {
-            if(article.kid.articleNumber > 0) {
-                body_buffer.add(formatDate(article.kid.date) + System.getProperty("line.separator") + article.kid.subject)
+            if(article.kid.articleNumberLong > 0) {
+                bodyBuffer.add(article.kid)
             }
             showMessages(article.kid, depth + 1)
         }
@@ -129,4 +132,13 @@ class FragmentShowMessages : Fragment() {
         }
     }
 
+    private fun onButtonBackClick() {
+        controller.currentNewsgroup = null
+        controller.currentArticles = null
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentShowSubgroups)
+    }
+
+    private fun onButtonCreateThreadClick() {
+        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+    }
 }

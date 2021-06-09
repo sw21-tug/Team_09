@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient_background"
-    tools:context=".FragmentShowMessages">
+    tools:context=".FragmentOpenThread">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_messages"
@@ -33,51 +32,78 @@
             android:layout_marginLeft="75dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/header_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="1"
                 android:textColor="@color/darkgrey"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_message_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/header_message"
                 android:textColor="@color/darkgrey"
                 android:textSize="16dp" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ExpandableListView
-        android:id="@+id/expandableView_show_messages"
+    <ScrollView
+        android:id="@+id/sv_thread_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:groupIndicator="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_messages" />
+        app:layout_constraintBottom_toTopOf="@+id/expandableView_show_replies"
+        app:layout_constraintTop_toBottomOf="@+id/header_messages">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_thread_messages_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20sp"
+                android:text="@string/tv_text" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ExpandableListView
+        android:id="@+id/expandableView_show_replies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:groupIndicator="@null"
+        android:maxHeight="150sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="150sp"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_create_thread"
+        android:id="@+id/button_reply_thread"
         android:layout_width="45dp"
         android:layout_height="45dp"
         app:fabCustomSize="45dp"
-        android:src="@drawable/icon_add"
+        android:src="@drawable/icon_reply"
         app:backgroundTint="@color/berry"
         app:tint="@color/white"
         app:borderWidth="0dp"
+        app:elevation="6dp"
         android:layout_marginBottom="25dp"
         android:layout_marginRight="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

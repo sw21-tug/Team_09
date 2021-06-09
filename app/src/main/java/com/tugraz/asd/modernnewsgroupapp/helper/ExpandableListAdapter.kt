@@ -1,7 +1,6 @@
-package com.tugraz.asd.modernnewsgroupapp
+package com.tugraz.asd.modernnewsgroupapp.helper
 
 import android.content.Context
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,22 +9,35 @@ import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.tugraz.asd.modernnewsgroupapp.R
+import com.tugraz.asd.modernnewsgroupapp.ServerObservable
+import org.apache.commons.net.nntp.Article
+import java.text.SimpleDateFormat
 
-class ExpandableListAdapter(var context: Context, var expandableListView: ExpandableListView, var header: MutableList<String>, var body: MutableList<MutableList<String>>) : BaseExpandableListAdapter() {
+class ExpandableListAdapter(
+    var context: Context,
+    private var expandableListView: ExpandableListView,
+    private var header: MutableList<Article>,
+    private var body: MutableList<MutableList<Article>>,
+    private val viewModel: ServerObservable
+) : BaseExpandableListAdapter() {
+
     override fun getGroupCount(): Int {
         return header.size
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return body.get(groupPosition).size
+        return body[groupPosition].size
     }
 
     override fun getGroup(groupPosition: Int): String {
-        return header.get(groupPosition)
+        val article = header[groupPosition]
+        return Helper.formatDate(article.date) + System.getProperty("line.separator") + article.subject
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): String {
-        return body.get(groupPosition).get(childPosition)
+        val article = body[groupPosition][childPosition]
+        return Helper.formatDate(article.date) + System.getProperty("line.separator") + article.subject
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -40,11 +52,16 @@ class ExpandableListAdapter(var context: Context, var expandableListView: Expand
         return false
     }
 
-    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View? {
+    override fun getGroupView(
+        groupPosition: Int,
+        isExpanded: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View? {
         var convertView = convertView
         if(convertView == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = inflater.inflate(R.layout.layout_thread ,null)
+            convertView = inflater.inflate(R.layout.layout_thread, null)
         }
         val title = convertView?.findViewById<TextView>(R.id.thread_title)
         title?.text = getGroup(groupPosition)
@@ -52,7 +69,9 @@ class ExpandableListAdapter(var context: Context, var expandableListView: Expand
         if(getChildrenCount(groupPosition) > 0) {
             convertView?.findViewById<ImageView>(R.id.image_arrow)?.isVisible = true
             convertView?.findViewById<ImageView>(R.id.image_arrow)?.setSelected(isExpanded)
-            title?.setOnClickListener {
+
+            // onClick listener on whole list entry element to expand / collapse
+            convertView?.setOnClickListener {
                 if (expandableListView.isGroupExpanded(groupPosition))
                     expandableListView.collapseGroup(groupPosition)
                 else
@@ -60,20 +79,39 @@ class ExpandableListAdapter(var context: Context, var expandableListView: Expand
 
             }
         }
+        // onClick listener on list entry name to show thread in own fragment
+        title?.setOnClickListener {
+            val controller = viewModel.controller.value!!
+            controller.currentArticle = header[groupPosition]
+            viewModel.controller.postValue(controller)
+        }
 
         return convertView
     }
 
-    override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View? {
+    override fun getChildView(
+        groupPosition: Int,
+        childPosition: Int,
+        isLastChild: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View? {
         var convertView = convertView
             if(convertView == null) {
                 val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                convertView = inflater.inflate(R.layout.layout_thread_child ,null)
+                convertView = inflater.inflate(R.layout.layout_thread_child, null)
             }
         val title = convertView?.findViewById<TextView>(R.id.thread_child)
         title?.text = getChild(groupPosition, childPosition)
-        return convertView
 
+        // onClick listener on list entry name to show thread in own fragment
+        title?.setOnClickListener {
+            val controller = viewModel.controller.value!!
+            controller.currentArticle = body[groupPosition][childPosition]
+            viewModel.controller.postValue(controller)
+        }
+
+        return convertView
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
