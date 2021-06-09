@@ -8,6 +8,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -43,8 +44,6 @@ class ShowMessageThreadsTest {
         onView(withText("control.checkgroups")).perform(ViewActions.click())
         onView(withText("FINISH")).perform(ViewActions.click())
         onView(withText("control.checkgroups")).perform(ViewActions.click())
-        Thread.sleep(2000)
-
         onView(withText(R.string.feedback_no_message_threads)).check(matches((isDisplayed())))
     }
 
@@ -57,6 +56,14 @@ class ShowMessageThreadsTest {
         onView(withText("vc-graz")).perform(ViewActions.click())
         Thread.sleep(2000)
 
-        onView(withId(R.layout.layout_thread)).check(matches((isDisplayed())))
+        val textView = onView(
+            Matchers.allOf(
+                withId(R.id.thread_title),
+                withText("06.05.2021 09:18\nWLAN VCGraz Wartung/maintenance 2021-05-11 06:00-08:30"),
+                withParent(withParent(withId(R.id.expandableView_show_messages))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(isDisplayed()))
     }
 }

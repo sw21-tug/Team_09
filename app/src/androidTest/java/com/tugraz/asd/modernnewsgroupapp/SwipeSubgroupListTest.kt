@@ -42,7 +42,7 @@ class SwipeSubgroupListTest {
         onView(withText("FINISH")).perform(ViewActions.click())
     }
 
-    @Test (expected = NoMatchingViewException::class)
+    @Test
     fun checkLeftSwipeForDeletion()
     {
         clearDb()

@@ -16,6 +16,7 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,9 +39,13 @@ class LanguageSwitcherTest {
         clearDb()
     }
 
+    @After
+    fun after() {
+        clearDb()
+    }
+
     @Test
     fun languageSwitcherTest___() {
-        clearDb()
         Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
