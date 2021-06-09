@@ -25,12 +25,26 @@ User Story | Feature
 [MNA-001](https://github.com/sw21-tug/Team_09/issues/1)  | Subscription
 [MNA-002](https://github.com/sw21-tug/Team_09/issues/2)  | Cancel Subscription
 [MNA-003](https://github.com/sw21-tug/Team_09/issues/3)  | Subgroups
+[MNA-004](https://github.com/sw21-tug/Team_09/issues/4)  | Cancel Subgroups
+[MNA-005](https://github.com/sw21-tug/Team_09/issues/5)  | Message Threads
+[MNA-006](https://github.com/sw21-tug/Team_09/issues/6)  | Post Messages
 [MNA-007](https://github.com/sw21-tug/Team_09/issues/7)  | Set Server names
 [MNA-008](https://github.com/sw21-tug/Team_09/issues/8)  | Edit Server names
+[MNA-009](https://github.com/sw21-tug/Team_09/issues/9)  | Set Aliases
+[MNA-010](https://github.com/sw21-tug/Team_09/issues/10)  | Delete Aliases
+[MNA-011](https://github.com/sw21-tug/Team_09/issues/11)  | Edit Aliases
 [MNA-014](https://github.com/sw21-tug/Team_09/issues/14)  | Group Overview
 [MNA-015](https://github.com/sw21-tug/Team_09/issues/19)  | Start / Splash Screen
 [MNA-016](https://github.com/sw21-tug/Team_09/issues/20)  | Feedback Messages
 [MNA-017](https://github.com/sw21-tug/Team_09/issues/37)  | Change Language
+[MNA-018](https://github.com/sw21-tug/Team_09/issues/47)  | Remember subscribed newsgroups and settings
+[MNA-019](https://github.com/sw21-tug/Team_09/issues/28)  | Replace Logo
+[MNA-022](https://github.com/sw21-tug/Team_09/issues/53)  | Input Validation
+[MNA-024](https://github.com/sw21-tug/Team_09/issues/60)  | Multiple Newsgroup Server Subscription
+[MNA-025](https://github.com/sw21-tug/Team_09/issues/59)  | Fix Failing Test Cases
+[MNA-026](https://github.com/sw21-tug/Team_09/issues/63)  | Update DB
+[MNA-027](https://github.com/sw21-tug/Team_09/issues/70)  | App should not crash
+[MNA-BUG-001](https://github.com/sw21-tug/Team_09/issues/55)  | Dark Mode View
 
 
 ### Description of these Features:
