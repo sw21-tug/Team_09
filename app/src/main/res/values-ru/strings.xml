@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ягодная коробка</string>
+    <string name="app_name">EVERNEWS</string>
     <string name="action_settings">Настройки</string>
     <string name="button_next">" ДАЛЕЕ следующий "</string>
     <string name="button_back">НАЗАД</string>
@@ -23,9 +23,9 @@
     <string name="label_newsgroup_name">Название группы новостей</string>
     <string name="label_subgroup_name">Название подгруппы</string>
     <string name="label_server">Информация о сервере</string>
-    <string name="splash_image_description">Изображение ягоды</string>
+    <string name="splash_image_description">логотип приложения</string>
     <string name="splash_subtutle">Ваш мобильный ридер групп новостей</string>
-    <string name="splash_title">Ягодная коробка</string>
+    <string name="splash_title">EVERNEWS</string>
     <string name="filter">Фильтр…</string>
     <string name="profile_label_language">Язык</string>
     <string name="header_message">Входящие</string>

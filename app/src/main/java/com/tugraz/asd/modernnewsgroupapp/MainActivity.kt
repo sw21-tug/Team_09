@@ -68,13 +68,4 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_newsgroup)
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        // get chosen language from shared preference
-        val prefs = PreferenceManager.getDefaultSharedPreferences(newBase);
-        val localeString = prefs.getString("language", "en")
-        println("Language: $localeString")
-        val localeUpdatedContext: ContextWrapper = ContextUtils.updateLocale(newBase, Locale(localeString))
-        super.attachBaseContext(localeUpdatedContext)
-    }
-
 }

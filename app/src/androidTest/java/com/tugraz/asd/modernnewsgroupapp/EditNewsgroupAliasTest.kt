@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
 import org.junit.Before
@@ -28,9 +29,12 @@ class EditNewsgroupAliasTest {
 
     @Rule
     @JvmField
-    var  rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
 
     private fun init() {
+        Thread.sleep(3000)
+
         val inputName = onView(withId(R.id.editText_name)).check(matches(isDisplayed()))
         val inputEmail = onView(withId(R.id.editText_email)).check(matches(isDisplayed()))
 

@@ -35,7 +35,7 @@ class FilterSubgroupTest {
 
     @Test
     fun filtersubgroupTest() {
-        Thread.sleep(5000)
+        Thread.sleep(3000)
 
         val appCompatEditText = onView(
             allOf(

@@ -47,6 +47,7 @@ class FragmentShowMessages : Fragment() {
             if(!::controller.isInitialized) {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
+                        viewModel.controller.value!!.updateNewsgroup()
                         viewModel.controller.value!!.fetchArticles()
                         controller = viewModel.controller.value!!
                         viewModel.controller.postValue(viewModel.controller.value)

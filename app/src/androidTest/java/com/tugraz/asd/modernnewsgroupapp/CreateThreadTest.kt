@@ -37,6 +37,7 @@ class CreateThreadTest {
 
     @Test
     fun createThreadTest() {
+        Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),

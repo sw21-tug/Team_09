@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Berry Box</string>
+    <string name="app_name">EVERNEWS</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
 
@@ -25,8 +25,8 @@
     <string name="label_subgroup_name">Subgroup name</string>
     <string name="label_alias">Alias</string>
     <string name="splash_subtutle">Your mobile Newsgroup-Reader</string>
-    <string name="splash_title">BerryBox</string>
-    <string name="splash_image_description">Image of a berry</string>
+    <string name="splash_title">EVERNEWS</string>
+    <string name="splash_image_description">App logo</string>
     <string name="feedback_message">Feedback Nachricht</string>
 
     <string-array name="dummy_newsgroups">

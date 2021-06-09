@@ -44,4 +44,10 @@ interface NewsgroupDao {
 
     @Query("SELECT * FROM Newsgroup WHERE newsgroup_server_id = :serverId ")
     suspend fun getNewsgroupsForServerId(serverId: Int) : List<Newsgroup>
+
+    @Query("UPDATE Newsgroup SET alias=:ngAlias WHERE newsgroup_server_id=:serverId AND id = :newsgroupId")
+    suspend fun updateAlias(serverId: Int, newsgroupId: Int, ngAlias: String)
+
+    @Query("UPDATE Newsgroup SET subscribed = 0 WHERE newsgroup_server_id = :serverId AND id = :newsgroupId")
+    suspend fun unsubscribeNewsgroupForServerId(serverId: Int, newsgroupId: Int)
 }

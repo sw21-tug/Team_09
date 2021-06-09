@@ -15,6 +15,7 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,6 +28,16 @@ class ChangeServerTest {
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
+
+    @After
+    fun after(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
 
     @Test
     fun changeServerTest() {

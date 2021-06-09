@@ -36,6 +36,12 @@ class NewsgroupController {
         }
     }
 
+    fun updateNewsgroup() {
+        for ((_, con) in servers) {
+            con.updateNewsGroup(currentNewsgroup!!)
+        }
+    }
+
     fun fetchNewsGroups(server: NewsgroupServer) {
         currentNewsgroups = servers.get(server)?.getNewsGroups()!!
     }
@@ -106,6 +112,21 @@ class NewsgroupController {
                 ng.newsgroupServerId = currentServer!!.id
             }
             db.newsgroupDao().insertAll(currentNewsgroups)
+        }
+    }
+
+    suspend fun removeNewsgroup(newsgroup: Newsgroup) {
+        if(currentServer != null) {
+            db.newsgroupDao().unsubscribeNewsgroupForServerId(currentServer!!.id, newsgroup.id)
+            newsgroup.subscribed = false
+        }
+    }
+
+    suspend fun renameNewsgroupAlias(newsgroup: Newsgroup, newAlias: String){
+        if(currentServer != null)
+        {
+            db.newsgroupDao().updateAlias(currentServer!!.id, newsgroup.id, newAlias)
+            newsgroup.alias = newAlias
         }
     }
 

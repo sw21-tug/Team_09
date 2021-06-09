@@ -28,14 +28,19 @@ class MainActivityTest {
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
-    @Before
-    fun clearDb(){
+    private fun clearDb(){
         InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
+
+    @Before
+    fun before(){
+        clearDb()
     }
 
     @Test
     fun activityAddNewsgroupTest() {
-        Thread.sleep(5000)
+        clearDb()
+        Thread.sleep(3000)
         val appCompatEditText = onView(
                 allOf(
                         withId(R.id.editText_name),
