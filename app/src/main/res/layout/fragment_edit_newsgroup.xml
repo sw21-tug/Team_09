@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/subtitle_edit_groups"
-/>/                android:text="Newsgroup-Configuration"
+                android:text="Newsgroup-Configuration"
                 android:textColor="@color/darkgrey"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -70,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
+            android:text="@string/label_newsgroup_name"
             android:textColor="@color/berry"
             android:textSize="20dp" />
 
