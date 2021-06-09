@@ -19,6 +19,7 @@ import com.tugraz.asd.modernnewsgroupapp.helper.SimpleSwipeCallback
 import com.tugraz.asd.modernnewsgroupapp.helper.SubscribedListAdapter
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import kotlinx.coroutines.launch
+import org.apache.commons.net.nntp.NNTPClient
 
 
 /**
@@ -29,6 +30,7 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var viewModel: ServerObservable
     private lateinit var binding: FragmentShowSubgroupsBinding
     private lateinit var controller: NewsgroupController
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
