@@ -7,6 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +18,7 @@ class ShowMessageThreadsTest {
 
     @Rule
     @JvmField
-    var rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
     fun clearDb() {
@@ -42,6 +43,8 @@ class ShowMessageThreadsTest {
         onView(withText("control.checkgroups")).perform(ViewActions.click())
         onView(withText("FINISH")).perform(ViewActions.click())
         onView(withText("control.checkgroups")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
         onView(withText(R.string.feedback_no_message_threads)).check(matches((isDisplayed())))
     }
 
@@ -52,6 +55,8 @@ class ShowMessageThreadsTest {
         onView(withText("vc-graz")).perform(ViewActions.click())
         onView(withText("FINISH")).perform(ViewActions.click())
         onView(withText("vc-graz")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
         onView(withId(R.layout.layout_thread)).check(matches((isDisplayed())))
     }
 }
