@@ -14,6 +14,7 @@ import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import kotlinx.coroutines.launch
+import org.apache.commons.net.nntp.NNTPClient
 
 
 /**
@@ -23,10 +24,12 @@ class FragmentAddNewsgroup : Fragment() {
 
     private lateinit var binding: FragmentAddNewsgroupBinding
     private lateinit var viewModel: ServerObservable
+    private lateinit var client_: NNTPClient
+    private var stop_ : Boolean = false
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         viewModel = activity?.run {
@@ -65,11 +68,38 @@ class FragmentAddNewsgroup : Fragment() {
             return
         }
 
+        client_ = NNTPClient()
+        stop_ = false
+        val t = Thread {
+            try {
+                client_.connect(hostname.toString(), 119)
+            }catch (e:Exception)
+            {
+                stop_ = true
+            }
+        }
+
+        try {
+            t.start()
+        }catch (e:Exception)
+        {
+        }
+
+        t.join()
+
+        if(stop_)
+        {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
+            return
+        }
+        client_.disconnect()
+
         val controller = viewModel.controller.value
 
         if(controller == null) {
             return
         }
+
 
         val server = NewsgroupServer(host = hostname.toString(), username = name.text.toString(), email = email.toString())
         controller.addServer(server)
@@ -81,7 +111,7 @@ class FragmentAddNewsgroup : Fragment() {
         try {
             thread.start()
         } catch (e: Exception) {
-             when(e) {
+            when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
                     Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
                     println("Error on Server connection: " + e.message)
