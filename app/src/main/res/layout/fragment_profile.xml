@@ -70,12 +70,12 @@
     <Button
         android:id="@+id/button_save_profile"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
+        android:textSize="16dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:background="#FFFFFF"
+        android:background="@drawable/button_corner_round"
+        app:backgroundTint="#AA4075"
         android:text="@string/button_save"
-        app:backgroundTint="#38AB79"
-        app:cornerRadius="100dp"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
