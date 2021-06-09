@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentOpenReplyThreadBinding
 import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.helper.Helper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -31,6 +35,10 @@ class FragmentOpenReplyThread : Fragment() {
 
         binding.buttonBack.setOnClickListener {
             onButtonBackClick()
+        }
+
+        binding.buttonReplyThread.setOnClickListener() {
+            onButtonReplyThreadClick()
         }
 
         viewModel = activity?.run {
@@ -82,6 +90,32 @@ class FragmentOpenReplyThread : Fragment() {
 
     private fun onButtonReplyThreadClick() {
         // TODO call to reply to current reply thread
-        //findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+        val subject = "RE: " + controller.currentArticle!!.subject
+        val text = binding.tvThreadReplyMessagesBody.text
+
+       if (text.toString() == "") {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_missing_message))
+            return
+        }
+
+
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                if(!controller.postArticle(subject.toString(), text.toString(), controller.currentArticle)) {
+                    withContext(Dispatchers.Main) {
+                        Feedback.showError(requireView(), getString(R.string.feedback_send_fail))
+                    }
+
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Feedback.showSuccess(requireView(), getString(R.string.feedback_send_succeeded))
+                        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+                        // controller.currentArticle = null
+                        viewModel.controller.postValue(viewModel.controller.value)
+                    }
+                }
+            }
+        }
     }
 }
