@@ -48,7 +48,7 @@ class SwipeSubgroupListTest {
         clearDb()
         init()
         onView(withText("vc-graz")).perform(swipeLeft())
-        onView(withText("vc-graz")).check(matches((isDisplayed())))
+        onView(withText("vc-graz")).check(matches(not(isDisplayed())))
     }
 
     @Test

@@ -35,7 +35,7 @@ class MainActivityTest {
 
     @Test
     fun activityAddNewsgroupTest() {
-        Thread.sleep(5000)
+        Thread.sleep(3000)
         val appCompatEditText = onView(
                 allOf(
                         withId(R.id.editText_name),
