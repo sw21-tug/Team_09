@@ -23,11 +23,10 @@ class FragmentAddNewsgroup : Fragment() {
 
     private lateinit var binding: FragmentAddNewsgroupBinding
     private lateinit var viewModel: ServerObservable
-    private var invalid_server = false
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         viewModel = activity?.run {
@@ -79,20 +78,17 @@ class FragmentAddNewsgroup : Fragment() {
             controller.fetchNewsGroups()
         }
 
-
-        lifecycleScope.launch {
-            try {
-                controller.fetchNewsGroups()
-            } catch (e: Exception) {
-                when (e) {
-                    is NewsgroupConnection.NewsgroupConnectionException -> {
-                        //Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
-                        println("Error on Server connection: " + e.message)
-                        invalid_server = true
-                    }
-                    else -> {
-                        throw e
-                    }
+        try {
+            thread.start()
+        } catch (e: Exception) {
+            when(e) {
+                is NewsgroupConnection.NewsgroupConnectionException -> {
+                    Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
+                    println("Error on Server connection: " + e.message)
+                    return
+                }
+                else -> {
+                    throw e
                 }
             }
         }
@@ -101,28 +97,25 @@ class FragmentAddNewsgroup : Fragment() {
             server.alias = serverAlias.toString()
         }
 
-        //thread.join()
+        thread.join()
 
-        if(!invalid_server) {
-            lifecycleScope.launch {
-                server.id =
-                    (activity as? MainActivity)?.db?.newsgroupServerDao()?.insert(server)?.toInt()
-                        ?: 0
-            }
-            lifecycleScope.launch {
-                if (controller.currentServer != null)
-                    controller.setCurrentServerDB(controller.currentServer!!.id, false)
 
-                controller.setCurrentServerDB(server.id, true)
-                controller.currentServer = server
-                findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
-            }
-        }
-        else
-        {
-            findNavController().navigate(R.id.action_FragmentAddNewsgroup_self)
+        lifecycleScope.launch {
+            server.id =
+                (activity as? MainActivity)?.db?.newsgroupServerDao()?.insert(server)?.toInt() ?: 0
         }
 
+
+        lifecycleScope.launch {
+            if (controller.currentServer != null)
+                controller.setCurrentServerDB(controller.currentServer!!.id, false)
+
+            controller.setCurrentServerDB(server.id, true)
+        }
+
+        controller.currentServer = server
+
+        findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
     }
 
     private fun isValidEmail(target: CharSequence): Boolean {
