@@ -39,6 +39,12 @@ class FragmentOpenThread : Fragment() {
             onButtonBackClick()
         }
 
+        binding.buttonReplyThread.setOnClickListener() {
+            onButtonReplyThreadClick()
+        }
+
+
+
         viewModel = activity?.run {
             ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
@@ -119,7 +125,7 @@ class FragmentOpenThread : Fragment() {
     }
 
     private fun onButtonReplyThreadClick() {
-        // TODO call to reply to current thread
-        // findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
+        controller.currentReplyArticle = controller.currentArticle
+         findNavController().navigate(R.id.action_fragmentOpenThread_to_fragmentOpenReplyThread)
     }
 }
