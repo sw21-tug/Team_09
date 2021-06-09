@@ -1,6 +1,7 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.tugraz.asd.modernnewsgroupapp.helper.Helper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.StringBuilder
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -52,7 +54,15 @@ class FragmentOpenReplyThread : Fragment() {
         binding.replyHeaderText.text = controller.currentReplyArticle?.subject
         binding.tvReplyMessageDate.text = Helper.formatDate(controller.currentReplyArticle?.date)
 
-        binding.tvThreadReplyMessagesBody.text = messageThread
+        val lines = messageThread?.lines()
+        val originalMessage = StringBuilder()
+
+        lines?.forEach { originalMessage.appendLine("> $it")  }
+
+        binding.tvThreadReplyMessagesBody.setText(originalMessage.toString())
+
+
+
 
         return binding.root
     }
