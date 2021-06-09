@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class LanguageSwitcherTest {
+class LanguageSwitcherTest___ {
 
     @Rule
     @JvmField
@@ -404,7 +404,6 @@ class LanguageSwitcherTest {
 
         val appCompatCheckedTextView = onView(allOf(withText("English")))
         appCompatCheckedTextView.perform(click())
-
 
         val materialButton7 = onView(
             allOf(
