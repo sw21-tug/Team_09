@@ -81,7 +81,7 @@ class FragmentProfile : Fragment() {
                 conf.locale = new_locale
                 res.updateConfiguration(conf, dm)
                 currentLocale = new_locale
-                val refresh = Intent(requireView().context, MainActivity::class.java)
+
 
                 val prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 if (prefs != null) {
@@ -90,6 +90,7 @@ class FragmentProfile : Fragment() {
                         apply()
                     }
                 }
+                val refresh = Intent(requireView().context, MainActivity::class.java)
 
                 startActivity(refresh)
             } else {
