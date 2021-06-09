@@ -46,7 +46,6 @@ class NewsgroupConnection (var server: NewsgroupServer){
     fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article? {
         ensureConnection()
         if (sg != null) {
-            print("name of ng to select: " + sg.name)
             if(client.selectNewsgroup(sg.name))
                 print("Newsgroup selected")
             else
@@ -94,13 +93,15 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
         if (article != null) {
             header.addHeaderField("References", article.articleId)
-
+            println(header.toString())
             }
 
         writer.write(header.toString())
         writer.write(message)
         writer.close()
-        client.completePendingCommand()
+//        client.completePendingCommand()
+        println(client.completePendingCommand())
+        println(client.replyString)
         return true
     }
 

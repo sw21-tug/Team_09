@@ -16,7 +16,7 @@ class AnswerArticleTest {
 
     @Test
     fun answerTestArticle() {
-        val server = NewsgroupServer(0, HOST, username = "test@tugrazngtest.local")
+        val server = NewsgroupServer(0, HOST, email = "test@tugrazngtest.local")
 
         val controller = NewsgroupController()
         controller.addServer(server)
@@ -31,7 +31,8 @@ class AnswerArticleTest {
         val newsgroup = newsgroups[0]
         controller.currentNewsgroup = newsgroup
         controller.fetchArticles()
-        val article = controller.currentArticles
+        val article = controller.currentArticles?.next
+
 
         controller.postArticle("ASD Android App Test", "This is a Test answer", article)
     }
