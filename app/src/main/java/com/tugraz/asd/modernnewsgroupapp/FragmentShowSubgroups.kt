@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
@@ -18,6 +19,7 @@ import com.tugraz.asd.modernnewsgroupapp.helper.SimpleSwipeCallback
 import com.tugraz.asd.modernnewsgroupapp.helper.SubscribedListAdapter
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import kotlinx.coroutines.launch
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -59,8 +61,19 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
             val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups, viewModel)
             binding.recyclerView.layoutManager = LinearLayoutManager(context)
             binding.recyclerView.adapter = recycleAdapter
+            binding.recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
 
-            val itemTouchHelper = ItemTouchHelper(SimpleSwipeCallback(requireContext(), recycleAdapter))
+            val itemTouchHelper = ItemTouchHelper(
+                SimpleSwipeCallback(
+                    requireContext(),
+                    recycleAdapter
+                )
+            )
             itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
             binding.buttonAddSubgroups.setOnClickListener {
@@ -86,7 +99,8 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
                 }
             }
             val spinner: Spinner = binding.newsgroupsList
-            val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
+            val adapter: ArrayAdapter<Any?> = ArrayAdapter(
+                this.requireContext(), android.R.layout.simple_spinner_item,
                 list as List<Any?>
             )
 
@@ -103,7 +117,7 @@ class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-       val con_list : ArrayList<NewsgroupConnection> = ArrayList(viewModel.controller.value!!.servers.values)
+        val con_list : ArrayList<NewsgroupConnection> = ArrayList(viewModel.controller.value!!.servers.values)
         val con = con_list[position]
 
         if(viewModel.controller.value!!.currentServer != con.server)
