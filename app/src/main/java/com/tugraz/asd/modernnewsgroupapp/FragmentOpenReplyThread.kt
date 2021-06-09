@@ -89,7 +89,6 @@ class FragmentOpenReplyThread : Fragment() {
     }
 
     private fun onButtonReplyThreadClick() {
-        // TODO call to reply to current reply thread
         val subject = "RE: " + controller.currentArticle!!.subject
         val text = binding.tvThreadReplyMessagesBody.text
 
@@ -102,7 +101,7 @@ class FragmentOpenReplyThread : Fragment() {
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if(!controller.postArticle(subject.toString(), text.toString(), controller.currentArticle)) {
+                if(!controller.postArticle(subject.toString(), text.toString(), controller.currentReplyArticle)) {
                     withContext(Dispatchers.Main) {
                         Feedback.showError(requireView(), getString(R.string.feedback_send_fail))
                     }
@@ -110,8 +109,8 @@ class FragmentOpenReplyThread : Fragment() {
                 } else {
                     withContext(Dispatchers.Main) {
                         Feedback.showSuccess(requireView(), getString(R.string.feedback_send_succeeded))
-                        findNavController().navigate(R.id.action_FragmentMessageThreads_to_FragmentCreateThread)
-                        // controller.currentArticle = null
+                        findNavController().navigate(R.id.action_fragmentOpenReplyThread_to_fragmentOpenThread)
+                        controller.currentReplyArticle = null
                         viewModel.controller.postValue(viewModel.controller.value)
                     }
                 }
