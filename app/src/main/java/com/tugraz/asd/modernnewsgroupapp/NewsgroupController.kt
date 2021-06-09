@@ -71,12 +71,12 @@ class NewsgroupController {
         }
     }
 
-    fun postArticle(subject: String, message: String): Boolean {
+    fun postArticle(subject: String, message: String, article: Article? = null): Boolean {
         if(currentServer == null || currentNewsgroup == null) return false
 
         val con = getConnById(currentServer!!.id) ?: return false
 
-        return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message)
+        return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message, article)
     }
 
     suspend fun loadServersFromDB() {

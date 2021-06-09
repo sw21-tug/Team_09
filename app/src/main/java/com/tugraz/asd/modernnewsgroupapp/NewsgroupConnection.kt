@@ -80,7 +80,7 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return client.retrieveArticleBody(articleId).use(BufferedReader::readText)
     }
 
-    fun postArticle(newsgroup: Newsgroup, from: String, subject: String, message: String): Boolean {
+    fun postArticle(newsgroup: Newsgroup, from: String, subject: String, message: String, article: Article? = null): Boolean {
         ensureConnection()
 
         if(!client.isAllowedToPost) return false
@@ -91,6 +91,12 @@ class NewsgroupConnection (var server: NewsgroupServer){
 
         val header = SimpleNNTPHeader(from, subject)
         header.addNewsgroup(newsgroup.name)
+
+        if (article != null) {
+            header.addHeaderField("References", article.articleId)
+
+            }
+
         writer.write(header.toString())
         writer.write(message)
         writer.close()

@@ -74,6 +74,7 @@ class FragmentOpenReplyThread : Fragment() {
         thread.join()
     }
 
+
     private fun onButtonBackClick() {
         controller.currentReplyArticle = null
         findNavController().navigate(R.id.action_fragmentOpenReplyThread_to_fragmentOpenThread)
