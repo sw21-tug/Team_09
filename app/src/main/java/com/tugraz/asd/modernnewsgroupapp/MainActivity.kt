@@ -10,10 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.tugraz.asd.modernnewsgroupapp.db.NewsgroupDb
 import com.tugraz.asd.modernnewsgroupapp.helper.ContextUtils
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +52,9 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 skipSetup = true;
                 controller.loadServersFromDB()
-                controller.currentServer = controller.servers.keys.first()
+                controller.currentServer = controller.getCurrentServerFromDB()
+                if(controller.currentServer == null)
+                    controller.currentServer = controller.servers.keys.first()
                 controller.loadNewsgroupsFromDB();
                 viewModel.controller.postValue(controller)
             }

@@ -4,7 +4,6 @@ import com.tugraz.asd.modernnewsgroupapp.db.NewsgroupDb
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
 import org.apache.commons.net.nntp.Article
-import org.apache.commons.net.nntp.Threadable
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
@@ -64,6 +63,14 @@ class NewsgroupController {
         }
     }
 
+    suspend fun getCurrentServerFromDB(): NewsgroupServer {
+        return db.newsgroupServerDao().getCurrentServer()
+    }
+
+    suspend fun setCurrentServerDB(id: Int, current: Boolean) {
+        db.newsgroupServerDao().updateCurrentServer(id, current)
+    }
+
     suspend fun loadNewsgroupsFromDB() {
         currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
         println("Loaded NGs from DB: " + currentNewsgroups.size)
@@ -89,9 +96,12 @@ class NewsgroupController {
         }
     }
 
-    fun renameCurrentAlias(newAlias: String){
+    suspend fun renameCurrentAlias(newAlias: String){
         if(currentServer != null)
+        {
+            db.newsgroupServerDao().updateAlias(currentServer!!.id, newAlias)
             currentServer!!.alias = newAlias
+        }
     }
 
 }
