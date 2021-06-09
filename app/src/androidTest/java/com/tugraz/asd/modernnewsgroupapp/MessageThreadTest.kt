@@ -9,7 +9,6 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
@@ -29,7 +28,6 @@ class MessageThreadTest {
 
     @Rule
     @JvmField
-
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
@@ -39,7 +37,7 @@ class MessageThreadTest {
 
     @Test
     fun messageThreadTest_() {
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),
@@ -68,22 +66,52 @@ class MessageThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText2.perform(replaceText("test@test.at"), closeSoftKeyboard())
+        appCompatEditText2.perform(replaceText("tes@t"), closeSoftKeyboard())
 
         val appCompatEditText3 = onView(
             allOf(
-                withId(R.id.editText_serverAlias),
+                withId(R.id.editText_email), withText("tes@t"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.linearLayout2),
                         1
                     ),
-                    5
+                    2
                 ),
                 isDisplayed()
             )
         )
-        appCompatEditText3.perform(replaceText("test"), closeSoftKeyboard())
+        appCompatEditText3.perform(click())
+
+        val appCompatEditText4 = onView(
+            allOf(
+                withId(R.id.editText_email), withText("tes@t"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText4.perform(replaceText("tes@t.com"))
+
+        val appCompatEditText5 = onView(
+            allOf(
+                withId(R.id.editText_email), withText("tes@t.com"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText5.perform(closeSoftKeyboard())
 
         val materialButton = onView(
             allOf(
@@ -103,7 +131,7 @@ class MessageThreadTest {
         )
         materialButton.perform(click())
 
-        val appCompatEditText4 = onView(
+        val appCompatEditText6 = onView(
             allOf(
                 withId(R.id.editTextGroupFilter),
                 childAtPosition(
@@ -119,7 +147,25 @@ class MessageThreadTest {
                 isDisplayed()
             )
         )
-        appCompatEditText4.perform(replaceText("oad"), closeSoftKeyboard())
+        appCompatEditText6.perform(click())
+
+        val appCompatEditText7 = onView(
+            allOf(
+                withId(R.id.editTextGroupFilter),
+                childAtPosition(
+                    allOf(
+                        withId(R.id.linearLayout3),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            0
+                        )
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText7.perform(replaceText("oad"), closeSoftKeyboard())
 
         val materialCheckBox = onView(
             allOf(
@@ -164,17 +210,27 @@ class MessageThreadTest {
             )
         )
         recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-
-
-        val textView = onView(
+        Thread.sleep(3000);
+        val materialTextView = onView(
             allOf(
                 withId(R.id.thread_title), withText("10.10.2018 00:38\nGruppensuche"),
-                withParent(withParent(withId(R.id.expandableView_show_messages))),
+                childAtPosition(
+                    withParent(withId(R.id.expandableView_show_messages)),
+                    0
+                ),
                 isDisplayed()
             )
         )
-        textView.check(matches(withText("10.10.2018 00:38 Gruppensuche")))
-
+        materialTextView.perform(click())
+        Thread.sleep(3000);
+        val textView = onView(
+            allOf(
+                withId(R.id.header_text), withText("Gruppensuche"),
+                withParent(withParent(withId(R.id.header_messages))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(withText("Gruppensuche")))
     }
 
     private fun childAtPosition(
