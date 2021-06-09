@@ -44,9 +44,10 @@ class FragmentShowMessages : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         viewModel.controller.observe(viewLifecycleOwner) {
-            if(!::controller.isInitialized) {
+            if(!::controller.isInitialized || controller.currentArticles == null) {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
+                        viewModel.controller.value!!.updateNewsgroup()
                         viewModel.controller.value!!.fetchArticles()
                         controller = viewModel.controller.value!!
                         viewModel.controller.postValue(viewModel.controller.value)

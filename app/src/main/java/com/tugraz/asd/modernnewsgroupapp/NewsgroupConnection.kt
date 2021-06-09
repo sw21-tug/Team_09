@@ -43,6 +43,19 @@ class NewsgroupConnection (var server: NewsgroupServer){
         return groups
     }
 
+    fun updateNewsGroup(newsgroup: Newsgroup) {
+        ensureConnection()
+        val response = client.listNewsgroups()
+
+        for (group in response) {
+            if (newsgroup.name == group.newsgroup) {
+                newsgroup.firstArticle = group.firstArticleLong
+                newsgroup.lastArticle = group.lastArticleLong
+            }
+            //groups.add(Newsgroup(name = group.newsgroup, newsgroupServerId = server.id, firstArticle = group.firstArticleLong, lastArticle = group.lastArticleLong))
+        }
+    }
+
     fun getArticleHeaders(sg: Newsgroup?, retry: Int = 0): Article? {
         ensureConnection()
         if (sg != null) {

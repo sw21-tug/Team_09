@@ -36,6 +36,12 @@ class NewsgroupController {
         }
     }
 
+    fun updateNewsgroup() {
+        for ((_, con) in servers) {
+            con.updateNewsGroup(currentNewsgroup!!)
+        }
+    }
+
     fun fetchNewsGroups(server: NewsgroupServer) {
         currentNewsgroups = servers.get(server)?.getNewsGroups()!!
     }
