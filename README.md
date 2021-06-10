@@ -1,5 +1,5 @@
 # Team_09
-## Modern Newsgroup App
+## EverNews - a modern Newsgroup App
 The motivation for this project is that students of the TU Graz need the TU Graz newsgroup for a lot of their lectures. Actually, there is no really good client for Android available. Most of the available apps are not really free and filled with ads. Furthermore, the existing solutions are only simple clients and do not offer more than that.
 
 The idea is to create an app, which will not only be a simple newsgroup reader. Additionally, it will have features like setting aliases for all your groups and subgroups, filter and sort entries, set message threads to your personal favourites to follow them and see your own messages and threads in a different tab/view.
