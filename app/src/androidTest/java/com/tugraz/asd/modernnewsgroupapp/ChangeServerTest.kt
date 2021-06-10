@@ -42,161 +42,161 @@ class ChangeServerTest {
     @Test
     fun changeServerTest() {
         val appCompatEditText = onView(
-allOf(withId(R.id.editText_name),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-1),
-isDisplayed()))
+            allOf(withId(R.id.editText_name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    1),
+                isDisplayed()))
         appCompatEditText.perform(replaceText("pe"), closeSoftKeyboard())
-        
+
         val appCompatEditText2 = onView(
-allOf(withId(R.id.editText_email),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-2),
-isDisplayed()))
+            allOf(withId(R.id.editText_email),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    2),
+                isDisplayed()))
         appCompatEditText2.perform(replaceText("pe@v.m"), closeSoftKeyboard())
-        
+
         val appCompatEditText3 = onView(
-allOf(withId(R.id.editText_serverAlias),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-5),
-isDisplayed()))
+            allOf(withId(R.id.editText_serverAlias),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    5),
+                isDisplayed()))
         appCompatEditText3.perform(replaceText("pe"), closeSoftKeyboard())
-        
+
         val materialButton = onView(
-allOf(withId(R.id.button_subscribe), withText("NEXT"),
-childAtPosition(
-allOf(withId(R.id.linearLayout5),
-childAtPosition(
-withId(R.id.linearLayout2),
-2)),
-0),
-isDisplayed()))
+            allOf(withId(R.id.button_subscribe), withText("NEXT"),
+                childAtPosition(
+                    allOf(withId(R.id.linearLayout5),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            2)),
+                    0),
+                isDisplayed()))
         materialButton.perform(click())
-        
+
         val materialCheckBox = onView(
-allOf(withId(R.id.checkBox), withText("tu-graz.algorithmen"),
-childAtPosition(
-childAtPosition(
-withId(R.id.linear_scroll),
-0),
-0),
-isDisplayed()))
+            allOf(withId(R.id.checkBox), withText("tu-graz.algorithmen"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linear_scroll),
+                        0),
+                    0),
+                isDisplayed()))
         materialCheckBox.perform(click())
-        
+
         val materialButton2 = onView(
-allOf(withId(R.id.button_finish), withText("FINISH"),
-childAtPosition(
-allOf(withId(R.id.linearLayout4),
-childAtPosition(
-withId(R.id.linearLayout2),
-2)),
-1),
-isDisplayed()))
+            allOf(withId(R.id.button_finish), withText("FINISH"),
+                childAtPosition(
+                    allOf(withId(R.id.linearLayout4),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            2)),
+                    1),
+                isDisplayed()))
         materialButton2.perform(click())
-        
+
         val appCompatImageButton = onView(
-allOf(withId(R.id.button_add_server),
-childAtPosition(
-allOf(withId(R.id.simple_spinner_dropdown_item),
-childAtPosition(
-withId(R.id.linearLayout2),
-0)),
-3),
-isDisplayed()))
+            allOf(withId(R.id.button_add_server),
+                childAtPosition(
+                    allOf(withId(R.id.simple_spinner_dropdown_item),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            0)),
+                    3),
+                isDisplayed()))
         appCompatImageButton.perform(click())
-        
+
         val appCompatEditText4 = onView(
-allOf(withId(R.id.editText_name),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-1),
-isDisplayed()))
+            allOf(withId(R.id.editText_name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    1),
+                isDisplayed()))
         appCompatEditText4.perform(replaceText("nis"), closeSoftKeyboard())
-        
+
         val appCompatEditText5 = onView(
-allOf(withId(R.id.editText_email),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-2),
-isDisplayed()))
+            allOf(withId(R.id.editText_email),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    2),
+                isDisplayed()))
         appCompatEditText5.perform(replaceText("nis@gmail.com"), closeSoftKeyboard())
-        
+
         val appCompatEditText6 = onView(
-allOf(withId(R.id.editText_serverAlias),
-childAtPosition(
-childAtPosition(
-withId(R.id.linearLayout2),
-1),
-5),
-isDisplayed()))
+            allOf(withId(R.id.editText_serverAlias),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linearLayout2),
+                        1),
+                    5),
+                isDisplayed()))
         appCompatEditText6.perform(replaceText("nis"), closeSoftKeyboard())
-        
+
         val materialButton3 = onView(
-allOf(withId(R.id.button_subscribe), withText("NEXT"),
-childAtPosition(
-allOf(withId(R.id.linearLayout5),
-childAtPosition(
-withId(R.id.linearLayout2),
-2)),
-0),
-isDisplayed()))
+            allOf(withId(R.id.button_subscribe), withText("NEXT"),
+                childAtPosition(
+                    allOf(withId(R.id.linearLayout5),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            2)),
+                    0),
+                isDisplayed()))
         materialButton3.perform(click())
-        
+
         val appCompatEditText7 = onView(
-allOf(withId(R.id.editTextGroupFilter),
-childAtPosition(
-allOf(withId(R.id.linearLayout3),
-childAtPosition(
-withId(R.id.linearLayout2),
-0)),
-2),
-isDisplayed()))
+            allOf(withId(R.id.editTextGroupFilter),
+                childAtPosition(
+                    allOf(withId(R.id.linearLayout3),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            0)),
+                    2),
+                isDisplayed()))
         appCompatEditText7.perform(replaceText("ci"), closeSoftKeyboard())
-        
+
         val materialCheckBox2 = onView(
-allOf(withId(R.id.checkBox), withText("tu-graz.lv.ci"),
-childAtPosition(
-childAtPosition(
-withId(R.id.linear_scroll),
-11),
-0),
-isDisplayed()))
+            allOf(withId(R.id.checkBox), withText("tu-graz.lv.ci"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.linear_scroll),
+                        11),
+                    0),
+                isDisplayed()))
         materialCheckBox2.perform(click())
-        
+
         val materialButton4 = onView(
-allOf(withId(R.id.button_finish), withText("FINISH"),
-childAtPosition(
-allOf(withId(R.id.linearLayout4),
-childAtPosition(
-withId(R.id.linearLayout2),
-2)),
-1),
-isDisplayed()))
+            allOf(withId(R.id.button_finish), withText("FINISH"),
+                childAtPosition(
+                    allOf(withId(R.id.linearLayout4),
+                        childAtPosition(
+                            withId(R.id.linearLayout2),
+                            2)),
+                    1),
+                isDisplayed()))
         materialButton4.perform(click())
-        
+
         val textView = onView(
-allOf(withId(R.id.tv_subgroup_name), withText("tu-graz.lv.ci"),
-withParent(allOf(withId(R.id.subgroup_entry_layout),
-withParent(withId(R.id.recyclerView)))),
-isDisplayed()))
+            allOf(withId(R.id.tv_subgroup_name), withText("tu-graz.lv.ci"),
+                withParent(allOf(withId(R.id.recyclerView),
+                    withParent(withId(R.id.linearLayout2)))),
+                isDisplayed()))
         textView.check(matches(withText("tu-graz.lv.ci")))
-        }
-    
+    }
+
     private fun childAtPosition(
-            parentMatcher: Matcher<View>, position: Int): Matcher<View> {
+        parentMatcher: Matcher<View>, position: Int): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
             override fun describeTo(description: Description) {
@@ -211,4 +211,4 @@ isDisplayed()))
             }
         }
     }
-    }
+}

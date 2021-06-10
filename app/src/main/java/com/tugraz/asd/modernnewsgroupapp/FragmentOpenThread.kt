@@ -65,7 +65,7 @@ class FragmentOpenThread : Fragment() {
     {
         val thread = Thread {
             val currentArticle = controller.currentArticle
-            messageThread = controller.currentServer?.let { controller.fetchCurrentArticleBody(it) }
+            messageThread = controller.fetchCurrentArticleBody()
 
             if (currentArticle?.kid != null) {
                 generateReplyMessages(currentArticle.kid)
@@ -105,7 +105,7 @@ class FragmentOpenThread : Fragment() {
     private fun generateReplyMessages(article: Article) {
 
         header.add(article)
-        val articleMessage = controller.currentServer?.let { controller.fetchArticleBodyById(it, article.articleNumberLong) }
+        val articleMessage = controller.fetchArticleBodyById(article.articleNumberLong)
         if (articleMessage != null) {
             body[article.articleId] = articleMessage
         }

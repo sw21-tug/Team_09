@@ -12,10 +12,16 @@ class Helper {
 
             var output = ""
             if (!date.isNullOrEmpty()) {
-                val dateShort = date.substring(5, 25)
+                val dateShort = date.substring(5, 30)
                 val parser = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
                 val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                output = formatter.format(parser.parse(dateShort))
+                try
+                {
+                    output = formatter.format(parser.parse(dateShort))
+                }catch (e:Exception)
+                {
+                    return output
+                }
             }
 
             return output
