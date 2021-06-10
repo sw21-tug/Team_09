@@ -86,6 +86,7 @@ class SubscribedListAdapter(private val items: MutableList<Newsgroup>, private v
         builder.setView(input)
 
         builder.setPositiveButton(ctx.getString(R.string.save)) { _, _ ->
+            newsgroup.alias = input.text.toString()
             viewmodel.viewModelScope.launch {
                 viewmodel.controller.value!!.renameNewsgroupAlias(newsgroup, input.text.toString())
             }

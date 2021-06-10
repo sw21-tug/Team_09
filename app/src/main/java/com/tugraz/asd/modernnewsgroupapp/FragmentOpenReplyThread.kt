@@ -71,7 +71,7 @@ class FragmentOpenReplyThread : Fragment() {
     {
         val thread = Thread {
             val currentReplyArticle = controller.currentReplyArticle
-            messageThread = controller.currentServer?.let { controller.fetchArticleBodyById(it, currentReplyArticle!!.articleNumberLong) }
+            messageThread = controller.fetchArticleBodyById(currentReplyArticle!!.articleNumberLong)
         }
         try {
             thread.start()
