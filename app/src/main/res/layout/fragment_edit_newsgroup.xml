@@ -5,7 +5,6 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentEditNewsgroup">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
-        android:background="#F5F5F5"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -41,16 +39,17 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/darkgrey"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:id="@+id/subtitle_edit_groups"
                 android:text="Newsgroup-Configuration"
                 android:textColor="@color/darkgrey"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -67,10 +66,11 @@
         tools:layout_editor_absoluteX="24dp">
 
         <TextView
+            android:id="@+id/news_or_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_newsgroup_name"
             android:textAllCaps="true"
+            android:text="@string/label_newsgroup_name"
             android:textColor="@color/berry"
             android:textSize="20dp" />
 
@@ -81,7 +81,7 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:textColor="@color/darkgrey"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.127"
@@ -103,19 +103,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:maxLines="1"
-            android:textSize="20dp"
+            android:textSize="18dp"
             app:backgroundTint="@color/berry" />
     </LinearLayout>
 
     <Button
         android:id="@+id/button_save_newsgroup"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="10dp"
-        android:background="#FFFFFF"
+        android:textSize="16dp"
+        android:background="@drawable/button_corner_round"
         android:text="@string/button_save"
         app:backgroundTint="#38AB79"
         app:cornerRadius="100dp"
@@ -127,13 +128,14 @@
     <Button
         android:id="@+id/button_delete_newsgroup"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="40dp"
-        android:background="#DE553E"
+        android:textSize="16dp"
         android:text="@string/button_delete_newsgroup"
         app:backgroundTint="#DE553E"
         app:cornerRadius="100dp"
+        android:background="@drawable/button_corner_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

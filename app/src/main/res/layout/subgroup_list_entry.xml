@@ -1,0 +1,10 @@
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_subgroup_name"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:paddingLeft="20dp"
+    android:gravity="center|left"
+    android:textColor="@color/darkgrey"
+    android:textSize="18dp"
+    android:text="@string/tv_text" />

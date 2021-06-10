@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentAddNewsgroupBinding
+import com.tugraz.asd.modernnewsgroupapp.helper.Feedback
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import kotlinx.coroutines.launch
+import org.apache.commons.net.nntp.NNTPClient
 
 
 /**
@@ -20,46 +24,85 @@ class FragmentAddNewsgroup : Fragment() {
 
     private lateinit var binding: FragmentAddNewsgroupBinding
     private lateinit var viewModel: ServerObservable
+    private lateinit var client_: NNTPClient
+    private var stop_ : Boolean = false
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentAddNewsgroupBinding.inflate(layoutInflater)
-        val view = binding.root
-        binding.buttonSubscribe.setOnClickListener() {
-            onButtonSubscribeClick()
-        }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
+
+
+        if((activity as? MainActivity)?.skipSetup!!) {
+            (activity as? MainActivity)?.skipSetup = false
+            findNavController().navigate(R.id.action_FragmentAddNewsgroup_to_FragmentShowSubgroups)
+        }
+
+        // Inflate the layout for this fragment
+        binding = FragmentAddNewsgroupBinding.inflate(layoutInflater)
+        binding.buttonSubscribe.setOnClickListener {
+            onButtonSubscribeClick()
+        }
+        return binding.root
     }
 
-    fun onButtonSubscribeClick() {
+    private fun onButtonSubscribeClick() {
         val email = binding.editTextEmail.text
         val name = binding.editTextName
         val hostname = binding.editTextNewsgroupServer.text
         val serverAlias = binding.editTextServerAlias.text
 
-
-        if(!isValidEmail(email)) {
-            // TODO: show error message
+        // check if user provided valid name and email address for newsgroup server subscription
+        if (name.text.toString() == "" && !isValidEmail(email)) {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_name_email))
+            return
+        } else if (name.text.toString() == "") {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_name))
+            return
+        } else if (!isValidEmail(email)) {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_wrong_email))
             return
         }
 
-        val controller = NewsgroupController()
-        var server = NewsgroupServer(hostname.toString())
+        client_ = NNTPClient()
+        stop_ = false
+        val t = Thread {
+            try {
+                client_.connect(hostname.toString(), 119)
+            }catch (e:Exception)
+            {
+                stop_ = true
+            }
+        }
 
+        try {
+            t.start()
+        }catch (e:Exception)
+        {
+        }
+
+        t.join()
+
+        if(stop_)
+        {
+            Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
+            return
+        }
+        client_.disconnect()
+
+        val controller = viewModel.controller.value
+
+        if(controller == null) {
+            return
+        }
+
+
+        val server = NewsgroupServer(host = hostname.toString(), username = name.text.toString(), email = email.toString())
         controller.addServer(server)
-
-        System.out.println("Server: " + server.host)
 
         val thread = Thread {
             controller.fetchNewsGroups()
@@ -68,10 +111,10 @@ class FragmentAddNewsgroup : Fragment() {
         try {
             thread.start()
         } catch (e: Exception) {
-             when(e) {
+            when(e) {
                 is NewsgroupConnection.NewsgroupConnectionException -> {
-                    // TODO: show error message
-                    System.out.println("Error on Server connection: " + e.message)
+                    Feedback.showError(this.requireView(), getString(R.string.feedback_server_connection_error))
+                    println("Error on Server connection: " + e.message)
                     return
                 }
                 else -> {
@@ -80,25 +123,32 @@ class FragmentAddNewsgroup : Fragment() {
             }
         }
 
-        if(serverAlias.length > 0) {
+        if(serverAlias.isNotEmpty()) {
             server.alias = serverAlias.toString()
         }
 
         thread.join()
 
-        if( viewModel.data.value == null)
-        {
-            val controller : NewsgroupController = NewsgroupController()
-            viewModel.data.value = controller
+
+        lifecycleScope.launch {
+            server.id =
+                (activity as? MainActivity)?.db?.newsgroupServerDao()?.insert(server)?.toInt() ?: 0
         }
-        viewModel.data.value!!.currentServer = server
-        viewModel.data.value!!.addServer(server)
+
+
+        lifecycleScope.launch {
+            if (controller.currentServer != null)
+                controller.setCurrentServerDB(controller.currentServer!!.id, false)
+
+            controller.setCurrentServerDB(server.id, true)
+        }
+
+        controller.currentServer = server
 
         findNavController().navigate(R.id.action_AddNewsgroup_to_Subscribe)
-
     }
 
-    fun isValidEmail(target: CharSequence?): Boolean {
+    private fun isValidEmail(target: CharSequence): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 }

@@ -1,114 +1,142 @@
 package com.tugraz.asd.modernnewsgroupapp
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentShowSubgroupsBinding
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import com.tugraz.asd.modernnewsgroupapp.helper.SimpleSwipeCallback
+import com.tugraz.asd.modernnewsgroupapp.helper.SubscribedListAdapter
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
+import kotlinx.coroutines.launch
+import org.apache.commons.net.nntp.NNTPClient
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FragmentShowSubgroups : Fragment() {
+class FragmentShowSubgroups : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: ServerObservable
-    private lateinit var ngs: NewsgroupController
     private lateinit var binding: FragmentShowSubgroupsBinding
     private lateinit var controller: NewsgroupController
 
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
         binding = FragmentShowSubgroupsBinding.inflate(layoutInflater)
 
-        viewModel.data.observe(viewLifecycleOwner, Observer {
-            controller = viewModel.data.value!!
+        viewModel.controller.observe(viewLifecycleOwner, {
+            controller = viewModel.controller.value!!
+            onControllerChange()
         })
 
-        controller = viewModel.data.value!!
+        return binding.root
+    }
 
-        val subscribed_newsgroups = controller.currentServer?.newsGroups?.filter { newsgroup -> newsgroup.subscribed == true}
-        val scale = getResources().getDisplayMetrics().density;
+    private fun onControllerChange() {
+        if(controller.currentNewsgroup != null)
+        {
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentMessageThreads)
+        }
+        if(controller.isCurrentNewsgroupsInitialised()) {
+            val subscribedNewsgroups = controller.currentNewsgroups.filter { newsgroup -> newsgroup.subscribed } as MutableList<Newsgroup>
 
-        if (subscribed_newsgroups != null) {
-            for(ng in subscribed_newsgroups) {
-                val textview = TextView(activity)
-                val drawable = resources.getDrawable(R.drawable.border_top)
-                textview.text = ng.name
-                textview.width = ViewGroup.LayoutParams.MATCH_PARENT
-                textview.height = (80 * scale.toInt())
-                textview.gravity = Gravity.CENTER or Gravity.LEFT
-                textview.setPadding(50 * scale.toInt(), 0,0,0)
-                textview.setTextColor(Color.DKGRAY)
-                textview.background = drawable
-                textview.textSize = 20f
-                textview.setTypeface(Typeface.DEFAULT_BOLD)
+            val recycleAdapter = SubscribedListAdapter(subscribedNewsgroups, viewModel)
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+            binding.recyclerView.adapter = recycleAdapter
+            binding.recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
 
-                binding.viewShowSubgroups.addView(textview)
-            }
+            val itemTouchHelper = ItemTouchHelper(
+                SimpleSwipeCallback(
+                    requireContext(),
+                    recycleAdapter
+                )
+            )
+            itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-            binding.buttonAddSubgroups.setOnClickListener() {
+            binding.buttonAddSubgroups.setOnClickListener {
                 findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentSubscribe)
             }
+
+
+            val list: MutableList<String> = ArrayList()
+            var currentServerIndex = 0
+
+            for ((key, _) in controller.servers) {
+
+                val newsgroupServer = if (key.alias.isEmpty()) {
+                    key.host
+                } else {
+                    key.alias + " <" + key.host + ">"
+                }
+
+                list.add(newsgroupServer)
+
+                if (key == viewModel.controller.value!!.currentServer) {
+                    currentServerIndex = list.size - 1
+                }
+            }
+            val spinner: Spinner = binding.newsgroupsList
+            val adapter: ArrayAdapter<Any?> = ArrayAdapter(
+                this.requireContext(), android.R.layout.simple_spinner_item,
+                list as List<Any?>
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            // Initializing an ArrayAdapter
+            spinner.setSelection(currentServerIndex)
+            spinner.onItemSelectedListener = this
+
+
         }
+    }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-        val list: MutableList<String> = ArrayList()
-        var currentServerIndex = 0
+        val con_list : ArrayList<NewsgroupConnection> = ArrayList(viewModel.controller.value!!.servers.values)
+        val con = con_list[position]
 
-        for ((key, _) in  controller.servers) {
-            var newsgroupServer = ""
-            if(key.alias?.isEmpty()!!)
-            {
-                newsgroupServer = key.host.toString()
-            }
-            else
-            {
-                newsgroupServer = key.alias.toString() + " <" + key.host.toString() + ">"
-            }
-
-            list.add(newsgroupServer)
-
-            if(key == viewModel.data.value!!.currentServer) {
-                currentServerIndex = list.size -1
+        if(viewModel.controller.value!!.currentServer != con.server)
+        {
+            lifecycleScope.launch {
+                controller.currentServer?.id?.let { controller.setCurrentServerDB(it, false) }
+                controller.setCurrentServerDB(con.server.id, true)
+                viewModel.controller.value!!.currentServer = con.server
+                controller.loadNewsgroupsFromDB()
+                println("NG loaded from server")
+                onControllerChange()
             }
         }
+    }
 
-
-
-        val spinner : Spinner = binding.newsgroupsList
-
-
-        val adapter: ArrayAdapter<Any?> = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_item,
-            list as List<Any?>
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-
-
-        // Initializing an ArrayAdapter
-        spinner.setSelection(currentServerIndex)
-        return binding.root
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Needed
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,6 +149,12 @@ class FragmentShowSubgroups : Fragment() {
         view.findViewById<ImageButton>(R.id.button_show_profile).setOnClickListener {
             findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentProfile)
         }
+
+        view.findViewById<ImageButton>(R.id.button_add_server).setOnClickListener {
+            findNavController().navigate(R.id.action_FragmentShowSubgroups_to_FragmentAddNewsgroup)
+        }
     }
+
+
 
 }

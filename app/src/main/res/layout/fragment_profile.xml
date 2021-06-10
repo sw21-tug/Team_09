@@ -5,14 +5,12 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentEditNewsgroup">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#F5F5F5"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -72,12 +70,12 @@
     <Button
         android:id="@+id/button_save_profile"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
+        android:textSize="16dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:background="#FFFFFF"
+        android:background="@drawable/button_corner_round"
+        app:backgroundTint="#AA4075"
         android:text="@string/button_save"
-        app:backgroundTint="#38AB79"
-        app:cornerRadius="100dp"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

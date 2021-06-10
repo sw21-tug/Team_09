@@ -1,5 +1,6 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -13,11 +14,12 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tugraz.asd.modernnewsgroupapp.databinding.FragmentSubscribeBinding
 import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
-import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import kotlinx.coroutines.launch
 
 
 /**
@@ -40,24 +42,24 @@ class FragmentSubscribe : Fragment() {
         binding = FragmentSubscribeBinding.inflate(layoutInflater)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ServerObservable::class.java)
+            ViewModelProvider(this).get(ServerObservable::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        binding.buttonFinish.setOnClickListener() {
+        binding.buttonFinish.setOnClickListener {
             onButtonFinishClick()
         }
 
-        binding.buttonBack.setOnClickListener() {
+        binding.buttonBack.setOnClickListener {
             onButtonBackClick()
         }
 
         binding.editTextGroupFilter.addTextChangedListener(filterTextWatcher)
 
-        viewModel.data.observe(viewLifecycleOwner, Observer {
+        viewModel.controller.observe(viewLifecycleOwner, Observer {
 
             val newsgroupsToAdd = ArrayList<Newsgroup>()
 
-            newsgroupList = viewModel.data.value!!.currentServer.newsGroups as ArrayList<Newsgroup>
+            newsgroupList = viewModel.controller.value!!.currentNewsgroups as ArrayList<Newsgroup>
 
             //newsgroupList = viewModel.data.value?.newsGroups!! as ArrayList<Newsgroup>
             for (newsgroup in newsgroupList!!) {
@@ -68,7 +70,7 @@ class FragmentSubscribe : Fragment() {
 
                     // add parent newsgroup which does not exist (no subscribe possibility)
                     if (!newsgroupsToAdd.any{it.name == newsgroup.parent} && !newsgroupList!!.any {it.name == newsgroup.parent}) {
-                        val new = Newsgroup(newsgroup.parent!!)
+                        val new = Newsgroup(name = newsgroup.parent!!, newsgroupServerId = viewModel.controller.value!!.currentServer!!.id)
                         new.setParentNewsgroup()
                         new.setHierarchyLevel()
                         newsgroupsToAdd.add(new)
@@ -86,6 +88,7 @@ class FragmentSubscribe : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("InflateParams")
     private fun createHierarchyView(parentLayout: LinearLayout, newsgroups: List<Newsgroup>, level: Int) {
 
         for (item in newsgroups.filter { it.hierarchyLevel == level }) {
@@ -120,7 +123,7 @@ class FragmentSubscribe : Fragment() {
                 }
 
                 // subscribe / unsubscribe newsgroup if checked / unchecked
-                checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
                     newsgroupList!!.find { it.name == checkbox.text }?.subscribed = isChecked
                 }
             }
@@ -161,16 +164,14 @@ class FragmentSubscribe : Fragment() {
     }
 
     private fun onButtonFinishClick() {
-        viewModel.data.value!!.currentServer.newsGroups = newsgroupList
+        viewModel.controller.value!!.currentNewsgroups = newsgroupList!!
+        lifecycleScope.launch {
+            viewModel.controller.value!!.saveNewsgroups()
+        }
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentShowSubgroups)
     }
 
     private fun onButtonBackClick() {
         findNavController().navigate(R.id.action_FragmentSubscribe_to_FragmentAddNewsgroup2)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
 }

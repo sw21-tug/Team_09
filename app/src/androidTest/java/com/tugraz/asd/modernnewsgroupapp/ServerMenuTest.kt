@@ -8,6 +8,7 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import org.hamcrest.Description
@@ -15,6 +16,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,11 +27,16 @@ class ServerMenuTest {
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(SplashScreen::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun clearDb(){
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("newsgroup.db")
+    }
 
     @Test
     fun serverMenuTest() {
-        Thread.sleep(5000)
+        Thread.sleep(3000)
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editText_name),
@@ -93,56 +100,20 @@ class ServerMenuTest {
         )
         materialButton.perform(click())
 
-        val checkBox = onView(
+        val materialCheckBox = onView(
             allOf(
-                withText("tu-graz.algorithmen"),
+                withId(R.id.checkBox), withText("tu-graz.algorithmen"),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
+                    childAtPosition(
+                        withId(R.id.linear_scroll),
+                        0
                     ),
                     0
-                )
+                ),
+                isDisplayed()
             )
         )
-        checkBox.perform(scrollTo(), click())
-
-        val checkBox2 = onView(
-            allOf(
-                withText("tu-graz.anzeigen.arbeitsmarkt"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
-                    ),
-                    1
-                )
-            )
-        )
-        checkBox2.perform(scrollTo(), click())
-
-        val checkBox3 = onView(
-            allOf(
-                withText("tu-graz.anzeigen.computer"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.view_subscribe),
-                        childAtPosition(
-                            withId(R.id.scrollView2),
-                            0
-                        )
-                    ),
-                    2
-                )
-            )
-        )
-        checkBox3.perform(scrollTo(), click())
+        materialCheckBox.perform(click())
 
         val materialButton2 = onView(
             allOf(

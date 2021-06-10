@@ -1,37 +1,146 @@
 package com.tugraz.asd.modernnewsgroupapp
 
+import com.tugraz.asd.modernnewsgroupapp.db.NewsgroupDb
+import com.tugraz.asd.modernnewsgroupapp.vo.Newsgroup
 import com.tugraz.asd.modernnewsgroupapp.vo.NewsgroupServer
+import org.apache.commons.net.nntp.Article
 
 class NewsgroupController {
     var servers: HashMap<NewsgroupServer, NewsgroupConnection> = HashMap<NewsgroupServer, NewsgroupConnection>()
-    lateinit var currentServer: NewsgroupServer
+    var currentServer: NewsgroupServer? = null
+    lateinit var currentNewsgroups: List<Newsgroup>
+    var currentNewsgroup: Newsgroup? = null
+    var currentArticles: Article? = null
+    var currentArticle: Article? = null
+    var currentReplyArticle: Article? = null
+    lateinit var db: NewsgroupDb
+    var skipSetup: Boolean = false
 
     fun addServer(server: NewsgroupServer) {
-        servers[server] = NewsgroupConnection(server)
+        if(!servers.containsKey(server)) {
+            servers[server] = NewsgroupConnection(server)
+        }
+    }
+
+    fun getConnById(id: Int): NewsgroupConnection? {
+        for ((server, connection) in servers) {
+            if(server.id == id)
+                return connection
+        }
+        return null
     }
 
     fun fetchNewsGroups() {
-        for ((server, con) in servers) {
-            server.newsGroups = con.getNewsGroups()
+        for ((_, con) in servers) {
+            currentNewsgroups = con.getNewsGroups()
+        }
+    }
+
+    fun updateNewsgroup() {
+        for ((_, con) in servers) {
+            con.updateNewsGroup(currentNewsgroup!!)
         }
     }
 
     fun fetchNewsGroups(server: NewsgroupServer) {
-        server.newsGroups = servers.get(server)?.getNewsGroups()
+        currentNewsgroups = servers.get(server)?.getNewsGroups()!!
     }
 
-    fun removeServer(server: NewsgroupServer) {
-        servers.remove(server)
+    fun isCurrentNewsgroupsInitialised() = ::currentNewsgroups.isInitialized
+
+    fun fetchCurrentArticleBody(): String? {
+        if(currentServer != null && currentNewsgroup != null && currentArticle != null) {
+            val con = getConnById(currentServer!!.id)
+            return con?.getArticleBody(currentArticle!!.articleNumberLong)
+        }
+        return null
     }
 
-    fun removeCurrentServer() {
-        if(this::currentServer.isInitialized)
-            servers.remove(currentServer)
+    fun fetchArticleBodyById(articleId: Long): String? {
+        if(currentServer != null && currentNewsgroup != null && currentArticle != null) {
+            val con = getConnById(currentServer!!.id)
+            return con?.getArticleBody(articleId)
+        }
+        return null
     }
 
-    fun renameCurrentAlias(newAlias: String){
-        if(this::currentServer.isInitialized)
-            currentServer.alias = newAlias
+    fun fetchArticles() {
+        if(currentServer != null)
+        {
+            val con = getConnById(currentServer!!.id)
+            currentArticles = con?.getArticleHeaders(currentNewsgroup)
+        }
+    }
+
+    fun postArticle(subject: String, message: String, article: Article? = null): Boolean {
+        if(currentServer == null || currentNewsgroup == null) return false
+
+        val con = getConnById(currentServer!!.id) ?: return false
+
+        return con.postArticle(currentNewsgroup!!, currentServer!!.email, subject, message, article)
+    }
+
+    suspend fun loadServersFromDB() {
+        val query = db.newsgroupServerDao().getAll()
+        for(s in query) {
+            addServer(s)
+        }
+    }
+
+    suspend fun getCurrentServerFromDB(): NewsgroupServer {
+        return db.newsgroupServerDao().getCurrentServer()
+    }
+
+    suspend fun setCurrentServerDB(id: Int, current: Boolean) {
+        db.newsgroupServerDao().updateCurrentServer(id, current)
+    }
+
+    suspend fun loadNewsgroupsFromDB() {
+        currentNewsgroups = db.newsgroupDao().getNewsgroupsForServerId(currentServer!!.id)
+        println("Loaded NGs from DB: " + currentNewsgroups.size)
+    }
+
+    suspend fun saveNewsgroups() {
+        if(currentServer != null && this::currentNewsgroups.isInitialized) {
+            println("Saving NGs to DB: " + currentNewsgroups.size + ". Server id:" + currentServer!!.id)
+            for(ng in currentNewsgroups) {
+                ng.newsgroupServerId = currentServer!!.id
+            }
+            db.newsgroupDao().insertAll(currentNewsgroups)
+        }
+    }
+
+    suspend fun removeNewsgroup(newsgroup: Newsgroup) {
+        if(currentServer != null) {
+            db.newsgroupDao().unsubscribeNewsgroupForServerId(currentServer!!.id, newsgroup.id)
+            newsgroup.subscribed = false
+        }
+    }
+
+    suspend fun renameNewsgroupAlias(newsgroup: Newsgroup, newAlias: String){
+        if(currentServer != null)
+        {
+            db.newsgroupDao().updateAlias(currentServer!!.id, newsgroup.id, newAlias)
+            newsgroup.alias = newAlias
+        }
+    }
+
+    suspend fun removeCurrentServer() {
+        if(currentServer != null) {
+            db.newsgroupServerDao().delete(currentServer!!)
+            db.newsgroupDao().deleteNewsgroupsForServerId(currentServer!!.id)
+            servers.remove(currentServer!!)
+            currentServer = null
+            currentNewsgroups = emptyList()
+        }
+    }
+
+    suspend fun renameCurrentAlias(newAlias: String){
+        if(currentServer != null)
+        {
+            db.newsgroupServerDao().updateAlias(currentServer!!.id, newAlias)
+            currentServer!!.alias = newAlias
+        }
     }
 
 }

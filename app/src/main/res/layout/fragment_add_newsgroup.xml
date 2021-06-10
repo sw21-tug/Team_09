@@ -5,7 +5,6 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient_background"
     tools:context=".FragmentAddNewsgroup">
 
     <LinearLayout
@@ -63,20 +62,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="18dp"
             android:hint="@string/hint_name"
             android:inputType="text"
             android:maxLines="1"
-            app:backgroundTint="@color/berry" />
+            app:backgroundTint="@color/berry"/>
 
         <EditText
             android:id="@+id/editText_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:layout_marginTop="10dp"
             android:hint="@string/hint_email_address"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            app:backgroundTint="@color/berry" />
+            app:backgroundTint="@color/berry"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -92,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="18dp"
             android:hint="@string/hint_server"
             android:inputType="textWebEditText"
             android:maxLines="1"
@@ -103,7 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="18dp"
             android:hint="@string/hint_server_alias"
+            android:maxLines="1"
             app:backgroundTint="@color/berry"
             android:importantForAutofill="no" />
 
@@ -122,11 +126,12 @@
         <Button
             android:id="@+id/button_subscribe"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_margin="40dp"
-            android:background="#AA4075"
+            android:textSize="16dp"
             android:text="@string/button_next"
+            android:background="@drawable/button_corner_round"
             app:backgroundTint="#AA4075"
             app:cornerRadius="100dp" />
     </LinearLayout>
